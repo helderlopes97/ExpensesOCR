@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "241012792516",
+    "firebase_url": "https://expensesocr.firebaseio.com",
+    "project_id": "expensesocr",
+    "storage_bucket": "expensesocr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241012792516:android:730d4a6a97742d3f",
+        "android_client_info": {
+          "package_name": "com.ipt.expensesocr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241012792516-d8ftcvfbi5o67o9r79u9igtlpmelnn84.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWz0AUQJ-RyioPRePMN9fCKti3TjMNFaU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241012792516-d8ftcvfbi5o67o9r79u9igtlpmelnn84.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
