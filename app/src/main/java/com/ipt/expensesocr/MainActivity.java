@@ -57,16 +57,18 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
         //PERMISSIONS
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},CAMARA);
-        } else {
-            // Permission has already been granted
-        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},READ_EXTERNAL_STORAGE);
         } else {
             // Permission has already been granted
         }
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},CAMARA);
+        } else {
+            // Permission has already been granted
+        }
+        // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_EXTERNAL_STORAGE);
         } else {
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             }
         );
     }
-/*
+
     @Override
     public void onRequestPermissionsResult(int requestCode,String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -187,8 +189,10 @@ public class MainActivity extends AppCompatActivity {
             // permissions this app might request.
         }
     }
-*/
+
     private void camera() {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         Intent intent = new Intent();
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -212,12 +216,11 @@ public class MainActivity extends AppCompatActivity {
 
                 File file = new File(mCameraFileName);
                 if (!file.exists()) {
-                    file.mkdirs();
+                    file.mkdir();
                 }
                 image=null;
             }
         }
     }
-
 }
 
