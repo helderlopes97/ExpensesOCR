@@ -5,43 +5,57 @@ jdk:
 env: 
  global:
   - ADB_INSTALL_TIMEOUT=20
+  - ANDROID_API_LEVEL=28
+  - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+  - EMULATOR_API_LEVEL=24
+  - ANDROID_EMULATOR_IMAGE=sys-img-arm64-v8a-android-24
+  - ANDROID_ABI=arm64-v8a
 
 android:
  components:
+  # Base Components
   - tools
   - platform-tools
   - tools
- 
-  - build-tools-28.0.3
-  - android-28
-  - android-24
- 
+  # SDK Versions
+  - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+  - android-$ANDROID_API_LEVEL
+  - android-$EMULATOR_API_LEVEL
+  # Aditional Components
   - extra-android-support
   - extra-google-m2repository
   - extra-android-m2repository
-  #- extra-google-google_play_services
- 
-  - sys-img-arm64-v8a-android-24
+  - extra-google-google_play_services
+  # Emulator
+  - $ANDROID_EMULATOR_IMAGE
 
 licenses:
  - 'android-sdk-license-.+'
  - '.+'  
  
 before_install:
+ # permissao para executar
  - chmod +x gradlew
+ # eliminar o warning
  - mkdir -p ~/.android
  - touch ~/.android/repositories.cfg
- - yes | sdkmanager "platforms;android-28"
- - yes | sdkmanager "platforms;android-24"
  
 install:
  - sdkmanager --list || true
+ # updates
+ - echo yes | sdkmanager "tools"
+ - echo yes | sdkmanager "platform-tools"
+ - echo yes | sdkmanager "build-tools;"$ANDROID_BUILD_TOOLS_VERSION
+ - echo yes | sdkmanager "platforms;android-"$ANDROID_API_LEVEL # Latest platform required by SDK tools
+
+ - echo yes | sdkmanager "extras;android;m2repository"
+ - echo yes | sdkmanager "extras;google;m2repository"
  - echo yes | sdkmanager --update
  - echo yes | sdkmanager --licenses
  
 before_script:
- - sdkmanager "system-images;android-24;google_apis;arm64-v8a"
- - echo no | avdmanager -v create avd -f -n test -k "system-images;android-24;google_apis;arm64-v8a"
+ - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;google_apis;$ANDROID_ABI"
+ - echo no | avdmanager -v create avd -f -n test -k "system-images;android-$EMULATOR_API_LEVEL;google_apis;$ANDROID_ABI"
  - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -gpu swiftshader &
  - android-wait-for-emulator
  
