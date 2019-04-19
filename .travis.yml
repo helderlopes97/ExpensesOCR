@@ -17,7 +17,7 @@ android:
   - extra-android-m2repository
   - extra-google-google_play_services
  
- - sys-img-arm64-v8a-android-24
+  - sys-img-arm64-v8a-android-24
 
  
 before_install:
