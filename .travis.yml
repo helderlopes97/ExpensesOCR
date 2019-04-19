@@ -6,7 +6,7 @@ env:
  global:
   - ADB_INSTALL_TIMEOUT=20
 
-  android:
+android:
  components:
   - tools
   - platform-tools
