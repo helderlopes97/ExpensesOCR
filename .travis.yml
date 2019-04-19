@@ -31,6 +31,8 @@ before_install:
  - chmod +x gradlew
  - yes | sdkmanager "platforms;android-28"
  - yes | sdkmanager "platforms;android-24"
+ - mkdir -p ~/.android
+ - touch ~/.android/repositories.cfg
  
 install:
  - sdkmanager --list || true
@@ -40,7 +42,7 @@ install:
 before_script:
  - sdkmanager "system-images;android-24;google_apis;arm64-v8a"
  - echo no | avdmanager -v create avd -f -n teste -k "system-images;android-24;google_apis;arm64-v8a"
- - emulator -avd test -no-audio -no-window &
+ - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
  - android-wait-for-emulator
  
 script:
