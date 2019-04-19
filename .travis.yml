@@ -23,6 +23,9 @@ android:
  
   - sys-img-arm64-v8a-android-24
 
+licenses:
+ - 'android-sdk-license-.+'
+ - '.+'  
  
 before_install:
  - chmod +x gradlew
