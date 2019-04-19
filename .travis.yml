@@ -58,8 +58,8 @@ install:
  #- echo yes | sdkmanager --licenses
  
 before_script:
- - mkdir -p "$ANDROID_HOME/licenses"
- - cp ./google-licenses/* "$ANDROID_HOME/licenses"
+ #- mkdir -p "$ANDROID_HOME/licenses"
+ #- cp ./google-licenses/* "$ANDROID_HOME/licenses"
  #- sdkmanager "system-images;android-$EMULATOR_API_LEVEL;google_apis;$ANDROID_ABI"
  #- echo no | avdmanager -v create avd -f -n test -k "system-images;android-$EMULATOR_API_LEVEL;google_apis;$ANDROID_ABI"
  #- $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -gpu swiftshader &
