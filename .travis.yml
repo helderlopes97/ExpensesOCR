@@ -70,3 +70,6 @@ script:
  #- ./gradlew dependencyCheckAnalyse build
  #- adb shell input keyevent 82
  #- ./gradlew connectedCheck -PdisablePreDex --stacktrace
+
+notifications:
+ slack: projectosipt20182019:16ycXr2X0CeVr0PPPlbVGmPB
