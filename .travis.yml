@@ -34,6 +34,8 @@ before_install:
  
 install:
  - sdkmanager --list || true
+ - echo yes | sdkmanager --update
+ - echo yes | sdkmanager --licenses
  
 before_script:
  - android list targets
