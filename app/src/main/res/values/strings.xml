@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ExpensesOCR</string>
+    <string name="title_activity_formulario">Formulario</string>
 </resources>

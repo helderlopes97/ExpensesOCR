@@ -80,6 +80,17 @@ public class MainActivity extends AppCompatActivity {
         imageView.setImageBitmap(BitmapFactory.decodeFile(fatura));
         textView = (TextView) findViewById(R.id.txt);
 
+        Button next = (Button) findViewById(R.id.btNext);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Formulario.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
         // Butão da câmara
         Button cam = (Button) findViewById(R.id.btCam);
         cam.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
                 runTextRecognition();
             }
         });
+
+
     }
 
     private void runTextRecognition() {
