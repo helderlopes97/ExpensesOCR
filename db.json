@@ -12,5 +12,23 @@
       "username": "guest",
       "password": "asd123"
     }
+  ],
+  "despesas" :[
+    {
+      "id":1,
+      "dataPedido":"2016-09-03T23:00:00.000Z",
+      "estado":"Pendente",
+      "dataPartida":"2016-09-10T23:00:00.000Z",
+      "dataChegada":"2016-09-10T23:00:00.000Z",
+      "motivo":"reunião"
+    },
+    {
+      "id":2,
+      "dataPedido":"2016-10-03T23:00:00.000Z",
+      "estado":"Pendente",
+      "dataPartida":"2016-10-10T23:00:00.000Z",
+      "dataChegada":"2016-10-10T23:00:00.000Z",
+      "motivo":"reunião"
+    }
   ]
 }
