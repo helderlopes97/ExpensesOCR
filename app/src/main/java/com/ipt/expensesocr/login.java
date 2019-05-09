@@ -65,7 +65,7 @@ public class login extends AppCompatActivity {
                                         Log.d("asd", "password: " + password);
                                         if(user.equals(username) && pw.equals(password)){
                                             loggedin = true;
-                                            Intent intent = new Intent(login.this,MainActivity.class);
+                                            Intent intent = new Intent(login.this,DespesasPendentes.class);
                                             startActivity(intent);
                                             finish();
                                         }
