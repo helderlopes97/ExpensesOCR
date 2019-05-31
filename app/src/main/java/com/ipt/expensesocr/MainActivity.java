@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -31,6 +32,13 @@ import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -47,12 +55,15 @@ public class MainActivity extends AppCompatActivity {
     TextView textView;
     String fatura = Environment.getExternalStorageDirectory()+"/ExpensesOCR/fatura.jpg";
     Uri image;
+    Bitmap teste;
     String mCameraFileName;
+    String path = Environment.getExternalStorageDirectory()+"/ExpensesOCR/fatura.jpg";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        OpenCVLoader.initDebug();
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
 
@@ -110,6 +121,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        // Butão para teste
+        Button btTeste = (Button) findViewById(R.id.btTeste);
+        btTeste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this,teste.class);
+                intent.putExtra("path", path);
+                startActivity(intent);
+            }
+        });
     }
 
     private void runTextRecognition() {
@@ -235,5 +257,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }
 
