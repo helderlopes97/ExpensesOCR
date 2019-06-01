@@ -9,58 +9,204 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-    </android.support.design.widget.AppBarLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="93dp"
-            android:layout_height="match_parent"
-            android:text="Tipo"
-            android:textAllCaps="false"
-
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textSize="24sp" />
-
-        <Spinner
-            android:id="@+id/spinnerTipo"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_dropdown"
-            android:visibility="visible" />
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
+        </android.support.design.widget.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView"
+                                android:layout_width="93dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="30dp"
+                                android:text="Tipo"
+                                android:textAllCaps="false"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="20sp" />
+
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_weight=".28"
+                                android:background="@drawable/rounded_edittext"
+                                android:orientation="horizontal">
+
+                                <Spinner
+                                    android:id="@+id/spinnerTipo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:background="@android:color/transparent"
+                                    android:gravity="center"
+                                    android:spinnerMode="dropdown"
+                                    />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/dropdown_icon" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:text="Data"
+                            android:textAllCaps="false"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:id="@+id/dataDespesa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/rounded_edittext"
+                            android:ems="10"
+                            android:hint="dd/mm/aaaa"
+                            android:inputType="number" />
+
+                    </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView8"
+                                android:layout_width="93dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="30dp"
+                                android:text="NIF"
+                                android:textAllCaps="false"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="20sp" />
+
+                            <EditText
+                                android:id="@+id/nifDespesa"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="@drawable/rounded_edittext"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="30dp"
+                                android:text="Valor Total"
+                                android:textAllCaps="false"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="20sp" />
+
+                            <EditText
+                                android:id="@+id/valorPortagem"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="@drawable/rounded_edittext"
+                                android:ems="10"
+                                android:hint="0.00"
+                                android:inputType="number" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                <include
+                    android:id="@+id/refeição"
+                    layout="@layout/content_formulario_refeicao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/transport"
+                    layout="@layout/content_formulario_transport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/diversas"
+                    layout="@layout/content_formulario_diversas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/alojamento"
+                    layout="@layout/content_formulario_alojamento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </ScrollView>
+
     </LinearLayout>
 
-    <include
-        android:id="@+id/refeição"
-        layout="@layout/content_formulario_refeicao"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <include
-        android:id="@+id/idk"
-        layout="@layout/content_formulario"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

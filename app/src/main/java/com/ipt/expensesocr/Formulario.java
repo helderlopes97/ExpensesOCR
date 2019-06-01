@@ -9,9 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +18,13 @@ public class Formulario extends AppCompatActivity{
 
     Spinner spinner;
     Spinner spinnerRefeicao;
+    Spinner spinnerTranporte;
+    Spinner spinnerDiversas;
+    Spinner spinnerAlojamento;
     View viewRefeicao;
-    View idk;
-
+    View viewDiversas;
+    View viewTransport;
+    View viewAlojamento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +47,17 @@ public class Formulario extends AppCompatActivity{
     public void start(){
         spinner = (Spinner) findViewById(R.id.spinnerTipo);
         spinnerRefeicao = (Spinner) findViewById(R.id.spinnerRefeição);
+        spinnerTranporte = (Spinner) findViewById(R.id.spinnerTransporte);
+        spinnerDiversas =(Spinner) findViewById(R.id.spinnerDiversas);
+        spinnerAlojamento = (Spinner) findViewById(R.id.spinnerAlojamento);
         viewRefeicao = findViewById(R.id.refeição);
-        idk=findViewById(R.id.idk);
+        viewTransport=findViewById(R.id.transport);
+        viewDiversas=findViewById(R.id.diversas);
+        viewAlojamento = findViewById(R.id.alojamento);
         viewRefeicao.setVisibility(View.GONE);
-        idk.setVisibility(View.VISIBLE);
+        viewTransport.setVisibility(View.GONE);
+        viewDiversas.setVisibility(View.VISIBLE);
+        viewAlojamento.setVisibility(View.GONE);
 
         addItemsToSpinners();
         addListenertiSpinner();
@@ -56,12 +65,12 @@ public class Formulario extends AppCompatActivity{
 
     public void addItemsToSpinners(){
         List<String> list = new ArrayList<String>();
-        list.add("Transport");
+        list.add("Transporte");
         list.add("Alojamento");
         list.add("Refeições");
         list.add("Despesas Diversas");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.my_spinner_textview);
         spinner.setAdapter(dataAdapter);
 
         List<String> list2 = new ArrayList<String>();
@@ -70,8 +79,39 @@ public class Formulario extends AppCompatActivity{
         list2.add("Refeição com clientes");
         list2.add("Refeição de grupo");
         ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list2);
-        dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter2.setDropDownViewResource(R.layout.my_spinner_textview);
         spinnerRefeicao.setAdapter(dataAdapter2);
+
+        List<String> list3 = new ArrayList<String>();
+        list3.add("Viatura Própria");
+        list3.add("Viatura Empresa");
+        list3.add("Viatura Alugada");
+        list3.add("Transporte Públicos(Metro/autocarro)");
+        list3.add("Transporte Públicos(Comboio)");
+        list3.add("Taxi e outros");
+        ArrayAdapter<String> dataAdapter3 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list3);
+        dataAdapter3.setDropDownViewResource(R.layout.my_spinner_textview);
+        spinnerTranporte.setAdapter(dataAdapter3);
+
+        List<String> list4 = new ArrayList<String>();
+        list4.add("Marketing & Comunicação");
+        list4.add("Recursos Humanos");
+        list4.add("Comissões /IS Bancários");
+        list4.add("Passaportes /Vistos");
+        list4.add("Outras Despesas");
+        ArrayAdapter<String> dataAdapter4 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list4);
+        dataAdapter4.setDropDownViewResource(R.layout.my_spinner_textview);
+        spinnerDiversas.setAdapter(dataAdapter4);
+
+        List<String> list5 = new ArrayList<String>();
+        list5.add("Hotel");
+        list5.add("Motel");
+        list5.add("Pensão");
+        list5.add("Apartamento");
+        list5.add("Outro");
+        ArrayAdapter<String> dataAdapter5 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list5);
+        dataAdapter5.setDropDownViewResource(R.layout.my_spinner_textview);
+        spinnerAlojamento.setAdapter(dataAdapter5);
     }
 
     public void addListenertiSpinner(){
@@ -81,10 +121,24 @@ public class Formulario extends AppCompatActivity{
                 if(spinner.getSelectedItem().equals("Refeições")){
                     Log.e("spinner",spinner.getSelectedItem().toString());
                     viewRefeicao.setVisibility(View.VISIBLE);
-                    idk.setVisibility(View.GONE);
-                }else{
+                    viewTransport.setVisibility(View.GONE);
+                    viewDiversas.setVisibility(View.GONE);
+                    viewAlojamento.setVisibility(View.GONE);
+                }else if(spinner.getSelectedItem().equals("Alojamento")){
                     viewRefeicao.setVisibility(View.GONE);
-                    idk.setVisibility(View.VISIBLE);
+                    viewTransport.setVisibility(View.GONE);
+                    viewDiversas.setVisibility(View.GONE);
+                    viewAlojamento.setVisibility(View.VISIBLE);
+                }else if(spinner.getSelectedItem().equals("Transporte")){
+                    viewRefeicao.setVisibility(View.GONE);
+                    viewTransport.setVisibility(View.VISIBLE);
+                    viewDiversas.setVisibility(View.GONE);
+                    viewAlojamento.setVisibility(View.GONE);
+                }else if(spinner.getSelectedItem().equals("Despesas Diversas")){
+                    viewRefeicao.setVisibility(View.GONE);
+                    viewTransport.setVisibility(View.GONE);
+                    viewDiversas.setVisibility(View.VISIBLE);
+                    viewAlojamento.setVisibility(View.GONE);
                 }
             }
 
