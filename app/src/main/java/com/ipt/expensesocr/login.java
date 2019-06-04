@@ -3,21 +3,27 @@ package com.ipt.expensesocr;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class login extends AppCompatActivity {
 
@@ -39,12 +45,12 @@ public class login extends AppCompatActivity {
             public void onClick(View v) {
 
                 userTextView = findViewById(R.id.username);
-                username = userTextView.getText().toString();
+                username = userTextView.getText().toString().trim();
                 pwTextView = findViewById(R.id.password);
-                password = userTextView.getText().toString();
+                password = pwTextView.getText().toString().trim();
 
                 err = (TextView) findViewById(R.id.loginErr);
-
+/*
                 // Instantiate the RequestQueue.
                 RequestQueue queue = Volley.newRequestQueue(com.ipt.expensesocr.login.this);
                 String url ="https://my-json-server.typicode.com/helderfoca/ExpensesOCR/users";
@@ -86,7 +92,62 @@ public class login extends AppCompatActivity {
                         });
 
                 // Add the request to the RequestQueue.
+                queue.add(req);*/
+
+
+
+                // Instantiate the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(com.ipt.expensesocr.login.this);
+                String url ="https://davidnoob.herokuapp.com/api/v1/login/";
+
+                // Request a string response from the provided URL.
+                StringRequest req = new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String res) {
+                                    try{
+                                        JSONObject obj= new JSONObject(res);
+                                        Log.e("obj",obj.toString());
+                                        Log.e("er", ""+obj.has("token"));
+                                        if(obj.has("token")) {
+                                            loggedin = true;
+                                            Intent intent = new Intent(login.this, DespesasPendentes.class);
+                                            Log.e("token",(String) obj.get("token"));
+                                            intent.putExtra("token",(String) obj.get("token"));
+                                            intent.putExtra("email", username);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    } catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+
+                                if(!loggedin){
+                                    err.setText("Username ou Password incorretos!");
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                err.setText("Erro! Tente novamente");
+                                Log.e("erroidk", error.toString());
+                            }
+                        }){
+
+                            @Override
+                            protected Map<String,String> getParams(){
+                                Map<String ,String> params=new HashMap<String, String>();
+                                params.put("email",username);
+                                params.put("password",password);
+                                return params;
+                            }
+
+                         };
+
+                // Add the request to the RequestQueue.
                 queue.add(req);
+
             }
         });
 
