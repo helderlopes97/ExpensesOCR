@@ -129,13 +129,13 @@ public class DespesasPendentes extends AppCompatActivity {
                                         JSONObject estado=(JSONObject) obj.get("request_state");
                                         if((user.get("email")).equals(email)){
                                             myLayout.addView(createDespesa(
-                                                    (double) obj.get("id"),
-                                                    (String) obj.get("created_at"),
-                                                    (String) obj.get("start_date"),
-                                                    (String) obj.get("end_date"),
-                                                    (String) estado.get("name"),
-                                                    (double) obj.get("expenses_count"),
-                                                    (double) obj.get("expenses_sum")
+                                                     obj.get("id").toString(),
+                                                     obj.get("created_at").toString(),
+                                                     obj.get("start_date").toString(),
+                                                     obj.get("end_date").toString(),
+                                                     estado.get("name").toString(),
+                                                     obj.get("expenses_count").toString(),
+                                                     obj.get("expenses_sum").toString()
                                             ));
                                         }
 
@@ -182,19 +182,22 @@ public class DespesasPendentes extends AppCompatActivity {
 
 
     public LinearLayout createDespesa(
-            double id,
+            String id,
             String dataPedido,
             String dataStart,
             String dataEnd,
             String estadoDespesa,
-            double numeroDespesas,
-            double totalDespesas
+            String numeroDespesas,
+            String totalDespesas
     ){
 
+        dataPedido=dataPedido.substring(0,10);
+        dataEnd=dataEnd.substring(0,10);
+        dataStart=dataStart.substring(0,10);
 
         LinearLayout linearLayout_126 = new LinearLayout(this);
         linearLayout_126.setOrientation(VERTICAL);
-        linearLayout_126.setId(Integer.parseInt(Double.toString(id)));
+        linearLayout_126.setId(Integer.parseInt(id));
         linearLayout_126.setBackgroundResource(R.drawable.rounded_edittext);
         LinearLayout.LayoutParams layout_1000 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -305,7 +308,7 @@ public class DespesasPendentes extends AppCompatActivity {
         linearLayout_491.addView(numDespesas);
 
         TextView textView_308 = new TextView(this);
-        textView_308.setText(Double.toString(numeroDespesas));
+        textView_308.setText(numeroDespesas);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             textView_308.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
@@ -359,7 +362,7 @@ public class DespesasPendentes extends AppCompatActivity {
 
         TextView valorTotal = new TextView(this);
         valorTotal.setId(R.id.valorTotal);
-        valorTotal.setText(Double.toString(totalDespesas));
+        valorTotal.setText(totalDespesas);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             valorTotal.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
