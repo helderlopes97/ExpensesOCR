@@ -78,6 +78,12 @@ public class teste  extends AppCompatActivity {
         // Transforma o Mat em grayscale
         Imgproc.cvtColor(src,src,Imgproc.COLOR_BGR2GRAY);
 
+        // Noise reduction
+        //Imgproc.erode(src,src,new Mat());
+        //Imgproc.dilate(src,src,new Mat());
+        Imgproc.erode(src,src,new Mat(), new Point(-1,-1),10,1,new Scalar(1));
+        Imgproc.dilate(src,src,new Mat(), new Point(-1,-1),10,1,new Scalar(1));
+
         /*
             De entre as possíveis funções de Threshold vai ser utilizada a ADAPTIVE_THRESH_GAUSSIAN_C.
             Esta é a mais indicada para fazer OCR.
