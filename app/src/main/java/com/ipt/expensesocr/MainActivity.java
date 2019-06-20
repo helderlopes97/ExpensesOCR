@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     String fatura = Environment.getExternalStorageDirectory()+"/ExpensesOCR/fatura.jpg";
     Uri image;
     String mCameraFileName;
+    String despesaId;
+    String token;
 
 
     @Override
@@ -75,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
             // Permission has already been granted
         }
 
+        final Bundle intent=getIntent().getExtras();
+        despesaId=intent.getString("despesaId");
+        token=intent.getString("token");
 
         imageView = (ImageView) findViewById(R.id.img);
         imageView.setImageBitmap(BitmapFactory.decodeFile(fatura));

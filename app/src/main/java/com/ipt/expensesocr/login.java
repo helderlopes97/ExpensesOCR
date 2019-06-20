@@ -1,7 +1,11 @@
 package com.ipt.expensesocr;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -27,6 +31,10 @@ import java.util.Map;
 
 public class login extends AppCompatActivity {
 
+    static final int CAMARA = 100;
+    static final int READ_EXTERNAL_STORAGE = 101;
+    static  final int WRITE_EXTERNAL_STORAGE= 102;
+
     TextView userTextView;
     String username;
     TextView pwTextView;
@@ -39,6 +47,33 @@ public class login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //PERMISSIONS
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(login.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},READ_EXTERNAL_STORAGE);
+        } else {
+            // Permission has already been granted
+        }
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(login.this,new String[]{Manifest.permission.CAMERA},CAMARA);
+
+                   /* if (ContextCompat.checkSelfPermission(getContext(), permission) != PackageManager.PERMISSION_GRANTED){
+                        if(!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), permission)){
+                            requestPermissions(new String[]{permission}),
+                                    SMS_PERMISSION);
+                        }
+                    }*/
+        } else {
+            // Permission has already been granted
+        }
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(login.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_EXTERNAL_STORAGE);
+        } else {
+            // Permission has already been granted
+        }
+
+
         final Button login = (Button) findViewById(R.id.btLogin);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +85,9 @@ public class login extends AppCompatActivity {
                 password = pwTextView.getText().toString().trim();
 
                 err = (TextView) findViewById(R.id.loginErr);
-/*
+
+
+                /*
                 // Instantiate the RequestQueue.
                 RequestQueue queue = Volley.newRequestQueue(com.ipt.expensesocr.login.this);
                 String url ="https://my-json-server.typicode.com/helderfoca/ExpensesOCR/users";

@@ -5,15 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".DespesasPendentes"
-    tools:showIn="@layout/activity_despesas_pendentes">
+    tools:context=".DetalhesDespesa"
+    tools:showIn="@layout/activity_detalhes_despesa">
 
     <LinearLayout
         android:id="@+id/despesa"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/rounded_edittext"
         android:layout_marginBottom="15dp">
 
         <LinearLayout
@@ -27,19 +26,19 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/descricao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Descrição:"
+                android:text="Data:"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="15sp" />
+
             <TextView
-                android:id="@+id/valorDescricao"
+                android:id="@+id/data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5sp"
-                android:text="____________"
+                android:text="__/__/____"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </LinearLayout>
 
@@ -54,14 +53,13 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/estado"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:text="Estado: "
+                android:text="Valor:  "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <TextView
-                android:id="@+id/valorEstado"
+                android:id="@+id/valorDespesa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="_______"
@@ -80,10 +78,9 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/intervalo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Intervalo: "
+                android:text="Categoria: "
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="15sp" />
@@ -93,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5sp"
-                android:text="__/__/____ até __/__/____"
+                android:text="____________"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 
@@ -110,35 +107,28 @@
             android:layout_marginTop="2sp">
 
             <TextView
-                android:id="@+id/numDespesas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nº de despesas: "
+                android:text="Tipo: "
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tipo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
                 android:layout_marginRight="20dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Valor Total: "
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <TextView
-                android:id="@+id/numDespesas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
+                android:text="________"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/linebottom" />
 
 
     </LinearLayout>
