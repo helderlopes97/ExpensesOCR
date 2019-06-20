@@ -37,8 +37,6 @@ public class DetalhesDespesa extends AppCompatActivity {
     String email;
     String token;
     String despesaId;
-    TextView textView;
-    Button button;
     LinearLayout myLayout;
 
     //views
@@ -46,7 +44,7 @@ public class DetalhesDespesa extends AppCompatActivity {
     TextView intervalo;
     TextView valorEsperado;
     TextView valorReal;
-    TextView numDespesas;
+    TextView numeroDespesas;
 
 
     @Override
@@ -71,7 +69,7 @@ public class DetalhesDespesa extends AppCompatActivity {
         intervalo=findViewById(R.id.intervalo);
         valorEsperado=findViewById(R.id.valorEsperado);
         valorReal=findViewById(R.id.valorReal);
-        numDespesas=findViewById(R.id.numDespesas);
+        numeroDespesas=findViewById(R.id.numDespesas);
 
 
         //button=findViewById(R.id.button);
@@ -132,7 +130,7 @@ public class DetalhesDespesa extends AppCompatActivity {
                             intervalo.setText(res.get("start_date").toString()+" até "+res.get("end_date").toString());
                             valorEsperado.setText(res.get("estimated_value").toString());
                             valorReal.setText(res.get("real_value").toString());
-                            numDespesas.setText(res.get("expenses_count").toString());
+                            numeroDespesas.setText(res.get("expenses_count").toString());
                             JSONArray despesas= (JSONArray) res.get("expenses");
                             myLayout.removeAllViews();
                             for (int i = 0; i < despesas.length(); i++) {
