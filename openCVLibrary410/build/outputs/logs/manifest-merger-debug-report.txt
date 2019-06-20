@@ -37,3 +37,17 @@ uses-feature#android.hardware.camera2
 ADDED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml:10:5-61
 	android:name
 		ADDED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml:10:19-58
+uses-sdk
+INJECTED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml
+INJECTED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml
+INJECTED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml
+INJECTED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml
+		ADDED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml
+		ADDED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\helderfoca\AndroidStudioProjects\ExpensesOCR\openCVLibrary410\src\main\AndroidManifest.xml
