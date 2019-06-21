@@ -69,7 +69,7 @@ public class DetalhesDespesa extends AppCompatActivity {
         intervalo=findViewById(R.id.intervalo);
         valorEsperado=findViewById(R.id.valorEsperado);
         valorReal=findViewById(R.id.valorReal);
-        numeroDespesas=findViewById(R.id.numDespesas);
+        numeroDespesas=findViewById(R.id.numeroDespesas);
 
 
         //button=findViewById(R.id.button);
