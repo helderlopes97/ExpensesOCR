@@ -18,9 +18,6 @@
             android:name=".Formulario"
             android:label="@string/title_activity_formulario"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".teste"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

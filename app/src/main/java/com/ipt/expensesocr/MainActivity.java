@@ -17,7 +17,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,18 +33,11 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
 import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import Utils.ImageUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     static  final int WRITE_EXTERNAL_STORAGE= 102;
     ImageView imageView;
     TextView textView;
-    String fatura = Environment.getExternalStorageDirectory()+"/ExpensesOCR/fatura.jpg";
+    Bitmap fatura;
     Uri image;
     Bitmap teste;
     String mCameraFileName;
@@ -88,8 +80,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         imageView = (ImageView) findViewById(R.id.img);
-        imageView.setImageBitmap(BitmapFactory.decodeFile(fatura));
+        fatura = BitmapFactory.decodeFile(path);
+        imageView.setImageBitmap(fatura);
         textView = (TextView) findViewById(R.id.txt);
+
 
         Button next = (Button) findViewById(R.id.btNext);
         next.setOnClickListener(new View.OnClickListener() {
@@ -121,26 +115,20 @@ public class MainActivity extends AppCompatActivity {
         detect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try{
+                    fatura = ImageUtils.transform(fatura);
+                    fatura = ImageUtils.threshold(fatura);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                imageView.setImageBitmap(fatura);
                 runTextRecognition();
-            }
-        });
-
-
-        // Butão para teste
-        Button btTeste = (Button) findViewById(R.id.btTeste);
-        btTeste.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(MainActivity.this,teste.class);
-                intent.putExtra("path", path);
-                startActivity(intent);
             }
         });
     }
 
     private void runTextRecognition() {
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(BitmapFactory.decodeFile(fatura));
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(BitmapFactory.decodeFile(path));
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
         Task<FirebaseVisionText> result = detector.processImage(image)
             .addOnSuccessListener(
@@ -236,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        File outFile = new File(fatura);
+        File outFile = new File(path);
 
         mCameraFileName = outFile.toString();
         Uri outuri = Uri.fromFile(outFile);

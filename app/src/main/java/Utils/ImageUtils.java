@@ -1,4 +1,4 @@
-package com.ipt.expensesocr;
+package Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,31 +39,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-public class teste  extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.teste);
-
-        byte[] byteArray;
-        Bitmap bit;
-
-                Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            // Cria Bitmap da imagem pelo path
-            String path = extras.getString("path");
-            bit = BitmapFactory.decodeFile(path);
-            // Bitmap transformado
-            Bitmap transformed = transform(bit);
-            // Bitmap threshed
-            Bitmap threshed = threshold(transformed);
-            // Display
-            ImageView imgTeste = findViewById(R.id.imgTeste);
-            imgTeste.setImageBitmap(threshed);
-        }
-    }
-
+public class ImageUtils extends AppCompatActivity {
 
     /**
      * Esta função recebe um Bitmap e devolve-lo depois de ser feito thresholding
@@ -71,7 +47,7 @@ public class teste  extends AppCompatActivity {
      * @param bit Bitmap para fazer o thresholding
      * @return Bitmap com thresholding
      */
-    public Bitmap threshold(Bitmap bit) {
+    public static Bitmap threshold(Bitmap bit) {
         // Cria um novo Mat a partir do Bitmap
         Mat src = new Mat(bit.getWidth(), bit.getHeight(), CvType.CV_8UC1);
         Utils.bitmapToMat(bit, src);
@@ -111,7 +87,7 @@ public class teste  extends AppCompatActivity {
      * @param bit Bitmap da imagem
      * @return Bitmap da imagem com os contornos a verde
      */
-    public Bitmap edges(Bitmap bit) {
+    public static Bitmap edges(Bitmap bit) {
         // Cria um novo Mat a partir do Bitmap
         Mat src = new Mat(bit.getWidth(), bit.getHeight(), CvType.CV_8UC1);
         Utils.bitmapToMat(bit, src);
@@ -145,7 +121,7 @@ public class teste  extends AppCompatActivity {
      * @param bit Bitmap da imagem do texto
      * @return Bitmap com as linhas da inclinação
      */
-    public Bitmap calcSkew(Bitmap bit){
+    public static Bitmap calcSkew(Bitmap bit){
         // Cria um novo Mat a partir do Bitmap
         Mat src = new Mat(bit.getWidth(), bit.getHeight(), CvType.CV_8UC1);
         Utils.bitmapToMat(bit, src);
@@ -191,7 +167,7 @@ public class teste  extends AppCompatActivity {
      * @param bit Bitmap da imagem original
      * @return Bitmap da imagem transformada
      */
-    public Bitmap transform(Bitmap bit){
+    public static Bitmap transform(Bitmap bit){
         // Transforma o Bitmap em Mat
         Mat src = new Mat(bit.getWidth(), bit.getHeight(), CvType.CV_8UC1);
         Utils.bitmapToMat(bit, src);
@@ -261,7 +237,7 @@ public class teste  extends AppCompatActivity {
      * @param pts Array com os 4 pontos
      * @return Bitmap transformado
      */
-    public Bitmap four_point_transform(Mat original, Point[] pts) {
+    private static Bitmap four_point_transform(Mat original, Point[] pts) {
         // Calcula a largura dos pontos inferiores
         double widthA = Math.sqrt(
                 Math.pow((pts[2].x - pts[3].x),2) + Math.pow((pts[2].y - pts[3].y),2)
@@ -321,7 +297,7 @@ public class teste  extends AppCompatActivity {
      * @param pts Os 4 pontos a ordenar
      * @return Os pontos ordenados
      */
-    public Point[] orderPoints(Point[] pts){
+    private static Point[] orderPoints(Point[] pts){
         Point[] ord = new Point[4];
         // inicia as variáveis
         double max_sum = 0;
@@ -368,7 +344,7 @@ public class teste  extends AppCompatActivity {
      *
      * @param contours Lista de contornos
      */
-    public static void sortContoursByArea(List<MatOfPoint> contours) {
+    private static void sortContoursByArea(List<MatOfPoint> contours) {
         Collections.sort(contours, new Comparator<MatOfPoint>() {
             @Override
             public int compare(MatOfPoint a, MatOfPoint b) {
