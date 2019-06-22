@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -17,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -46,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
     static  final int WRITE_EXTERNAL_STORAGE= 102;
     ImageView imageView;
     TextView textView;
-    Bitmap fatura;
+    Bitmap fatura_original;
+    Bitmap fatura_transformada;
     Uri image;
     Bitmap teste;
     String mCameraFileName;
@@ -85,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
         token=intent.getString("token");
 
         imageView = (ImageView) findViewById(R.id.img);
-        fatura = BitmapFactory.decodeFile(path);
-        imageView.setImageBitmap(fatura);
+        fatura_original = BitmapFactory.decodeFile(path);
+        imageView.setImageBitmap(fatura_original);
         textView = (TextView) findViewById(R.id.txt);
 
 
@@ -121,19 +124,54 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try{
-                    fatura = ImageUtils.transform(fatura);
-                    fatura = ImageUtils.threshold(fatura);
+                    runTextRecognition(fatura_transformada);
+                    Log.e("YYYYYYYYYYYYYYYY", "TRANSFORM TRANSFORM");
                 } catch (Exception e){
+                    Log.e("YYYYYYYYYYYYYYYY", "ERRO ERRO ERRO ERRO");
                     e.printStackTrace();
+                    imageView.setImageBitmap(fatura_original);
+                    runTextRecognition(fatura_original);
                 }
-                imageView.setImageBitmap(fatura);
-                runTextRecognition();
+            }
+        });
+
+        // Butão para detetar
+        Button but1 = (Button) findViewById(R.id.button4);
+        but1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    Log.e("YYYYYYYYYYYYYYYY", "TRANSFORM11111111 TRANSFORM");
+                    fatura_transformada = ImageUtils.transform(fatura_original);
+                    imageView.setImageBitmap(fatura_transformada);
+                } catch (Exception e){
+                    Log.e("YYYYYYYYYYYYYYYY", "ERRO ERRO ERRO ERRO 1111111111");
+                    e.printStackTrace();
+                    imageView.setImageBitmap(fatura_original);
+                }
+            }
+        });
+
+        // Butão para detetar
+        Button but2 = (Button) findViewById(R.id.button5);
+        but2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    Log.e("YYYYYYYYYYYYYYYY", "TRANSFORM222222222222 TRANSFORM");
+                    fatura_transformada = ImageUtils.threshold(fatura_transformada);
+                    imageView.setImageBitmap(fatura_transformada);
+                } catch (Exception e){
+                    Log.e("YYYYYYYYYYYYYYYY", "ERRO ERRO ERRO ERRO 22222222222");
+                    e.printStackTrace();
+                    imageView.setImageBitmap(fatura_original);
+                }
             }
         });
     }
 
-    private void runTextRecognition() {
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(BitmapFactory.decodeFile(path));
+    private void runTextRecognition(Bitmap fatura) {
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(fatura);
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
         Task<FirebaseVisionText> result = detector.processImage(image)
             .addOnSuccessListener(
@@ -165,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                         }
+
+                        Log.e("TEXTO", textView.getText().toString() );
                     }
                 }
             )

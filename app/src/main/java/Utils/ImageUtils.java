@@ -55,10 +55,8 @@ public class ImageUtils extends AppCompatActivity {
         Imgproc.cvtColor(src,src,Imgproc.COLOR_BGR2GRAY);
 
         // Noise reduction
-        //Imgproc.erode(src,src,new Mat());
-        //Imgproc.dilate(src,src,new Mat());
-        Imgproc.erode(src,src,new Mat(), new Point(-1,-1),10,1,new Scalar(1));
-        Imgproc.dilate(src,src,new Mat(), new Point(-1,-1),10,1,new Scalar(1));
+        Imgproc.erode(src,src,new Mat(), new Point(-1,-1),2,1,new Scalar(1,1,1));
+        Imgproc.dilate(src,src,new Mat(), new Point(-1,-1),2,1,new Scalar(1,1,1));
 
         /*
             De entre as possíveis funções de Threshold vai ser utilizada a ADAPTIVE_THRESH_GAUSSIAN_C.
@@ -66,14 +64,14 @@ public class ImageUtils extends AppCompatActivity {
         */
 
         // SIMPLE THRESHOLDING
-        //Imgproc.threshold(tmp,tmp,100,255,Imgproc.THRESH_BINARY);
+        //Imgproc.threshold(src,src,100,255,Imgproc.THRESH_BINARY);
 
         // ADAPTIVE THRESHOLDING
         Imgproc.adaptiveThreshold(src,src,255,Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,Imgproc.THRESH_BINARY, 31,2);
-        //Imgproc.adaptiveThreshold(tmp,tmp,255,Imgproc.ADAPTIVE_THRESH_MEAN_C,Imgproc.THRESH_BINARY, 31,2);
+        //Imgproc.adaptiveThreshold(src,src,255,Imgproc.ADAPTIVE_THRESH_MEAN_C,Imgproc.THRESH_BINARY, 31,2);
 
         // OTSU'S THRESHOLDING
-        //Imgproc.threshold(tmp,tmp,0,255,Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
+        //Imgproc.threshold(src,src,0,255,Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
 
         // Converte o Mat final para o Bitmap
         Utils.matToBitmap(src, bit);
