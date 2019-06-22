@@ -27,6 +27,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -37,11 +44,15 @@ import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Utils.ImageUtils;
 
@@ -62,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
     String email;
     String despesaId;
     String token;
+    String api_key;
+    String tipo;
+    String perc;
 
 
     @Override
@@ -93,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         despesaId=intent.getString("despesaId");
         token=intent.getString("token");
         email=intent.getString("email");
+        api_key = "b05c81093b4371c50f3aa142184974149d4411b2";
 
         imageView = (ImageView) findViewById(R.id.img);
         fatura_original = BitmapFactory.decodeFile(path);
@@ -169,14 +184,78 @@ public class MainActivity extends AppCompatActivity {
                         pickFromGallery();
                         break;
                     case R.id.action_next:
-                        intent = new Intent(MainActivity.this, Formulario.class);
-                        intent.putExtra("despesaId",(String) despesaId+"");
-                        intent.putExtra("token",(String) token);
-                        intent.putExtra("email",(String) email);
-                        startActivity(intent);
-                        finish();
-                        break;
+                        // Instantiate the RequestQueue.
+                        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
 
+                        String url ="https://api.monkeylearn.com/v3/classifiers/cl_ZSPc2GNb/classify/";
+
+                        // Request a string response from the provided URL.
+                        StringRequest req = new StringRequest(Request.Method.POST, url,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String res) {
+                                        try{
+                                            Log.e("CLASS", "aqui");
+                                            JSONArray array= new JSONArray(res);
+                                            JSONObject obj = (JSONObject) array.get(0);
+                                            if(obj.has("classifications")) {
+                                                JSONArray classifArray = (JSONArray) obj.get("classifications");
+                                                JSONObject classifcObj = (JSONObject) classifArray.get(0);
+                                                String tag = classifcObj.get("tag_name").toString();
+                                                String conf = classifcObj.get("confidence").toString();
+                                                tipo = tag;
+                                                perc = Double.valueOf(conf) * 100 + "%";
+                                                Log.e("YYYYYYYYYYYYYYYY", tipo);
+                                                Log.e("YYYYYYYYYYYYYYYY", perc);
+                                                Intent intent;
+                                                intent = new Intent(MainActivity.this, Formulario.class);
+                                                intent.putExtra("despesaId",(String) despesaId+"");
+                                                intent.putExtra("token",(String) token);
+                                                intent.putExtra("email",(String) email);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        } catch (Exception e){
+                                            Log.e("CLASS", "erro");
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.e("ERR", "API FAIL" );
+                                    }
+                                }){
+
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/json; charset=utf-8";
+                            }
+
+                            @Override
+                            public byte[] getBody() throws AuthFailureError {
+                                try{
+                                    JSONObject jsonBody = new JSONObject();
+                                    JSONArray bodyArray = new JSONArray();
+                                    bodyArray.put(textView.getText().toString());
+                                    jsonBody.put("data",bodyArray);
+                                    return jsonBody.toString().getBytes("utf-8");
+                                } catch (Exception e){
+                                    e.printStackTrace();
+                                    return null;
+                                }
+                            }
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                final Map<String, String> headers = new HashMap<String, String>();
+                                headers.put("Authorization", "Token " + api_key);
+                                return headers;
+                            }
+                        };
+
+                        // Add the request to the RequestQueue.
+                        queue.add(req);
                 }
                 return true;
             }
@@ -187,54 +266,54 @@ public class MainActivity extends AppCompatActivity {
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(fatura);
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
         Task<FirebaseVisionText> result = detector.processImage(image)
-            .addOnSuccessListener(
-                new OnSuccessListener<FirebaseVisionText>() {
-                    @Override
-                    public void onSuccess(FirebaseVisionText firebaseVisionText) {
-                        // Task completed successfully
-                        // ...
-                        textView.setText("");
-                        String texto = "";
-                        for (FirebaseVisionText.TextBlock block: firebaseVisionText.getTextBlocks()) {
-                            String blockText = block.getText();
-                            //textView.append(blockText);
-                            Float blockConfidence = block.getConfidence();
-                            List<RecognizedLanguage> blockLanguages = block.getRecognizedLanguages();
-                            Point[] blockCornerPoints = block.getCornerPoints();
-                            Rect blockFrame = block.getBoundingBox();
-                            texto += "\n";
-                            for (FirebaseVisionText.Line line: block.getLines()) {
-                                String lineText = line.getText();
-                                Float lineConfidence = line.getConfidence();
-                                List<RecognizedLanguage> lineLanguages = line.getRecognizedLanguages();
-                                Point[] lineCornerPoints = line.getCornerPoints();
-                                Rect lineFrame = line.getBoundingBox();
-                                texto += "\n";
-                                for (FirebaseVisionText.Element element: line.getElements()) {
-                                    String elementText = element.getText();
-                                    Float elementConfidence = element.getConfidence();
-                                    List<RecognizedLanguage> elementLanguages = element.getRecognizedLanguages();
-                                    Point[] elementCornerPoints = element.getCornerPoints();
-                                    Rect elementFrame = element.getBoundingBox();
-                                    texto += elementText + " ";
+                .addOnSuccessListener(
+                        new OnSuccessListener<FirebaseVisionText>() {
+                            @Override
+                            public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                                // Task completed successfully
+                                // ...
+                                textView.setText("");
+                                String texto = "";
+                                for (FirebaseVisionText.TextBlock block: firebaseVisionText.getTextBlocks()) {
+                                    String blockText = block.getText();
+                                    //textView.append(blockText);
+                                    Float blockConfidence = block.getConfidence();
+                                    List<RecognizedLanguage> blockLanguages = block.getRecognizedLanguages();
+                                    Point[] blockCornerPoints = block.getCornerPoints();
+                                    Rect blockFrame = block.getBoundingBox();
+                                    texto += "\n";
+                                    for (FirebaseVisionText.Line line: block.getLines()) {
+                                        String lineText = line.getText();
+                                        Float lineConfidence = line.getConfidence();
+                                        List<RecognizedLanguage> lineLanguages = line.getRecognizedLanguages();
+                                        Point[] lineCornerPoints = line.getCornerPoints();
+                                        Rect lineFrame = line.getBoundingBox();
+                                        texto += "\n";
+                                        for (FirebaseVisionText.Element element: line.getElements()) {
+                                            String elementText = element.getText();
+                                            Float elementConfidence = element.getConfidence();
+                                            List<RecognizedLanguage> elementLanguages = element.getRecognizedLanguages();
+                                            Point[] elementCornerPoints = element.getCornerPoints();
+                                            Rect elementFrame = element.getBoundingBox();
+                                            texto += elementText + " ";
+                                        }
+                                    }
                                 }
+                                textView.setText(texto);
+                                Log.e("TEXTO", textView.getText().toString() );
                             }
                         }
-                        textView.setText(texto);
-                        Log.e("TEXTO", textView.getText().toString() );
-                    }
-                }
-            )
-        .addOnFailureListener(
-            new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    // Task failed with an exception
-                    // ...
-                    textView.setText("Fail");
-                }
-            }
-        );
+                )
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Task failed with an exception
+                                // ...
+                                textView.setText("Fail");
+                            }
+                        }
+                );
     }
 
     @Override
@@ -327,7 +406,6 @@ public class MainActivity extends AppCompatActivity {
                     imageView.setImageDrawable(null);
                     imageView.setImageURI(image);
                     imageView.setVisibility(View.VISIBLE);
-
                     file = new File(mCameraFileName);
                     if (!file.exists()) {
                         file.mkdir();
@@ -361,6 +439,4 @@ public class MainActivity extends AppCompatActivity {
             }
     }
 
-
 }
-
