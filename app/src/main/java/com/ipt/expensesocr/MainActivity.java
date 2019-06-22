@@ -40,6 +40,7 @@ import com.google.firebase.ml.vision.text.RecognizedLanguage;
 import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import Utils.ImageUtils;
@@ -294,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void pickFromGallery() {
-        File outFile = new File(path);
+       /* File outFile = new File(path);
         mCameraFileName = outFile.toString();
         Uri outuri = Uri.fromFile(outFile);
         //Create an Intent with action as ACTION_PICK
@@ -306,7 +307,9 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
         // Launching the Intent
-        startActivityForResult(intent, GALLERY_REQUEST_CODE);
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);*/
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent,GALLERY_REQUEST_CODE);
 
     }
 
@@ -319,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
             switch (requestCode) {
                 case GALLERY_REQUEST_CODE:
                     //data.getData returns the content URI for the selected Image
-                    Uri selectedImage = data.getData();
+                   /* Uri selectedImage = data.getData();
                     image=selectedImage;
                     imageView.setImageDrawable(null);
                     imageView.setImageURI(image);
@@ -329,7 +332,18 @@ public class MainActivity extends AppCompatActivity {
                     if (!file.exists()) {
                         file.mkdir();
                     }
-                    image = null;
+                    image = null;*/
+                    Uri selectedImage = data.getData();
+
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+
+                        imageView.setImageBitmap(bitmap);
+                        fatura_original=bitmap;
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case CAMARA:
                     image = Uri.fromFile(new File(mCameraFileName));
