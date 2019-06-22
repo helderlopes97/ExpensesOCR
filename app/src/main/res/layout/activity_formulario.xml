@@ -26,10 +26,14 @@
 
 
         </android.support.design.widget.AppBarLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@id/bar">
 
 
             <LinearLayout
@@ -205,7 +209,22 @@
             </LinearLayout>
         </ScrollView>
 
+    <android.support.design.widget.BottomNavigationView
+
+        android:id="@+id/bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:menu="@menu/bottom_nav_menu4"
+        app:labelVisibilityMode="labeled"
+        app:itemBackground="@color/colorPrimaryDark"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white" />
+</RelativeLayout>
     </LinearLayout>
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
