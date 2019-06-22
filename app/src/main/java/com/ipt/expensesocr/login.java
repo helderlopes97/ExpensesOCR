@@ -78,7 +78,7 @@ public class login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                login.setActivated(false);
                 userTextView = findViewById(R.id.username);
                 username = userTextView.getText().toString().trim();
                 pwTextView = findViewById(R.id.password);
@@ -161,14 +161,15 @@ public class login extends AppCompatActivity {
 
                                 if(!loggedin){
                                     err.setText("Username ou Password incorretos!");
+                                    login.setActivated(false);
                                 }
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                err.setText("Erro! Tente novamente");
-                                Log.e("erroidk", error.toString());
+                                err.setText("Username ou Password incorretos!");
+                                login.setActivated(false);
                             }
                         }){
 

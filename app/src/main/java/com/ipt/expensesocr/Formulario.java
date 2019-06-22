@@ -1,15 +1,20 @@
 package com.ipt.expensesocr;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +30,9 @@ public class Formulario extends AppCompatActivity{
     View viewDiversas;
     View viewTransport;
     View viewAlojamento;
+    String email;
+    String token;
+    String despesaId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,37 @@ public class Formulario extends AppCompatActivity{
                         .setAction("Action", null).show();
             }
         });
+
+        final Bundle intent=getIntent().getExtras();
+        despesaId=intent.getString("despesaId");
+        token=intent.getString("token");
+        email=intent.getString("email");
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bar);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_back:
+                        Intent intent = new Intent(Formulario.this, MainActivity.class);
+                        intent.putExtra("token",(String) token);
+                        intent.putExtra("email",(String) email);
+                        intent.putExtra("despesaId",(String)despesaId);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case R.id.action_send:
+                        Toast.makeText(Formulario.this, "Envio não é possivel", Toast.LENGTH_SHORT).show();
+                        break;
+
+
+                }
+                return true;
+            }
+        });
+
+
+
         start();
     }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Camera;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -14,11 +15,13 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     static final int CAMARA = 100;
     static final int READ_EXTERNAL_STORAGE = 101;
     static  final int WRITE_EXTERNAL_STORAGE= 102;
+    static final int GALLERY_REQUEST_CODE = 103;
     ImageView imageView;
     TextView textView;
     Bitmap fatura_original;
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     Bitmap teste;
     String mCameraFileName;
     String path = Environment.getExternalStorageDirectory()+"/ExpensesOCR/fatura.jpg";
+    String email;
     String despesaId;
     String token;
 
@@ -86,54 +91,12 @@ public class MainActivity extends AppCompatActivity {
         final Bundle intent=getIntent().getExtras();
         despesaId=intent.getString("despesaId");
         token=intent.getString("token");
+        email=intent.getString("email");
 
         imageView = (ImageView) findViewById(R.id.img);
         fatura_original = BitmapFactory.decodeFile(path);
         imageView.setImageBitmap(fatura_original);
         textView = (TextView) findViewById(R.id.txt);
-
-
-        Button next = (Button) findViewById(R.id.btNext);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,Formulario.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-
-        // Butão da câmara
-        Button cam = (Button) findViewById(R.id.btCam);
-        cam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.CAMERA},CAMARA);
-                } else {
-                    // Permission has already been granted
-                    camera();
-                }
-            }
-        });
-
-        // Butão para detetar
-        Button detect = (Button) findViewById(R.id.btDetect);
-        detect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try{
-                    runTextRecognition(fatura_transformada);
-                    Log.e("YYYYYYYYYYYYYYYY", "TRANSFORM TRANSFORM");
-                } catch (Exception e){
-                    Log.e("YYYYYYYYYYYYYYYY", "ERRO ERRO ERRO ERRO");
-                    e.printStackTrace();
-                    imageView.setImageBitmap(fatura_original);
-                    runTextRecognition(fatura_original);
-                }
-            }
-        });
 
         // Butão para detetar
         Button but1 = (Button) findViewById(R.id.button4);
@@ -168,6 +131,55 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bar);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
+                switch (item.getItemId()) {
+                    case R.id.action_back:
+
+                        intent = new Intent(MainActivity.this, DetalhesDespesa.class);
+                        intent.putExtra("despesaId",(String) despesaId+"");
+                        intent.putExtra("token",(String) token);
+                        intent.putExtra("email",(String) email);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case R.id.action_detect:
+                        try {
+                            runTextRecognition(fatura_transformada);
+                        } catch (Exception e) {
+                            imageView.setImageBitmap(fatura_original);
+                            runTextRecognition(fatura_original);
+                        }
+
+                        break;
+                    case R.id.action_camera:
+                        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, CAMARA);
+                        } else {
+                            // Permission has already been granted
+                            camera();
+                        }
+                        break;
+                    case R.id.action_gallery:
+                        pickFromGallery();
+                        break;
+                    case R.id.action_next:
+                        intent = new Intent(MainActivity.this, Formulario.class);
+                        intent.putExtra("despesaId",(String) despesaId+"");
+                        intent.putExtra("token",(String) token);
+                        intent.putExtra("email",(String) email);
+                        startActivity(intent);
+                        finish();
+                        break;
+
+                }
+                return true;
+            }
+        });
     }
 
     private void runTextRecognition(Bitmap fatura) {
@@ -181,29 +193,33 @@ public class MainActivity extends AppCompatActivity {
                         // Task completed successfully
                         // ...
                         textView.setText("");
+                        String texto = "";
                         for (FirebaseVisionText.TextBlock block: firebaseVisionText.getTextBlocks()) {
                             String blockText = block.getText();
-                            textView.append(blockText);
+                            //textView.append(blockText);
                             Float blockConfidence = block.getConfidence();
                             List<RecognizedLanguage> blockLanguages = block.getRecognizedLanguages();
                             Point[] blockCornerPoints = block.getCornerPoints();
                             Rect blockFrame = block.getBoundingBox();
+                            texto += "\n";
                             for (FirebaseVisionText.Line line: block.getLines()) {
                                 String lineText = line.getText();
                                 Float lineConfidence = line.getConfidence();
                                 List<RecognizedLanguage> lineLanguages = line.getRecognizedLanguages();
                                 Point[] lineCornerPoints = line.getCornerPoints();
                                 Rect lineFrame = line.getBoundingBox();
+                                texto += "\n";
                                 for (FirebaseVisionText.Element element: line.getElements()) {
                                     String elementText = element.getText();
                                     Float elementConfidence = element.getConfidence();
                                     List<RecognizedLanguage> elementLanguages = element.getRecognizedLanguages();
                                     Point[] elementCornerPoints = element.getCornerPoints();
                                     Rect elementFrame = element.getBoundingBox();
+                                    texto += elementText + " ";
                                 }
                             }
                         }
-
+                        textView.setText(texto);
                         Log.e("TEXTO", textView.getText().toString() );
                     }
                 }
@@ -274,26 +290,61 @@ public class MainActivity extends AppCompatActivity {
         mCameraFileName = outFile.toString();
         Uri outuri = Uri.fromFile(outFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
-        startActivityForResult(intent, 2);
+        startActivityForResult(intent, CAMARA);
+    }
+
+    private void pickFromGallery() {
+        File outFile = new File(path);
+        mCameraFileName = outFile.toString();
+        Uri outuri = Uri.fromFile(outFile);
+        //Create an Intent with action as ACTION_PICK
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        // Sets the type as image/*. This ensures only components of type image are selected
+        intent.setType("image/*");
+        //We pass an extra array with the accepted mime types. This will ensure only components with these MIME types as targeted.
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
+        // Launching the Intent
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == 2) {
-                image = Uri.fromFile(new File(mCameraFileName));
-                imageView.setImageDrawable(null);
-                imageView.setImageURI(image);
-                imageView.setVisibility(View.VISIBLE);
+        File file;
+        // Result code is RESULT_OK only if the user selects an Image
+        if (resultCode == Activity.RESULT_OK)
+            switch (requestCode) {
+                case GALLERY_REQUEST_CODE:
+                    //data.getData returns the content URI for the selected Image
+                    Uri selectedImage = data.getData();
+                    image=selectedImage;
+                    imageView.setImageDrawable(null);
+                    imageView.setImageURI(image);
+                    imageView.setVisibility(View.VISIBLE);
 
-                File file = new File(mCameraFileName);
-                if (!file.exists()) {
-                    file.mkdir();
-                }
-                image=null;
+                    file = new File(mCameraFileName);
+                    if (!file.exists()) {
+                        file.mkdir();
+                    }
+                    image = null;
+                    break;
+                case CAMARA:
+                    image = Uri.fromFile(new File(mCameraFileName));
+                    imageView.setImageDrawable(null);
+                    imageView.setImageURI(image);
+                    imageView.setVisibility(View.VISIBLE);
+
+
+                    file = new File(mCameraFileName);
+                    if (!file.exists()) {
+                        file.mkdir();
+                    }
+                    image = null;
+                    fatura_original=BitmapFactory.decodeFile(path);
             }
-        }
     }
 
 

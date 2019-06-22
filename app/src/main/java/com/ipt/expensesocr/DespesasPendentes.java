@@ -212,6 +212,8 @@ public class DespesasPendentes extends AppCompatActivity {
         dataEnd=dataEnd.substring(0,10);
         dataStart=dataStart.substring(0,10);
         String datas= dataStart+" até "+dataEnd;
+
+
         /*
         LinearLayout linearLayout_126 = new LinearLayout(this);
         linearLayout_126.setOrientation(VERTICAL);
@@ -588,6 +590,7 @@ public class DespesasPendentes extends AppCompatActivity {
         layoutDespesas.addView(textView_82);
 
         TextView valorTotal = new TextView(this);
+
         valorTotal.setText(totalDespesas);
         LinearLayout.LayoutParams layout_83 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
