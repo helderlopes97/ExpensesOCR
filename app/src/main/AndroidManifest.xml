@@ -15,11 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DetalhesDespesa"></activity>
-        <activity android:name=".DespesasPendentes" />
+        <activity android:name=".DetalhesDespesa"
+            android:label="Detalhes">
+        </activity>
+        <activity android:name=".DespesasPendentes"
+            android:label="Despesas">
+        </activity>
         <activity
             android:name=".login"
-            android:label="Login">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +34,8 @@
             android:name=".Formulario"
             android:label="@string/title_activity_formulario"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:label="Fatura">
 
             <!--
           <intent-filter>

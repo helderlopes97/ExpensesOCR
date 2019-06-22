@@ -13,7 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -30,9 +32,20 @@ public class Formulario extends AppCompatActivity{
     View viewDiversas;
     View viewTransport;
     View viewAlojamento;
+    EditText dataDespesa;
+    EditText nifDespesa;
+    EditText valorDespesa;
+
     String email;
     String token;
     String despesaId;
+
+    String valor;
+    String data;
+    String nif;
+    String tipo;
+    String perc;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +67,20 @@ public class Formulario extends AppCompatActivity{
         despesaId=intent.getString("despesaId");
         token=intent.getString("token");
         email=intent.getString("email");
+        valor=intent.getString("valor");
+        data=intent.getString("data");
+        nif=intent.getString("nif");
+        tipo=intent.getString("tipo");
+        tipo=tipo.toLowerCase();
+        perc=intent.getString("perc");
+
+        dataDespesa=findViewById(R.id.dataDespesa);
+        nifDespesa=findViewById(R.id.nifDespesa);
+        valorDespesa=findViewById(R.id.valorDespesa);
+
+        dataDespesa.setText(data);
+        nifDespesa.setText(nif);
+        valorDespesa.setText(valor);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bar);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -79,8 +106,26 @@ public class Formulario extends AppCompatActivity{
         });
 
 
-
+        Log.e("tranport",tipo);
         start();
+        switch(tipo){
+            case "comboio":
+                spinner.setSelection(0);
+                spinnerTranporte.setSelection(4);
+                break;
+            case "metro":
+                spinner.setSelection(0);
+                spinnerTranporte.setSelection(3);
+                break;
+            case "taxi":
+                spinner.setSelection(0);
+                spinnerTranporte.setSelection(4);
+                break;
+            case "autocarro":
+                spinner.setSelection(0);
+                spinnerTranporte.setSelection(5);
+                break;
+        }
     }
 
     public void start(){
@@ -89,10 +134,12 @@ public class Formulario extends AppCompatActivity{
         spinnerTranporte = (Spinner) findViewById(R.id.spinnerTransporte);
         spinnerDiversas =(Spinner) findViewById(R.id.spinnerDiversas);
         spinnerAlojamento = (Spinner) findViewById(R.id.spinnerAlojamento);
+
         viewRefeicao = findViewById(R.id.refeição);
         viewTransport=findViewById(R.id.transport);
         viewDiversas=findViewById(R.id.diversas);
         viewAlojamento = findViewById(R.id.alojamento);
+
         viewRefeicao.setVisibility(View.GONE);
         viewTransport.setVisibility(View.GONE);
         viewDiversas.setVisibility(View.VISIBLE);

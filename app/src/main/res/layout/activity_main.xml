@@ -11,11 +11,29 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:layout_alignParentTop="true">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
+        </android.support.design.widget.AppBarLayout>
+
         <ImageView
             android:id="@+id/img"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            app:srcCompat="@drawable/hello" />
+            app:srcCompat="@drawable/hello"
+            android:layout_below="@id/topbar"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -69,13 +87,13 @@
                     android:id="@+id/button4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="CAMARA" />
+                    android:text="img1" />
 
                 <Button
                     android:id="@+id/button5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Next" />
+                    android:text="img2" />
             </LinearLayout>
 
         </RelativeLayout>

@@ -20,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,9 +51,13 @@ import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Utils.ImageUtils;
 
@@ -78,12 +83,21 @@ public class MainActivity extends AppCompatActivity {
     String perc;
 
 
+    ///DADOS
+    Double valor=0.0;
+    String data;
+    String nif;
+    Date dataTeste;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         OpenCVLoader.initDebug();
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         //PERMISSIONS
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
@@ -100,6 +114,12 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_EXTERNAL_STORAGE);
         } else {
             // Permission has already been granted
+
+        }
+
+        try{
+            dataTeste=new SimpleDateFormat("yyyy-MM-dd").parse("2000-1-1");
+        }catch (Exception e){
 
         }
 
@@ -212,6 +232,11 @@ public class MainActivity extends AppCompatActivity {
                                                 intent.putExtra("despesaId",(String) despesaId+"");
                                                 intent.putExtra("token",(String) token);
                                                 intent.putExtra("email",(String) email);
+                                                intent.putExtra("valor",(String)""+valor);
+                                                intent.putExtra("data",(String) data);
+                                                intent.putExtra("nif",(String) nif);
+                                                intent.putExtra("tipo",(String) tipo);
+                                                intent.putExtra("perc",(String) perc);
                                                 startActivity(intent);
                                                 finish();
                                             }
@@ -301,6 +326,78 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 textView.setText(texto);
                                 Log.e("TEXTO", textView.getText().toString() );
+
+                                for (FirebaseVisionText.TextBlock block: firebaseVisionText.getTextBlocks()) {
+                                    for (FirebaseVisionText.Line line: block.getLines()) {
+                                        String lineText = line.getText();
+                                        lineText=lineText.toLowerCase();
+                                        Point[] lineCornerPoints = line.getCornerPoints();
+                                        if(lineText.contains("valor pago")||lineText.contains("eur")||lineText.contains("valor total")||lineText.contains("valor")||lineText.contains("total a pagar")||lineText.contains("preco")||lineText.contains("prego")){
+                                            //////valor////////////
+                                            int y1, y2;
+                                            y1=lineCornerPoints[0].y-100;
+                                            y2=lineCornerPoints[1].y+100;
+                                            for (FirebaseVisionText.TextBlock block2: firebaseVisionText.getTextBlocks()) {
+                                                for (FirebaseVisionText.Line line2 : block2.getLines()) {
+                                                    for (FirebaseVisionText.Element element : line2.getElements()) {
+                                                        String elementText = element.getText();
+                                                        Point[] elementCornerPoints = element.getCornerPoints();
+                                                        int elementY1, elementY2;
+                                                        elementY1=elementCornerPoints[0].y;
+                                                        elementY2=elementCornerPoints[2].y;
+                                                        if((y1<elementY1 && elementY1<y2)||(y1<elementY2 && elementY2<y2)){
+                                                            Pattern p = Pattern.compile("[0-9]+\\,[0-9]{2}");
+                                                            Matcher m = p.matcher(elementText);
+                                                            boolean b = m.matches();
+                                                            Log.e("elementos",elementText+" "+b);
+                                                            if(m.matches()){
+                                                                elementText=elementText.replace(",",".");
+                                                                Double valorElemento=Double.valueOf(elementText);
+                                                                if(valorElemento>valor){
+                                                                    valor=valorElemento;
+                                                                }
+                                                                Log.e("eeeeeeeeeeeeeeeeeeeeee", valor+"");
+                                                                Log.e("eeeeeeeeeeeeeeeeeeeeee2", valorElemento+"");
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        /////////////////DATA///////////////////
+                                        for (FirebaseVisionText.Element element: line.getElements()) {
+                                            String elementText = element.getText();
+                                            Pattern p = Pattern.compile("[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}");
+                                            Matcher m = p.matcher(elementText);
+                                            boolean b = m.matches();
+                                            if(m.matches()){
+                                                try {
+                                                    Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(elementText);
+                                                    if (date1.after(dataTeste)){
+                                                        dataTeste=date1;
+                                                        data=elementText;
+                                                        Log.e("dddddddddddddddddddddd", data);
+                                                    }
+
+                                                }catch (Exception e){
+                                                    data=elementText;
+                                                }
+
+                                            }
+                                        }
+                                        ////////////////NIF//////////////////
+                                        for (FirebaseVisionText.Element element: line.getElements()) {
+                                            String elementText = element.getText();
+                                            Pattern p = Pattern.compile("[0-9]{9}");
+                                            Matcher m = p.matcher(elementText);
+                                            boolean b = m.matches();
+                                            if(m.matches()&&elementText.equals("508207908")){
+                                                nif=elementText;
+                                                Log.e("nnnnnnnnnnnnnnnn", nif);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                 )
