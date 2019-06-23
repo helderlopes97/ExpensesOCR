@@ -1,7 +1,9 @@
 package com.ipt.expensesocr;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +34,7 @@ public class Formulario extends AppCompatActivity{
     View viewDiversas;
     View viewTransport;
     View viewAlojamento;
+    View viewTransporteProprio;
     EditText dataDespesa;
     EditText nifDespesa;
     EditText valorDespesa;
@@ -81,6 +84,16 @@ public class Formulario extends AppCompatActivity{
         dataDespesa.setText(data);
         nifDespesa.setText(nif);
         valorDespesa.setText(valor);
+        /*
+        if(data.equals("") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            dataDespesa.setBackground(getDrawable(R.drawable.rounded_edittext_red));
+        }
+        if(valor.equals("0")&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            valorDespesa.setBackground(getDrawable(R.drawable.rounded_edittext_red));
+        }
+        if(nif.equals("")&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            nifDespesa.setBackground(getDrawable(R.drawable.rounded_edittext_red));
+        }*/
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bar);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -105,7 +118,6 @@ public class Formulario extends AppCompatActivity{
             }
         });
 
-
         Log.e("tranport",tipo);
         start();
         switch(tipo){
@@ -115,15 +127,15 @@ public class Formulario extends AppCompatActivity{
                 break;
             case "metro":
                 spinner.setSelection(0);
-                spinnerTranporte.setSelection(3);
+                spinnerTranporte.setSelection(5);
                 break;
             case "taxi":
                 spinner.setSelection(0);
-                spinnerTranporte.setSelection(4);
+                spinnerTranporte.setSelection(6);
                 break;
             case "autocarro":
                 spinner.setSelection(0);
-                spinnerTranporte.setSelection(5);
+                spinnerTranporte.setSelection(3);
                 break;
         }
     }
@@ -139,11 +151,13 @@ public class Formulario extends AppCompatActivity{
         viewTransport=findViewById(R.id.transport);
         viewDiversas=findViewById(R.id.diversas);
         viewAlojamento = findViewById(R.id.alojamento);
+        viewTransporteProprio=findViewById(R.id.transportProprio);
 
         viewRefeicao.setVisibility(View.GONE);
         viewTransport.setVisibility(View.GONE);
         viewDiversas.setVisibility(View.VISIBLE);
         viewAlojamento.setVisibility(View.GONE);
+        viewTransporteProprio.setVisibility(View.GONE);
 
         addItemsToSpinners();
         addListenertiSpinner();
@@ -172,8 +186,9 @@ public class Formulario extends AppCompatActivity{
         list3.add("Viatura Própria");
         list3.add("Viatura Empresa");
         list3.add("Viatura Alugada");
-        list3.add("Transporte Públicos(Metro/autocarro)");
-        list3.add("Transporte Públicos(Comboio)");
+        list3.add("Autocarro");
+        list3.add("Comboio");
+        list3.add("Metro");
         list3.add("Taxi e outros");
         ArrayAdapter<String> dataAdapter3 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list3);
         dataAdapter3.setDropDownViewResource(R.layout.my_spinner_textview);
@@ -210,21 +225,44 @@ public class Formulario extends AppCompatActivity{
                     viewTransport.setVisibility(View.GONE);
                     viewDiversas.setVisibility(View.GONE);
                     viewAlojamento.setVisibility(View.GONE);
+                    viewTransporteProprio.setVisibility(View.GONE);
                 }else if(spinner.getSelectedItem().equals("Alojamento")){
                     viewRefeicao.setVisibility(View.GONE);
                     viewTransport.setVisibility(View.GONE);
                     viewDiversas.setVisibility(View.GONE);
                     viewAlojamento.setVisibility(View.VISIBLE);
+                    viewTransporteProprio.setVisibility(View.GONE);
                 }else if(spinner.getSelectedItem().equals("Transporte")){
                     viewRefeicao.setVisibility(View.GONE);
                     viewTransport.setVisibility(View.VISIBLE);
                     viewDiversas.setVisibility(View.GONE);
                     viewAlojamento.setVisibility(View.GONE);
+                    viewTransporteProprio.setVisibility(View.GONE);
+                    if(spinnerTranporte.getSelectedItem().equals("Viatura Própria")){
+                        viewTransporteProprio.setVisibility(View.VISIBLE);
+                    }
                 }else if(spinner.getSelectedItem().equals("Despesas Diversas")){
                     viewRefeicao.setVisibility(View.GONE);
                     viewTransport.setVisibility(View.GONE);
                     viewDiversas.setVisibility(View.VISIBLE);
                     viewAlojamento.setVisibility(View.GONE);
+                    viewTransporteProprio.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinnerTranporte.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(spinnerTranporte.getSelectedItem().equals("Viatura Própria")){
+                    viewTransporteProprio.setVisibility(View.VISIBLE);
+                }else {
+                    viewTransporteProprio.setVisibility(View.GONE);
                 }
             }
 

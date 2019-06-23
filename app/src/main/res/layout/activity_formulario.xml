@@ -207,6 +207,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
+                    <include
+                        android:id="@+id/transportProprio"
+                        layout="@layout/content_formulario_transporttipo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
                 </LinearLayout>
             </ScrollView>
 

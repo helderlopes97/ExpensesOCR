@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
     ///DADOS
     Double valor=0.0;
-    String data;
-    String nif;
+    String data="";
+    String nif="";
     Date dataTeste;
 
     @Override
@@ -367,7 +367,7 @@ public class MainActivity extends AppCompatActivity {
                                         /////////////////DATA///////////////////
                                         for (FirebaseVisionText.Element element: line.getElements()) {
                                             String elementText = element.getText();
-                                            Pattern p = Pattern.compile("[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}");
+                                            Pattern p = Pattern.compile("[0-9]{1,4}\\-[0-9]{1,2}\\-[0-9]{1,4}");
                                             Matcher m = p.matcher(elementText);
                                             boolean b = m.matches();
                                             if(m.matches()){
@@ -376,13 +376,31 @@ public class MainActivity extends AppCompatActivity {
                                                     if (date1.after(dataTeste)){
                                                         dataTeste=date1;
                                                         data=elementText;
-                                                        Log.e("dddddddddddddddddddddd", data);
+                                                        Log.e("dddddddddddddddd", data);
                                                     }
 
                                                 }catch (Exception e){
                                                     data=elementText;
+                                                    Log.e("dddddddddddddddd", data);
                                                 }
 
+                                            }
+                                            p = Pattern.compile("[0-9]{1,4}\\/[0-9]{1,2}\\/[0-9]{1,4}");
+                                            m = p.matcher(elementText);
+                                            b = m.matches();
+                                            if(m.matches()){
+                                                try {
+                                                    Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(elementText);
+                                                    if (date1.after(dataTeste)){
+                                                        dataTeste=date1;
+                                                        data=elementText;
+                                                        Log.e("dddddddddddddddd", data);
+                                                    }
+
+                                                }catch (Exception e){
+                                                    data=elementText;
+                                                    Log.e("dddddddddddddddd", data);
+                                                }
                                             }
                                         }
                                         ////////////////NIF//////////////////
