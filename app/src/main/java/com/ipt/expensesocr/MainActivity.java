@@ -2,8 +2,10 @@ package com.ipt.expensesocr;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Camera;
@@ -14,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -27,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -45,13 +49,19 @@ import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         OpenCVLoader.initDebug();
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -489,19 +498,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void pickFromGallery() {
-       /* File outFile = new File(path);
-        mCameraFileName = outFile.toString();
-        Uri outuri = Uri.fromFile(outFile);
-        //Create an Intent with action as ACTION_PICK
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        // Sets the type as image/*. This ensures only components of type image are selected
-        intent.setType("image/*");
-        //We pass an extra array with the accepted mime types. This will ensure only components with these MIME types as targeted.
-        String[] mimeTypes = {"image/jpeg", "image/png"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
-        // Launching the Intent
-        startActivityForResult(intent, GALLERY_REQUEST_CODE);*/
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent,GALLERY_REQUEST_CODE);
 
@@ -515,18 +511,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK)
             switch (requestCode) {
                 case GALLERY_REQUEST_CODE:
-                    //data.getData returns the content URI for the selected Image
-                   /* Uri selectedImage = data.getData();
-                    image=selectedImage;
-                    imageView.setImageDrawable(null);
-                    imageView.setImageURI(image);
-                    imageView.setVisibility(View.VISIBLE);
-                    file = new File(mCameraFileName);
-                    if (!file.exists()) {
-                        file.mkdir();
-                    }
-                    image = null;*/
-                    Uri selectedImage = data.getData();
+                  /*  Uri selectedImage = data.getData();
 
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
@@ -536,7 +521,52 @@ public class MainActivity extends AppCompatActivity {
 
                     } catch (IOException e) {
                         e.printStackTrace();
+                    }*/
+                    try {
+                    Uri selectedImage = data.getData();
+                    Bitmap bitmap2;
+
+                        bitmap2 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+
+                    //////https://android--code.blogspot.com/2015/09/android-how-to-save-image-to-file-in.html
+                    /////////////////////////////////////////////////////////////////////
+                    File fileSelected;
+                    String path = Environment.getExternalStorageDirectory()+"/ExpensesOCR/fatura.jpg";
+
+                    fileSelected = new File(path);
+
+                    try{
+
+                        OutputStream stream = null;
+
+                        stream = new FileOutputStream(fileSelected);
+
+                        bitmap2.compress(Bitmap.CompressFormat.JPEG,100,stream);
+
+                        stream.flush();
+
+                        stream.close();
+
+                    }catch (IOException e) // Catch the exception
+                    {
+                        e.printStackTrace();
                     }
+
+                    // Parse the saved image path to uri
+                    Uri savedImageURI = Uri.parse(fileSelected.getAbsolutePath());
+                    Log.e("path", savedImageURI.getPath());
+                    File file6=new File(savedImageURI.getPath());
+
+                        image = Uri.fromFile(file6);
+                        imageView.setImageDrawable(null);
+                        imageView.setImageURI(image);
+                        imageView.setVisibility(View.VISIBLE);
+                        fatura_original=bitmap2;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    ////////////////////////////////////////////////////////////////////
                     break;
                 case CAMARA:
                     image = Uri.fromFile(new File(mCameraFileName));
@@ -553,5 +583,4 @@ public class MainActivity extends AppCompatActivity {
                     fatura_original=BitmapFactory.decodeFile(path);
             }
     }
-
 }
