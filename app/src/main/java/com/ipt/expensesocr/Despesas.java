@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,77 +27,81 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DetalhesDespesa extends AppCompatActivity {
+public class Despesas extends AppCompatActivity {
+
+    // Variáveis globais
     String email;
     String token;
-    String despesaId;
+    String deslocamentoId;
     LinearLayout myLayout;
-
-    //views
+    // TextViews
     TextView descricao;
     TextView intervalo;
     TextView valorEsperado;
     TextView valorReal;
     TextView numeroDespesas;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalhes_despesa);
+        // Mostrar o ecrã das despesas
+        setContentView(R.layout.activity_despesas);
 
+        // Ativa a toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Recebe o id do deslocamento e as variáveis de login
+        final Bundle intent = getIntent().getExtras();
+        deslocamentoId = intent.getString("deslocamentoId");
+        token = intent.getString("token");
+        email = intent.getString("email");
 
-        final Bundle intent=getIntent().getExtras();
-        despesaId=intent.getString("despesaId");
-        token=intent.getString("token");
-        email=intent.getString("email");
+        // Referencia os elementos gráficos
+        myLayout = findViewById(R.id.myLayout);
+        descricao = findViewById(R.id.descricao);
+        intervalo = findViewById(R.id.intervalo);
+        valorEsperado = findViewById(R.id.valorEsperado);
+        valorReal = findViewById(R.id.valorReal);
+        numeroDespesas = findViewById(R.id.numeroDespesas);
 
-        myLayout=findViewById(R.id.myLayout);
-        //textView=findViewById(R.id.despesaId);
-        //textView.setText(despesaId);
-
-        descricao=findViewById(R.id.descricao);
-        intervalo=findViewById(R.id.intervalo);
-        valorEsperado=findViewById(R.id.valorEsperado);
-        valorReal=findViewById(R.id.valorReal);
-        numeroDespesas=findViewById(R.id.numeroDespesas);
-
-
-        //button=findViewById(R.id.button);
-        /*button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetalhesDespesa.this, MainActivity.class);
-                intent.putExtra("despesaId",(String) despesaId+"");
-                intent.putExtra("token",(String) token);
-                startActivity(intent);
-                finish();
-            }
-        });*/
+        // Programa a barra de opções
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bar);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+
+                    // Botão voltar
                     case R.id.action_back:
-                        Intent intent = new Intent(DetalhesDespesa.this, Deslocamentos.class);
+                        // Prepara a atividade dos deslocamentos
+                        Intent intent = new Intent(Despesas.this, Deslocamentos.class);
+                        // Envia o email e o token para a nova atividade
                         intent.putExtra("token",(String) token);
                         intent.putExtra("email",(String) email);
+                        // Inicia a atividade
                         startActivity(intent);
+                        // Termina a atividade das despesas
                         finish();
                         break;
+
+                    // Botão adicionar
                     case R.id.action_add:
-                        Intent intent2 = new Intent(DetalhesDespesa.this, MainActivity.class);
-                        intent2.putExtra("despesaId",(String) despesaId+"");
+                        // Prepara a atividade para inserir uma despesa
+                        Intent intent2 = new Intent(Despesas.this, MainActivity.class);
+                        // Envia o id do deslocamento, email e token para a nova atividade
+                        intent2.putExtra("deslocamentoId",(String) deslocamentoId +"");
                         intent2.putExtra("token",(String) token);
                         intent2.putExtra("email",(String) email);
+                        // Inicia a atividade
                         startActivity(intent2);
+                        // Termina a atividade das despesas
                         finish();
                         break;
+
+                    // Botão atualizar
                     case R.id.action_refresh:
+                        // Volta a pedir as despesas
                         getDespesas();
                         break;
 
@@ -106,34 +109,47 @@ public class DetalhesDespesa extends AppCompatActivity {
                 return true;
             }
         });
-
+        // Pede as despesas
         getDespesas();
     }
 
+    /**
+     * Pede as despesas do deslocamento através da API
+     */
     public void getDespesas(){
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(DetalhesDespesa.this);
-        String url ="https://davidnoob.herokuapp.com/api/v1/requests/"+despesaId;
 
-        // Request a string response from the provided URL.
+        // Inicia o RequestQueue
+        RequestQueue queue = Volley.newRequestQueue(Despesas.this);
+
+        // Link para a API
+        String url ="https://davidnoob.herokuapp.com/api/v1/requests/"+deslocamentoId;
+
+        // Pede uma String de resposta ao URL
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject res) {
                         try {
+                            // Mostra os detalhes do deslocamento
                             descricao.setText( res.get("description").toString());
                             intervalo.setText(res.get("start_date").toString()+" até "+res.get("end_date").toString());
                             valorEsperado.setText(res.get("estimated_value").toString());
                             valorReal.setText(res.get("real_value").toString());
                             numeroDespesas.setText(res.get("expenses_count").toString());
+                            // Cria um objeto para as despesas do deslocamento
                             JSONArray despesas= (JSONArray) res.get("expenses");
+                            // Limpa a lista de despesas
                             myLayout.removeAllViews();
+                            // Percorre as despesas
                             for (int i = 0; i < despesas.length(); i++) {
+                                // Cria um objeto para a despesa
                                 JSONObject despesa=(JSONObject) despesas.get(i);
+                                // Cria um objeto para a categoria da despesa
                                 JSONObject categoria=(JSONObject) despesa.get("expense_category");
+                                // Cria um objeto para o tipo de despesa
                                 JSONObject tipo=(JSONObject) categoria.get("expense_type");
-
-                                myLayout.addView(criarDespesa(
+                                // Cria a despesa
+                                myLayout.addView(createDespesa(
                                         despesa.get("expense_date").toString(),
                                         despesa.get("expense_value").toString(),
                                         categoria.get("name").toString(),
@@ -141,81 +157,61 @@ public class DetalhesDespesa extends AppCompatActivity {
                                 ));
                             }
                         } catch (JSONException e) {
+                            // Log do erro
                             e.printStackTrace();
                             Log.e("erro", e.toString());
+                            // Limpa a lista de despesas
                             myLayout.removeAllViews();
-                            TextView text= new TextView(DetalhesDespesa.this);
+                            // Cria uma TextView para mostrar o erro
+                            TextView text= new TextView(Despesas.this);
+                            // Define o layout da TextView
                             text.setLayoutParams(new LinearLayout.LayoutParams(
-                                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                                            LinearLayout.LayoutParams.WRAP_CONTENT
-                                    )
+                                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                )
                             );
+                            // Define a mensagem de erro
                             text.setText("Ocoreu um erro");
+                            // Mostra o erro na lista de despesas
                             myLayout.addView(text);
                         }
-                        /*myLayout.removeAllViews();
-                        for (int i = 0; i <  ; i++) {
-                            try{
-                               // JSONObject obj = res.getJSONObject(i);
-                               // JSONObject user =(JSONObject) obj.get("user");
-                               // JSONObject estado=(JSONObject) obj.get("request_state");
-                               // if((user.get("email")).equals(email)){
-                                    myLayout.addView(criarDespesa(
-                                            /*obj.get("id").toString(),
-                                            obj.get("start_date").toString(),
-                                            obj.get("end_date").toString(),
-                                            estado.get("name").toString(),
-                                            obj.get("expenses_count").toString(),
-                                            obj.get("expenses_sum").toString(),
-                                            obj.get("description").toString()
-                                    ));
-                                //}
-
-
-                            } catch (Exception e){
-                                e.printStackTrace();
-                                Log.e("erro", e.toString());
-                                myLayout.removeAllViews();
-                                TextView text= new TextView(DetalhesDespesa.this);
-                                text.setLayoutParams(new LinearLayout.LayoutParams(
-                                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                LinearLayout.LayoutParams.WRAP_CONTENT
-                                        )
-                                );
-                                text.setText("Ocoreu um erro");
-                                myLayout.addView(text);
-                                break;
-                            }
-                        }*/
-
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //viewDeslocamentos.addView(despesaPendente.despesTextView(getApplicationContext(),"Erro ao receber dados."));
                     }
                 }){
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
+                // Define o cabeçalho de autenticação no pedido
                 final Map<String, String> headers = new HashMap<String, String>();
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
         };
-
-        // Add the request to the RequestQueue.
+        // Adiciona o pedido ao RequestQueue
         queue.add(req);
     }
 
-    public View criarDespesa(
+    /**
+     * Cria uma despesa na lista de despesas
+     *
+     * @param dataDespesa - data da despesa
+     * @param valorDespesa - valor da despesa
+     * @param categoriaDespesa - categoria da despesa
+     * @param tipoDespesa - tipo da despesa
+     * @return Layout da despesa
+     */
+    public LinearLayout createDespesa(
+            // Detalhes da despesa
             String dataDespesa,
             String valorDespesa,
             String categoriaDespesa,
             String tipoDespesa
     ){
+        // Cria o layout para a despesa
         LinearLayout despesa = new LinearLayout(this);
         despesa.setId(R.id.deslocamento);
         despesa.setOrientation(LinearLayout.VERTICAL);
@@ -224,27 +220,30 @@ public class DetalhesDespesa extends AppCompatActivity {
         layout_725.topMargin = 10;
         despesa.setLayoutParams(layout_725);
 
-        LinearLayout layoutDescricao = new LinearLayout(this);
-        layoutDescricao.setId(R.id.layoutDescricao);
-        layoutDescricao.setOrientation(LinearLayout.HORIZONTAL);
+        // Cria o layout para a data da despesa
+        LinearLayout layoutData = new LinearLayout(this);
+        layoutData.setId(R.id.layoutDescricao);
+        layoutData.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams layout_130 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         layout_130.leftMargin = 45;
         layout_130.topMargin = 6;
         layout_130.rightMargin = 45;
         layout_130.bottomMargin = 6;
-        layoutDescricao.setLayoutParams(layout_130);
+        layoutData.setLayoutParams(layout_130);
 
-        TextView textView_145 = new TextView(this);
-        textView_145.setText("Data: ");
-        textView_145.setAllCaps(false);
-        textView_145.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
+        // TextView para a tag da data
+        TextView dateDespesa = new TextView(this);
+        dateDespesa.setText("Data: ");
+        dateDespesa.setAllCaps(false);
+        dateDespesa.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
         LinearLayout.LayoutParams layout_501 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            textView_145.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
+            dateDespesa.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        textView_145.setLayoutParams(layout_501);
-        layoutDescricao.addView(textView_145);
+        dateDespesa.setLayoutParams(layout_501);
+        layoutData.addView(dateDespesa);
 
+        // TextView para o campo data da despesa
         TextView data = new TextView(this);
         data.setId(R.id.data);
         data.setText(dataDespesa);
@@ -254,28 +253,31 @@ public class DetalhesDespesa extends AppCompatActivity {
         }
         layout_454.rightMargin = 15;
         data.setLayoutParams(layout_454);
-        layoutDescricao.addView(data);
-        despesa.addView(layoutDescricao);
+        layoutData.addView(data);
+        despesa.addView(layoutData);
 
-        LinearLayout layoutEstado = new LinearLayout(this);
-        layoutEstado.setId(R.id.layoutEstado);
-        layoutEstado.setOrientation(LinearLayout.HORIZONTAL);
+        // Cria o layout para o valor da despesa
+        LinearLayout layoutValor = new LinearLayout(this);
+        layoutValor.setId(R.id.layoutEstado);
+        layoutValor.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams layout_574 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         layout_574.leftMargin = 45;
         layout_574.topMargin = 6;
         layout_574.rightMargin =45;
         layout_574.bottomMargin = 2;
-        layoutEstado.setLayoutParams(layout_574);
+        layoutValor.setLayoutParams(layout_574);
 
-        TextView textView_53 = new TextView(this);
-        textView_53.setText("Valor: ");
+        // TextView para a tag do valor
+        TextView tagValor = new TextView(this);
+        tagValor.setText("Valor: ");
         LinearLayout.LayoutParams layout_123 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            textView_53.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
+            tagValor.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        textView_53.setLayoutParams(layout_123);
-        layoutEstado.addView(textView_53);
+        tagValor.setLayoutParams(layout_123);
+        layoutValor.addView(tagValor);
 
+        // TextView para o campo valor da despesa
         TextView valor = new TextView(this);
         valor.setId(R.id.valorDespesa);
         valor.setText(valorDespesa);
@@ -284,30 +286,33 @@ public class DetalhesDespesa extends AppCompatActivity {
             valor.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
         valor.setLayoutParams(layout_563);
-        layoutEstado.addView(valor);
-        despesa.addView(layoutEstado);
+        layoutValor.addView(valor);
+        despesa.addView(layoutValor);
 
-        LinearLayout layoutIntervalo = new LinearLayout(this);
-        layoutIntervalo.setId(R.id.layoutIntervalo);
-        layoutIntervalo.setOrientation(LinearLayout.HORIZONTAL);
+        // Cria o layout para a categoria da despesa
+        LinearLayout layoutCategoria = new LinearLayout(this);
+        layoutCategoria.setId(R.id.layoutIntervalo);
+        layoutCategoria.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams layout_185 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         layout_185.leftMargin = 45;
         layout_185.topMargin = 6;
         layout_185.rightMargin = 45;
         layout_185.bottomMargin = 6;
-        layoutIntervalo.setLayoutParams(layout_185);
+        layoutCategoria.setLayoutParams(layout_185);
 
-        TextView textView_392 = new TextView(this);
-        textView_392.setText("Categoria: ");
-        textView_392.setAllCaps(false);
-        textView_392.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
+        // TextView para a tag da categoria
+        TextView tagCategoria = new TextView(this);
+        tagCategoria.setText("Categoria: ");
+        tagCategoria.setAllCaps(false);
+        tagCategoria.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
         LinearLayout.LayoutParams layout_425 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            textView_392.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
+            tagCategoria.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        textView_392.setLayoutParams(layout_425);
-        layoutIntervalo.addView(textView_392);
+        tagCategoria.setLayoutParams(layout_425);
+        layoutCategoria.addView(tagCategoria);
 
+        // TextView para o campo categoria da despesa
         TextView categoria = new TextView(this);
         categoria.setText(categoriaDespesa);
         LinearLayout.LayoutParams layout_483 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -316,31 +321,34 @@ public class DetalhesDespesa extends AppCompatActivity {
         }
         layout_483.rightMargin = 15;
         categoria.setLayoutParams(layout_483);
-        layoutIntervalo.addView(categoria);
-        despesa.addView(layoutIntervalo);
+        layoutCategoria.addView(categoria);
+        despesa.addView(layoutCategoria);
 
-        LinearLayout layoutDespesas = new LinearLayout(this);
-        layoutDespesas.setId(R.id.layoutDespesas);
-        layoutDespesas.setOrientation(LinearLayout.HORIZONTAL);
+        // Cria o layout para o tipo da despesa
+        LinearLayout layoutTipo = new LinearLayout(this);
+        layoutTipo.setId(R.id.layoutDespesas);
+        layoutTipo.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams layout_290 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         layout_290.leftMargin = 45;
         layout_290.rightMargin = 45;
         layout_290.bottomMargin = 6;
         layout_290.topMargin = 6;
-        layoutDespesas.setLayoutParams(layout_290);
+        layoutTipo.setLayoutParams(layout_290);
 
-        TextView numDespesas = new TextView(this);
-        numDespesas.setId(R.id.numDespesas);
-        numDespesas.setText("Tipo: ");
-        numDespesas.setAllCaps(false);
-        numDespesas.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
+        // TextView para a tag do tipo
+        TextView tagTipo = new TextView(this);
+        tagTipo.setId(R.id.numDespesas);
+        tagTipo.setText("Tipo: ");
+        tagTipo.setAllCaps(false);
+        tagTipo.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
         LinearLayout.LayoutParams layout_71 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            numDespesas.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
+            tagTipo.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        numDespesas.setLayoutParams(layout_71);
-        layoutDespesas.addView(numDespesas);
+        tagTipo.setLayoutParams(layout_71);
+        layoutTipo.addView(tagTipo);
 
+        // TextView para o campo tipo da despesa
         TextView tipo = new TextView(this);
         tipo.setId(R.id.tipo);
         tipo.setText(tipoDespesa);
@@ -350,16 +358,18 @@ public class DetalhesDespesa extends AppCompatActivity {
         }
         layout_296.rightMargin = 60;
         tipo.setLayoutParams(layout_296);
-        layoutDespesas.addView(tipo);
-        despesa.addView(layoutDespesas);
+        layoutTipo.addView(tipo);
+        despesa.addView(layoutTipo);
 
-        TextView textView3 = new TextView(this);
-        textView3.setId(R.id.textView3);
-        textView3.setBackgroundResource(R.drawable.linebottom);
+        // TextView de separação de despesas
+        TextView separador = new TextView(this);
+        separador.setId(R.id.textView3);
+        separador.setBackgroundResource(R.drawable.linebottom);
         LinearLayout.LayoutParams layout_973 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,4);
-        textView3.setLayoutParams(layout_973);
-        despesa.addView(textView3);
+        separador.setLayoutParams(layout_973);
+        despesa.addView(separador);
 
+        // Devolve o layout da despesa
         return despesa;
     }
 }

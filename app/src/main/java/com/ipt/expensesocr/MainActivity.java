@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         final Bundle intent=getIntent().getExtras();
-        despesaId=intent.getString("despesaId");
+        despesaId=intent.getString("deslocamentoId");
         token=intent.getString("token");
         email=intent.getString("email");
         api_key = "b05c81093b4371c50f3aa142184974149d4411b2";
@@ -187,8 +187,8 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.action_back:
 
-                        intent = new Intent(MainActivity.this, DetalhesDespesa.class);
-                        intent.putExtra("despesaId",(String) despesaId+"");
+                        intent = new Intent(MainActivity.this, Despesas.class);
+                        intent.putExtra("deslocamentoId",(String) despesaId+"");
                         intent.putExtra("token",(String) token);
                         intent.putExtra("email",(String) email);
                         startActivity(intent);
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                                                 Log.e("YYYYYYYYYYYYYYYY", perc);
                                                 Intent intent;
                                                 intent = new Intent(MainActivity.this, Formulario.class);
-                                                intent.putExtra("despesaId",(String) despesaId+"");
+                                                intent.putExtra("deslocamentoId",(String) despesaId+"");
                                                 intent.putExtra("token",(String) token);
                                                 intent.putExtra("email",(String) email);
                                                 intent.putExtra("valor",(String)""+valor);

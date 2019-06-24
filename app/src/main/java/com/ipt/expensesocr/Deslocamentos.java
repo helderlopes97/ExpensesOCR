@@ -1,11 +1,9 @@
 package com.ipt.expensesocr;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -33,7 +31,6 @@ import java.util.Map;
 
 import static android.widget.LinearLayout.HORIZONTAL;
 import static android.widget.LinearLayout.VERTICAL;
-import static java.lang.Boolean.FALSE;
 
 public class Deslocamentos extends AppCompatActivity {
 
@@ -133,6 +130,7 @@ public class Deslocamentos extends AppCompatActivity {
                                          obj.get("description").toString()
                                 ));
                             } catch (Exception e){
+                                // Log do erro
                                 e.printStackTrace();
                                 Log.e("erro", e.toString());
                                 // Limpa a lista de deslocamentos
@@ -376,9 +374,9 @@ public class Deslocamentos extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Prepara a atividade dos detalhes e despesas do deslocamento
-                Intent intent = new Intent(Deslocamentos.this, DetalhesDespesa.class);
+                Intent intent = new Intent(Deslocamentos.this, Despesas.class);
                 // Envia o id, token e email para a nova atividade
-                intent.putExtra("despesaId",(String) id+"");
+                intent.putExtra("deslocamentoId",(String) id+"");
                 intent.putExtra("token",(String) token);
                 intent.putExtra("email",(String) email);
                 // Inicia a atividade

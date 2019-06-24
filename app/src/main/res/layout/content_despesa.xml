@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".DetalhesDespesa"
-    tools:showIn="@layout/activity_detalhes_despesa">
+    tools:context=".Despesas"
+    tools:showIn="@layout/activity_despesas">
 
     <LinearLayout
         android:id="@+id/deslocamento"
