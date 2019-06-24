@@ -17,6 +17,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".DetalhesDespesa"
             android:label="Detalhes e Despesas">
+
         </activity>
         <activity android:name=".Deslocamentos"
             android:label="Deslocamentos">
