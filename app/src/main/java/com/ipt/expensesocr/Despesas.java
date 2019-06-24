@@ -386,7 +386,7 @@ public class Despesas extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_logout:
-                Intent intent = new Intent(DetalhesDespesa.this, Login.class);
+                Intent intent = new Intent(Despesas.this, Login.class);
                 startActivity(intent);
                 finish();
                 return true;
