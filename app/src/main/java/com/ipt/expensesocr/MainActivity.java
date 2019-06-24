@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
     String data="";
     String nif="";
     Date dataTeste;
+    boolean more=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +164,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        Button detectMore = (Button) findViewById(R.id.addmore);
+        detectMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                more=true;
+                try {
+                    runTextRecognition(fatura_transformada);
+                } catch (Exception e) {
+                    imageView.setImageBitmap(fatura_original);
+                    runTextRecognition(fatura_original);
+                }
+            }
+        });
+
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bar);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -179,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.action_detect:
+                        more=false;
                         try {
                             runTextRecognition(fatura_transformada);
                         } catch (Exception e) {
@@ -292,8 +309,13 @@ public class MainActivity extends AppCompatActivity {
                             public void onSuccess(FirebaseVisionText firebaseVisionText) {
                                 // Task completed successfully
                                 // ...
-                                textView.setText("");
-                                String texto = "";
+                                String texto;
+                                if(more==true){
+                                    texto=textView.getText().toString();
+                                }else{
+                                    texto = "";
+                                    textView.setText("");
+                                }
                                 for (FirebaseVisionText.TextBlock block: firebaseVisionText.getTextBlocks()) {
                                     String blockText = block.getText();
                                     //textView.append(blockText);

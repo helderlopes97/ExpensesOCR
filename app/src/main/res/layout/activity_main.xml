@@ -33,13 +33,19 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             app:srcCompat="@drawable/hello"
-            android:layout_below="@id/topbar"/>
+            android:layout_below="@id/topbar"
+            android:background="@drawable/image_border"
+            android:padding="3dp"
+            android:layout_margin="3dp"/>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/img"
-            android:layout_above="@id/btns">
+            android:layout_above="@id/btns"
+            android:layout_margin="3dp"
+            android:padding="3dp"
+            android:background="@drawable/image_border">
 
             <LinearLayout
                 android:id="@+id/myLayout"
@@ -73,26 +79,35 @@
             android:id="@+id/btns"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_above="@+id/bar">
+            android:layout_above="@+id/bar"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_centerInParent="true">
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/addmore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="detect more" />
 
                 <Button
                     android:id="@+id/button4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="img1" />
 
                 <Button
                     android:id="@+id/button5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="img2" />
             </LinearLayout>
 

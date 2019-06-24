@@ -72,6 +72,7 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                login.setEnabled(false);
                 // limpa o log de erros
                 err = (TextView) findViewById(R.id.loginErr);
                 err.setText("");
@@ -87,6 +88,7 @@ public class Login extends AppCompatActivity {
                 // verifica se os campos estão preenchidos
                 if( email.equals("") || password.equals("")){
                     err.setText("Dados incompletos!");
+                    login.setEnabled(true);
                     return;
                 }
 
@@ -131,15 +133,18 @@ public class Login extends AppCompatActivity {
                                     if(error.networkResponse.statusCode == 401) {
                                         // Erro de autenticação
                                         err.setText("Email/password incorretos!");
+                                        login.setEnabled(true);
                                     } else {
                                         // Erro inesperado
                                         Log.e("ERROR",  error.networkResponse.statusCode +"");
+                                        login.setEnabled(true);
                                         err.setText("Erro! Tente novamente");
                                     }
                                 } else {
                                     // Erro inesperado
                                     Log.e("ERROR",  error +"");
                                     err.setText("Erro! Tente novamente");
+                                    login.setEnabled(true);
                                 }
                             }
                         }){
