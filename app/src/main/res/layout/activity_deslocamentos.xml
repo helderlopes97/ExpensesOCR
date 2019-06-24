@@ -36,7 +36,7 @@
 
 
         <ScrollView
-            android:id="@+id/scrollViewDespesas"
+            android:id="@+id/scrollViewDeslocamentos"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
@@ -57,11 +57,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <include
-                    layout="@layout/content_despesa_pendente"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_detalhes_despesa">
 
     <LinearLayout
-        android:id="@+id/despesa"
+        android:id="@+id/deslocamento"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

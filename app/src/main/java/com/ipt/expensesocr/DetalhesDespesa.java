@@ -10,20 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -89,7 +84,7 @@ public class DetalhesDespesa extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_back:
-                        Intent intent = new Intent(DetalhesDespesa.this, DespesasPendentes.class);
+                        Intent intent = new Intent(DetalhesDespesa.this, Deslocamentos.class);
                         intent.putExtra("token",(String) token);
                         intent.putExtra("email",(String) email);
                         startActivity(intent);
@@ -199,7 +194,7 @@ public class DetalhesDespesa extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //viewDespesas.addView(despesaPendente.despesTextView(getApplicationContext(),"Erro ao receber dados."));
+                        //viewDeslocamentos.addView(despesaPendente.despesTextView(getApplicationContext(),"Erro ao receber dados."));
                     }
                 }){
 
@@ -222,7 +217,7 @@ public class DetalhesDespesa extends AppCompatActivity {
             String tipoDespesa
     ){
         LinearLayout despesa = new LinearLayout(this);
-        despesa.setId(R.id.despesa);
+        despesa.setId(R.id.deslocamento);
         despesa.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams layout_725 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
         layout_725.bottomMargin = 10;

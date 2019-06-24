@@ -39,6 +39,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Mostra o ecrã de login
         setContentView(R.layout.activity_login);
 
         // Pedido de autorização - Permissões da aplicação
@@ -89,11 +90,13 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                // Instantiate the RequestQueue.
+                // Inicia o RequestQueue
                 RequestQueue queue = Volley.newRequestQueue(Login.this);
+
+                // Link para a API
                 String url ="https://davidnoob.herokuapp.com/api/v1/login/";
 
-                // Request a string response from the provided URL.
+                // Pede uma String de resposta ao URL
                 StringRequest req = new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>() {
                             @Override
@@ -105,8 +108,8 @@ public class Login extends AppCompatActivity {
                                     if(obj.has("token")) {
                                         // Define o user com loggedin
                                         loggedin = true;
-                                        // Prepara a atividade das despesas pendentes
-                                        Intent intent = new Intent(Login.this, DespesasPendentes.class);
+                                        // Prepara a atividade dos deslocamentos
+                                        Intent intent = new Intent(Login.this, Deslocamentos.class);
                                         // Envia o Token e o email para a nova atividade
                                         intent.putExtra("token",(String) obj.get("token"));
                                         intent.putExtra("email", email);
@@ -124,12 +127,18 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 // Tratamento de erros
-                                if(error.networkResponse.statusCode == 401){
-                                    // Erro de autenticação
-                                    err.setText("Email/password incorretos!");
+                                if(error.networkResponse != null ){
+                                    if(error.networkResponse.statusCode == 401) {
+                                        // Erro de autenticação
+                                        err.setText("Email/password incorretos!");
+                                    } else {
+                                        // Erro inesperado
+                                        Log.e("ERROR",  error.networkResponse.statusCode +"");
+                                        err.setText("Erro! Tente novamente");
+                                    }
                                 } else {
                                     // Erro inesperado
-                                    Log.e("ERROR",  error.networkResponse.statusCode +"");
+                                    Log.e("ERROR",  error +"");
                                     err.setText("Erro! Tente novamente");
                                 }
                             }
@@ -143,11 +152,9 @@ public class Login extends AppCompatActivity {
                         return params;
                     }
                 };
-                // Add the request to the RequestQueue.
+                // Adiciona o pedido ao RequestQueue
                 queue.add(req);
             }
         });
-
     }
-
 }
