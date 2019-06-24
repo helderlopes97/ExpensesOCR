@@ -25,7 +25,7 @@
                 android:text="Tipo de Transporte"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
