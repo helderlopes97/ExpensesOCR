@@ -39,7 +39,6 @@ public class Login extends AppCompatActivity {
     TextView err;
     CheckBox credenciais;
     boolean loggedin = false;
-
     SharedPreferences sharedPref;
     SharedPreferences.Editor mEditor;
 
@@ -73,16 +72,17 @@ public class Login extends AppCompatActivity {
             // Permissão já autorizada
         }
 
-        //acede as shared preferences
+        // Acede às shared preferences
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = sharedPref.edit();
 
-        //coloca nas variaveis as respetivas views
-        credenciais= findViewById(R.id.checkBox);
+        // Referencia os objetos gráficos
+        credenciais = findViewById(R.id.checkBox);
         userTextView = findViewById(R.id.email);
         pwTextView = findViewById(R.id.password);
 
-        if(sharedPref.contains("token")&&sharedPref.contains("email")){
+        // Se tiver o email e token guardados
+        if(sharedPref.contains("token") && sharedPref.contains("email")){
             // Prepara a atividade dos deslocamentos
             Intent intent = new Intent(Login.this, Deslocamentos.class);
             // Envia o Token e o email para a nova atividade
@@ -94,12 +94,13 @@ public class Login extends AppCompatActivity {
             finish();
         }
 
+        // Se guardou as credenciais
         if(sharedPref.contains("password")){
+            // Preenche o campo email
             userTextView.setText(sharedPref.getString("email",""));
+            // Preenche o campo password
             pwTextView.setText(sharedPref.getString("password",""));
-        }
-
-        if(!userTextView.getText().toString().equals("")){
+            // Mantém as credenciais guardadas
             credenciais.setChecked(true);
         }
 
@@ -110,17 +111,17 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login.setEnabled(false);
-                // limpa o log de erros
+                // Limpa o log de erros
                 err = (TextView) findViewById(R.id.loginErr);
                 err.setText("");
-                // desativa o botão
+                // Desativa o botão
                 login.setActivated(false);
-                // encontra o email
+                // Encontra o email
                 email = userTextView.getText().toString().trim();
-                // encontra a password
+                // Encontra a password
                 password = pwTextView.getText().toString().trim();
 
-                // verifica se os campos estão preenchidos
+                // Verifica se os campos estão preenchidos
                 if( email.equals("") || password.equals("")){
                     err.setText("Dados incompletos!");
                     login.setEnabled(true);
@@ -143,17 +144,18 @@ public class Login extends AppCompatActivity {
                                     JSONObject obj= new JSONObject(res);
                                     // Verifica o Token
                                     if(obj.has("token")) {
-                                        //verifica se o utilizador pretende guardar credenciais
+                                        // Verifica se o utilizador pretende guardar credenciais
                                         if(credenciais.isChecked()){
-                                            //guarda as credenciais e o token
+                                            // Guarda as credenciais e o token
                                             mEditor.putString("email",email);
                                             mEditor.putString("password",password);
                                             mEditor.putString("token",(String) obj.get("token"));
                                             mEditor.commit();
                                         }else{
-                                            //guarda o email e o token mas remove a password caso ja exista uma guardada
+                                            // Guarda o email e o token
                                             mEditor.putString("email",email);
                                             mEditor.putString("token",(String) obj.get("token"));
+                                            // Remove a password caso já exista uma guardada
                                             if(sharedPref.contains("password")){
                                                 mEditor.remove("password");
                                             }

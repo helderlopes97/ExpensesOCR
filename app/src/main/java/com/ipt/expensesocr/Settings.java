@@ -1,24 +1,19 @@
 package com.ipt.expensesocr;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import Utils.ImageUtils;
-
-public class SettingsActivity extends AppCompatActivity {
+public class Settings extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Mostrar o ecrã das definições
         setContentView(R.layout.activity_settings);
 
         // Ativa a toolbar
@@ -30,12 +25,18 @@ public class SettingsActivity extends AppCompatActivity {
             if(savedInstanceState!= null){
                 return;
             }
+            // Acede às shared preferences
             SharedPreferences sharedPref = (SharedPreferences) PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor mEditor = sharedPref.edit();
+            // cria um bundle
             Bundle bundle = new Bundle();
+            //coloca o valor do nif no bundle
             bundle.putString("nif", sharedPref.getString("valorNIF",""));
+            //cria o fragment
             SettingsFragment frag=new SettingsFragment();
+            //adiciona o bundle ao fragment
             frag.setArguments(bundle);
+            // Inicia o SettingsFragment
             getFragmentManager().beginTransaction().add(R.id.fragment_container,frag).commit();
         }
     }
