@@ -214,35 +214,35 @@ public class Deslocamentos extends AppCompatActivity {
         LinearLayout layoutDescricao = new LinearLayout(this);
         layoutDescricao.setId(R.id.layoutDescricao);
         layoutDescricao.setOrientation(HORIZONTAL);
-        LinearLayout.LayoutParams layout_155 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout_155.leftMargin = 30;
-        layout_155.topMargin = 6;
-        layout_155.rightMargin = 30;
-        layout_155.bottomMargin = 6;
-        layoutDescricao.setLayoutParams(layout_155);
+        LinearLayout.LayoutParams paramsLayoutDescricao = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        paramsLayoutDescricao.leftMargin = 30;
+        paramsLayoutDescricao.topMargin = 6;
+        paramsLayoutDescricao.rightMargin = 30;
+        paramsLayoutDescricao.bottomMargin = 6;
+        layoutDescricao.setLayoutParams(paramsLayoutDescricao);
 
         // Cria a TextView para a tag descrição
         TextView descricao = new TextView(this);
         descricao.setId(R.id.descricao);
         descricao.setText("Descrição: ");
         descricao.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
-        LinearLayout.LayoutParams layout_587 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsDescricao = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             descricao.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        descricao.setLayoutParams(layout_587);
+        descricao.setLayoutParams(paramsDescricao);
         layoutDescricao.addView(descricao);
 
         // Cria a TextView para o campo descrição
         TextView valorDescricao = new TextView(this);
         valorDescricao.setId(R.id.valorDescricao);
         valorDescricao.setText(descricaoDeslocamento);
-        LinearLayout.LayoutParams layout_591 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsValorDescricao = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             valorDescricao.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
-        layout_591.rightMargin = 5;
-        valorDescricao.setLayoutParams(layout_591);
+        paramsValorDescricao.rightMargin = 5;
+        valorDescricao.setLayoutParams(paramsValorDescricao);
         layoutDescricao.addView(valorDescricao);
         deslocamento.addView(layoutDescricao);
 
@@ -250,32 +250,32 @@ public class Deslocamentos extends AppCompatActivity {
         LinearLayout layoutEstado = new LinearLayout(this);
         layoutEstado.setId(R.id.layoutEstado);
         layoutEstado.setOrientation(HORIZONTAL);
-        LinearLayout.LayoutParams layout_700 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout_700.leftMargin = 30;
-        layout_700.topMargin = 6;
-        layout_700.rightMargin = 30;
-        layout_700.bottomMargin = 6;
-        layoutEstado.setLayoutParams(layout_700);
+        LinearLayout.LayoutParams paramsLayoutEstado = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        paramsLayoutEstado.leftMargin = 30;
+        paramsLayoutEstado.topMargin = 6;
+        paramsLayoutEstado.rightMargin = 30;
+        paramsLayoutEstado.bottomMargin = 6;
+        layoutEstado.setLayoutParams(paramsLayoutEstado);
 
         // Cria a TextView para a tag estado
         TextView estado = new TextView(this);
         estado.setId(R.id.estado);
         estado.setText("Estado: ");
-        LinearLayout.LayoutParams layout_311 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        LinearLayout.LayoutParams paramsEstado = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             estado.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        estado.setLayoutParams(layout_311);
+        estado.setLayoutParams(paramsEstado);
         layoutEstado.addView(estado);
 
         // Cria a TextView para o campo estado
         TextView valorEstado = new TextView(this);
         valorEstado.setId(R.id.valorEstado);
         valorEstado.setText(estadoDeslocamento);
-        LinearLayout.LayoutParams layout_761 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsValorEstado = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             valorEstado.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
-        valorEstado.setLayoutParams(layout_761);
+        valorEstado.setLayoutParams(paramsValorEstado);
         layoutEstado.addView(valorEstado);
         deslocamento.addView(layoutEstado);
 
@@ -283,35 +283,35 @@ public class Deslocamentos extends AppCompatActivity {
         LinearLayout layoutIntervalo = new LinearLayout(this);
         layoutIntervalo.setId(R.id.layoutIntervalo);
         layoutIntervalo.setOrientation(HORIZONTAL);
-        LinearLayout.LayoutParams layout_895 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout_895.leftMargin = 30;
-        layout_895.topMargin = 6;
-        layout_895.rightMargin = 30;
-        layout_895.bottomMargin = 6;
-        layoutIntervalo.setLayoutParams(layout_895);
+        LinearLayout.LayoutParams paramsLayoutIntervalo = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        paramsLayoutIntervalo.leftMargin = 30;
+        paramsLayoutIntervalo.topMargin = 6;
+        paramsLayoutIntervalo.rightMargin = 30;
+        paramsLayoutIntervalo.bottomMargin = 6;
+        layoutIntervalo.setLayoutParams(paramsLayoutIntervalo);
 
         // Cria a TextView para a tag intervalo
         TextView intervalo = new TextView(this);
         intervalo.setId(R.id.intervalo);
         intervalo.setText("Intervalo: ");
         intervalo.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
-        LinearLayout.LayoutParams layout_993 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsIntervalo = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             intervalo.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        intervalo.setLayoutParams(layout_993);
+        intervalo.setLayoutParams(paramsIntervalo);
         layoutIntervalo.addView(intervalo);
 
         // Cria a TextView para o campo intervalo
         TextView valorIntervalo = new TextView(this);
         valorIntervalo.setId(R.id.valorIntervalo);
         valorIntervalo.setText(datas);
-        LinearLayout.LayoutParams layout_379 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsValorIntervalo = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             valorIntervalo.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
-        layout_379.rightMargin = 5;
-        valorIntervalo.setLayoutParams(layout_379);
+        paramsValorIntervalo.rightMargin = 5;
+        valorIntervalo.setLayoutParams(paramsValorIntervalo);
         layoutIntervalo.addView(valorIntervalo);
         deslocamento.addView(layoutIntervalo);
 
@@ -319,54 +319,54 @@ public class Deslocamentos extends AppCompatActivity {
         LinearLayout layoutNumDespesas = new LinearLayout(this);
         layoutNumDespesas.setId(R.id.layoutDespesas);
         layoutNumDespesas.setOrientation(HORIZONTAL);
-        LinearLayout.LayoutParams layout_346 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout_346.leftMargin = 30;
-        layout_346.rightMargin = 30;
-        layout_346.bottomMargin = 6;
-        layout_346.topMargin = 6;
-        layoutNumDespesas.setLayoutParams(layout_346);
+        LinearLayout.LayoutParams paramsLayoutNumDespesas = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        paramsLayoutNumDespesas.leftMargin = 30;
+        paramsLayoutNumDespesas.rightMargin = 30;
+        paramsLayoutNumDespesas.bottomMargin = 6;
+        paramsLayoutNumDespesas.topMargin = 6;
+        layoutNumDespesas.setLayoutParams(paramsLayoutNumDespesas);
 
         // Cria a TextView para a tag número de despesas
         TextView numDespesas = new TextView(this);
         numDespesas.setId(R.id.numDespesas);
         numDespesas.setText("Nº de despesas: ");
         numDespesas.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
-        LinearLayout.LayoutParams layout_172 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsNumDespesas = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             numDespesas.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        numDespesas.setLayoutParams(layout_172);
+        numDespesas.setLayoutParams(paramsNumDespesas);
         layoutNumDespesas.addView(numDespesas);
 
         // Cria a TextView para o campo número de despesas
-        TextView ValorNumDespesas = new TextView(this);
-        ValorNumDespesas.setText(numeroDespesas);
-        LinearLayout.LayoutParams layout_283 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView valorNumDespesas = new TextView(this);
+        valorNumDespesas.setText(numeroDespesas);
+        LinearLayout.LayoutParams paramsValorNumDespesas = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ValorNumDespesas.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
+            valorNumDespesas.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
-        layout_283.rightMargin = 50;
-        ValorNumDespesas.setLayoutParams(layout_283);
-        layoutNumDespesas.addView(ValorNumDespesas);
+        paramsValorNumDespesas.rightMargin = 50;
+        valorNumDespesas.setLayoutParams(paramsValorNumDespesas);
+        layoutNumDespesas.addView(valorNumDespesas);
 
         // Cria a TextView para a tag valor total
         TextView total = new TextView(this);
         total.setText("Valor Total: ");
-        LinearLayout.LayoutParams layout_125 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsTotal = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             total.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        total.setLayoutParams(layout_125);
+        total.setLayoutParams(paramsTotal);
         layoutNumDespesas.addView(total);
 
         // Cria a TextView para o campo valor total
         TextView valorTotal = new TextView(this);
         valorTotal.setText(totalDespesas);
-        LinearLayout.LayoutParams layout_83 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsValorTotal = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             valorTotal.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
-        valorTotal.setLayoutParams(layout_83);
+        valorTotal.setLayoutParams(paramsValorTotal);
         layoutNumDespesas.addView(valorTotal);
         deslocamento.addView(layoutNumDespesas);
 

@@ -259,6 +259,10 @@ public class Formulario extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(spinnerTranporte.getSelectedItem().equals("Viatura Própria")){
                     viewTransporteProprio.setVisibility(View.VISIBLE);
+                }else if(spinnerTranporte.getSelectedItem().equals("Viatura Empresa")){
+                    viewTransporteProprio.setVisibility(View.VISIBLE);
+                }else if(spinnerTranporte.getSelectedItem().equals("Viatura Alugada")){
+                    viewTransporteProprio.setVisibility(View.VISIBLE);
                 }else {
                     viewTransporteProprio.setVisibility(View.GONE);
                 }

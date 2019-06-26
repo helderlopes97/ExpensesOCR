@@ -216,44 +216,44 @@ public class Despesas extends AppCompatActivity {
         LinearLayout despesa = new LinearLayout(this);
         despesa.setId(R.id.deslocamento);
         despesa.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams layout_725 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
-        layout_725.bottomMargin = 10;
-        layout_725.topMargin = 10;
-        despesa.setLayoutParams(layout_725);
+        LinearLayout.LayoutParams paramsDespesa = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+        paramsDespesa.bottomMargin = 10;
+        paramsDespesa.topMargin = 10;
+        despesa.setLayoutParams(paramsDespesa);
 
         // Cria o layout para a data da despesa
         LinearLayout layoutData = new LinearLayout(this);
         layoutData.setId(R.id.layoutDescricao);
         layoutData.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams layout_130 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout_130.leftMargin = 45;
-        layout_130.topMargin = 6;
-        layout_130.rightMargin = 45;
-        layout_130.bottomMargin = 6;
-        layoutData.setLayoutParams(layout_130);
+        LinearLayout.LayoutParams paramsLayoutData = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        paramsLayoutData.leftMargin = 45;
+        paramsLayoutData.topMargin = 6;
+        paramsLayoutData.rightMargin = 45;
+        paramsLayoutData.bottomMargin = 6;
+        layoutData.setLayoutParams(paramsLayoutData);
 
         // TextView para a tag da data
         TextView dateDespesa = new TextView(this);
         dateDespesa.setText("Data: ");
         dateDespesa.setAllCaps(false);
         dateDespesa.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
-        LinearLayout.LayoutParams layout_501 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsDateDespesa = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             dateDespesa.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        dateDespesa.setLayoutParams(layout_501);
+        dateDespesa.setLayoutParams(paramsDateDespesa);
         layoutData.addView(dateDespesa);
 
         // TextView para o campo data da despesa
         TextView data = new TextView(this);
         data.setId(R.id.data);
         data.setText(dataDespesa);
-        LinearLayout.LayoutParams layout_454 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsData = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             data.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
-        layout_454.rightMargin = 15;
-        data.setLayoutParams(layout_454);
+        paramsData.rightMargin = 15;
+        data.setLayoutParams(paramsData);
         layoutData.addView(data);
         despesa.addView(layoutData);
 
@@ -261,32 +261,32 @@ public class Despesas extends AppCompatActivity {
         LinearLayout layoutValor = new LinearLayout(this);
         layoutValor.setId(R.id.layoutEstado);
         layoutValor.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams layout_574 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout_574.leftMargin = 45;
-        layout_574.topMargin = 6;
-        layout_574.rightMargin =45;
-        layout_574.bottomMargin = 2;
-        layoutValor.setLayoutParams(layout_574);
+        LinearLayout.LayoutParams paramsLayoutValor = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        paramsLayoutValor.leftMargin = 45;
+        paramsLayoutValor.topMargin = 6;
+        paramsLayoutValor.rightMargin =45;
+        paramsLayoutValor.bottomMargin = 2;
+        layoutValor.setLayoutParams(paramsLayoutValor);
 
         // TextView para a tag do valor
         TextView tagValor = new TextView(this);
         tagValor.setText("Valor: ");
-        LinearLayout.LayoutParams layout_123 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsTagValor = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             tagValor.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        tagValor.setLayoutParams(layout_123);
+        tagValor.setLayoutParams(paramsTagValor);
         layoutValor.addView(tagValor);
 
         // TextView para o campo valor da despesa
         TextView valor = new TextView(this);
         valor.setId(R.id.valorDespesa);
         valor.setText(valorDespesa);
-        LinearLayout.LayoutParams layout_563 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsValor = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             valor.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
-        valor.setLayoutParams(layout_563);
+        valor.setLayoutParams(paramsValor);
         layoutValor.addView(valor);
         despesa.addView(layoutValor);
 
@@ -294,34 +294,34 @@ public class Despesas extends AppCompatActivity {
         LinearLayout layoutCategoria = new LinearLayout(this);
         layoutCategoria.setId(R.id.layoutIntervalo);
         layoutCategoria.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams layout_185 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout_185.leftMargin = 45;
-        layout_185.topMargin = 6;
-        layout_185.rightMargin = 45;
-        layout_185.bottomMargin = 6;
-        layoutCategoria.setLayoutParams(layout_185);
+        LinearLayout.LayoutParams paramsLayoutCategoria = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        paramsLayoutCategoria.leftMargin = 45;
+        paramsLayoutCategoria.topMargin = 6;
+        paramsLayoutCategoria.rightMargin = 45;
+        paramsLayoutCategoria.bottomMargin = 6;
+        layoutCategoria.setLayoutParams(paramsLayoutCategoria);
 
         // TextView para a tag da categoria
         TextView tagCategoria = new TextView(this);
         tagCategoria.setText("Categoria: ");
         tagCategoria.setAllCaps(false);
         tagCategoria.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
-        LinearLayout.LayoutParams layout_425 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsTagCategotia = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             tagCategoria.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        tagCategoria.setLayoutParams(layout_425);
+        tagCategoria.setLayoutParams(paramsTagCategotia);
         layoutCategoria.addView(tagCategoria);
 
         // TextView para o campo categoria da despesa
         TextView categoria = new TextView(this);
         categoria.setText(categoriaDespesa);
-        LinearLayout.LayoutParams layout_483 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsCategoria = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             categoria.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
-        layout_483.rightMargin = 15;
-        categoria.setLayoutParams(layout_483);
+        paramsCategoria.rightMargin = 15;
+        categoria.setLayoutParams(paramsCategoria);
         layoutCategoria.addView(categoria);
         despesa.addView(layoutCategoria);
 
@@ -329,12 +329,12 @@ public class Despesas extends AppCompatActivity {
         LinearLayout layoutTipo = new LinearLayout(this);
         layoutTipo.setId(R.id.layoutDespesas);
         layoutTipo.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams layout_290 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout_290.leftMargin = 45;
-        layout_290.rightMargin = 45;
-        layout_290.bottomMargin = 6;
-        layout_290.topMargin = 6;
-        layoutTipo.setLayoutParams(layout_290);
+        LinearLayout.LayoutParams paramsLayoutTipo = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        paramsLayoutTipo.leftMargin = 45;
+        paramsLayoutTipo.rightMargin = 45;
+        paramsLayoutTipo.bottomMargin = 6;
+        paramsLayoutTipo.topMargin = 6;
+        layoutTipo.setLayoutParams(paramsLayoutTipo);
 
         // TextView para a tag do tipo
         TextView tagTipo = new TextView(this);
@@ -342,23 +342,23 @@ public class Despesas extends AppCompatActivity {
         tagTipo.setText("Tipo: ");
         tagTipo.setAllCaps(false);
         tagTipo.setTextSize((15/getApplicationContext().getResources().getDisplayMetrics().scaledDensity));
-        LinearLayout.LayoutParams layout_71 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsTagTipo = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             tagTipo.setTextAppearance(R.style.TextAppearance_AppCompat_Body2);
         }
-        tagTipo.setLayoutParams(layout_71);
+        tagTipo.setLayoutParams(paramsTagTipo);
         layoutTipo.addView(tagTipo);
 
         // TextView para o campo tipo da despesa
         TextView tipo = new TextView(this);
         tipo.setId(R.id.tipo);
         tipo.setText(tipoDespesa);
-        LinearLayout.LayoutParams layout_296 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsTipo = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             tipo.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         }
-        layout_296.rightMargin = 60;
-        tipo.setLayoutParams(layout_296);
+        paramsTipo.rightMargin = 60;
+        tipo.setLayoutParams(paramsTipo);
         layoutTipo.addView(tipo);
         despesa.addView(layoutTipo);
 
@@ -366,8 +366,8 @@ public class Despesas extends AppCompatActivity {
         TextView separador = new TextView(this);
         separador.setId(R.id.textView3);
         separador.setBackgroundResource(R.drawable.linebottom);
-        LinearLayout.LayoutParams layout_973 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,4);
-        separador.setLayoutParams(layout_973);
+        LinearLayout.LayoutParams paramsSeparador = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,4);
+        separador.setLayoutParams(paramsSeparador);
         despesa.addView(separador);
 
         // Devolve o layout da despesa
