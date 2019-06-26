@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Faturas">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/topbar"
+            android:id="@+id/topbar2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay"
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             app:srcCompat="@drawable/hello"
-            android:layout_below="@id/topbar"
+            android:layout_below="@id/topbar2"
             android:background="@drawable/image_border"
             android:padding="3dp"
             android:layout_margin="3dp"/>
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/img"
-            android:layout_above="@id/btns"
+            android:layout_above="@id/bar"
             android:layout_margin="3dp"
             android:padding="3dp"
             android:background="@drawable/image_border">
@@ -60,7 +60,6 @@
             </LinearLayout>
         </ScrollView>
 
-
         <android.support.design.widget.BottomNavigationView
 
             android:id="@+id/bar"
@@ -68,50 +67,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:theme="@style/AppTheme.AppBarOverlay"
-            app:menu="@menu/bottom_nav_menu3"
-            app:labelVisibilityMode="labeled"
             app:itemBackground="@color/colorPrimaryDark"
             app:itemIconTint="@android:color/white"
-            app:itemTextColor="@android:color/white" />
-
-        <RelativeLayout
-
-            android:id="@+id/btns"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/bar"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/addmore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="detect more" />
-
-                <Button
-                    android:id="@+id/button4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="img1" />
-
-                <Button
-                    android:id="@+id/button5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="img2" />
-            </LinearLayout>
-
-        </RelativeLayout>
+            app:itemTextColor="@android:color/white"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu3" />
 
     </RelativeLayout>
 

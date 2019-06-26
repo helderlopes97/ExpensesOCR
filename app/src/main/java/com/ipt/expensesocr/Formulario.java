@@ -1,9 +1,7 @@
 package com.ipt.expensesocr;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -18,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -102,7 +99,7 @@ public class Formulario extends AppCompatActivity{
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_back:
-                        Intent intent = new Intent(Formulario.this, MainActivity.class);
+                        Intent intent = new Intent(Formulario.this, Faturas.class);
                         intent.putExtra("token",(String) token);
                         intent.putExtra("email",(String) email);
                         intent.putExtra("deslocamentoId",(String)despesaId);

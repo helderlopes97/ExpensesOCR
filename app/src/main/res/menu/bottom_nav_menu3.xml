@@ -2,18 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_back"
-        android:enabled="true"
-        android:icon="@drawable/back3"
-        android:title="Voltar"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_detect"
-        android:enabled="true"
-        android:icon="@drawable/search"
-        android:title="Detect"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_camera"
         android:enabled="true"
         android:icon="@drawable/camera"
@@ -23,13 +11,24 @@
         android:id="@+id/action_gallery"
         android:enabled="true"
         android:icon="@drawable/galeria"
-        android:title="Galeria"
+        android:title="Gallery"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_crop"
+        android:enabled="true"
+        android:icon="@drawable/crop"
+        android:title="Crop"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_detect"
+        android:enabled="true"
+        android:icon="@drawable/search"
+        android:title="Detect"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_next"
         android:enabled="true"
         android:icon="@drawable/next"
         android:title="Next"
-
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 </menu>

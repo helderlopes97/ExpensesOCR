@@ -392,14 +392,14 @@ public class Deslocamentos extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Adiciona os items à topbar
         getMenuInflater().inflate(R.menu.topbar, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
+        // Programa os botões da barra de navegação
         switch (item.getItemId()) {
             case R.id.action_logout:
                 Intent intent = new Intent(Deslocamentos.this, Login.class);
@@ -408,6 +408,5 @@ public class Deslocamentos extends AppCompatActivity {
                 return true;
         }
         return false;
-
     }
 }

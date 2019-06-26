@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_back"
+        android:enabled="true"
+        android:icon="@drawable/white_back"
+        android:title="Back"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_addmore"
+        app:showAsAction="never"
+        android:title="Imagem Múltipla">
+    </item>
+    <item
+        android:id="@+id/action_original"
+        app:showAsAction="never"
+        android:title="Imagem Original">
+    </item>
+    <item
+        android:id="@+id/action_transform"
+        app:showAsAction="never"
+        android:title="Imagem Transformada">
+    </item>
+    <item
+        android:id="@+id/action_logout"
+        app:showAsAction="never"
+        android:title="Logout">
+    </item>
+</menu>

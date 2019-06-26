@@ -1,22 +1,8 @@
 package Utils;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Rect;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.google.android.gms.clearcut.ClearcutLogger;
-
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -27,17 +13,11 @@ import org.opencv.core.Point;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
-
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 public class ImageUtils extends AppCompatActivity {
 
@@ -73,10 +53,12 @@ public class ImageUtils extends AppCompatActivity {
         // OTSU'S THRESHOLDING
         //Imgproc.threshold(src,src,0,255,Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
 
-        // Converte o Mat final para o Bitmap
-        Utils.matToBitmap(src, bit);
-        // Devolve o Bitmap
-        return bit;
+        // Cria um novo Bitmap
+        Bitmap bit2 = Bitmap.createBitmap(src.cols(), src.rows(), Bitmap.Config.ARGB_8888);
+        // Tranforma o Mat da imagem original no Bitmap
+        Utils.matToBitmap(src, bit2);
+        // Devolve o bitmap
+        return bit2;
     }
 
     /**

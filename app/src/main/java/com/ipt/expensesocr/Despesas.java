@@ -89,7 +89,7 @@ public class Despesas extends AppCompatActivity {
                     // Botão adicionar
                     case R.id.action_add:
                         // Prepara a atividade para inserir uma despesa
-                        Intent intent2 = new Intent(Despesas.this, MainActivity.class);
+                        Intent intent2 = new Intent(Despesas.this, Faturas.class);
                         // Envia o id do deslocamento, email e token para a nova atividade
                         intent2.putExtra("deslocamentoId",(String) deslocamentoId +"");
                         intent2.putExtra("token",(String) token);
@@ -376,14 +376,14 @@ public class Despesas extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Adiciona os items à topbar
         getMenuInflater().inflate(R.menu.topbar, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
+        // Programa os botões da barra de navegação
         switch (item.getItemId()) {
             case R.id.action_logout:
                 Intent intent = new Intent(Despesas.this, Login.class);
