@@ -1,7 +1,9 @@
 package com.ipt.expensesocr;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -82,7 +84,8 @@ public class Deslocamentos extends AppCompatActivity {
                     // Botão definições
                     case R.id.action_settings:
                         // Não faz nada
-                        Toast.makeText(Deslocamentos.this, "Setting", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(Deslocamentos.this, SettingsActivity.class);
+                        startActivity(intent);
                         break;
                 }
                 return true;
@@ -402,6 +405,10 @@ public class Deslocamentos extends AppCompatActivity {
         // Programa os botões da barra de navegação
         switch (item.getItemId()) {
             case R.id.action_logout:
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor mEditor = sharedPref.edit();
+                mEditor.remove("token");
+                mEditor.commit();
                 Intent intent = new Intent(Deslocamentos.this, Login.class);
                 startActivity(intent);
                 finish();

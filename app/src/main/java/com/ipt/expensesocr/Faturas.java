@@ -3,6 +3,7 @@ package com.ipt.expensesocr;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +12,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -714,6 +716,10 @@ public class Faturas extends AppCompatActivity {
                 return true;
             // Botão logout
             case R.id.action_logout:
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor mEditor = sharedPref.edit();
+                mEditor.remove("token");
+                mEditor.commit();
                 // Prepara a atividade login
                 intent = new Intent(Faturas.this, Login.class);
                 // Inicia a atividade

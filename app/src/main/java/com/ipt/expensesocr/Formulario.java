@@ -1,7 +1,9 @@
 package com.ipt.expensesocr;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -287,6 +289,10 @@ public class Formulario extends AppCompatActivity{
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_logout:
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor mEditor = sharedPref.edit();
+                mEditor.remove("token");
+                mEditor.commit();
                 Intent intent = new Intent(Formulario.this, Login.class);
                 startActivity(intent);
                 finish();

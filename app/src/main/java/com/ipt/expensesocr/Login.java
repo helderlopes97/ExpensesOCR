@@ -2,14 +2,17 @@ package com.ipt.expensesocr;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,7 +37,11 @@ public class Login extends AppCompatActivity {
     TextView pwTextView;
     String password;
     TextView err;
+    CheckBox credenciais;
     boolean loggedin = false;
+
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor mEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,33 @@ public class Login extends AppCompatActivity {
             // Permissão já autorizada
         }
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = sharedPref.edit();
+
+        credenciais= findViewById(R.id.checkBox);
+        userTextView = findViewById(R.id.email);
+        pwTextView = findViewById(R.id.password);
+
+        if(sharedPref.contains("token")&&sharedPref.contains("email")){
+            // Prepara a atividade dos deslocamentos
+            Intent intent = new Intent(Login.this, Deslocamentos.class);
+            // Envia o Token e o email para a nova atividade
+            intent.putExtra("token", sharedPref.getString("token",""));
+            intent.putExtra("email", sharedPref.getString("email",""));
+            // Inicia a atividade
+            startActivity(intent);
+            // Termina a atividade Login
+            finish();
+        }
+        if(sharedPref.contains("password")){
+            userTextView.setText(sharedPref.getString("email",""));
+            pwTextView.setText(sharedPref.getString("password",""));
+        }
+
+        if(!userTextView.getText().toString().equals("")){
+            credenciais.setChecked(true);
+        }
+
         // Botão de login
         final Button login = (Button) findViewById(R.id.btLogin);
         // Função do botão
@@ -79,10 +113,8 @@ public class Login extends AppCompatActivity {
                 // desativa o botão
                 login.setActivated(false);
                 // encontra o email
-                userTextView = findViewById(R.id.email);
                 email = userTextView.getText().toString().trim();
                 // encontra a password
-                pwTextView = findViewById(R.id.password);
                 password = pwTextView.getText().toString().trim();
 
                 // verifica se os campos estão preenchidos
@@ -108,6 +140,20 @@ public class Login extends AppCompatActivity {
                                     JSONObject obj= new JSONObject(res);
                                     // Verifica o Token
                                     if(obj.has("token")) {
+                                        if(credenciais.isChecked()){
+                                            mEditor.putString("email",email);
+                                            mEditor.putString("password",password);
+                                            mEditor.putString("token",(String) obj.get("token"));
+                                            mEditor.commit();
+                                        }else{
+                                            mEditor.putString("email",email);
+                                            mEditor.putString("token",(String) obj.get("token"));
+                                            if(sharedPref.contains("password")){
+                                                mEditor.remove("password");
+                                            }
+                                            mEditor.commit();
+                                        }
+
                                         // Define o user com loggedin
                                         loggedin = true;
                                         // Prepara a atividade dos deslocamentos
