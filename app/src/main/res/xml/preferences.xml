@@ -5,5 +5,7 @@
         android:key="valorNIF"
         android:title="NIF"
         android:summary="Valor pretendido do NIF"
+        android:inputType="numberDecimal"
+        android:digits="0123456789"
         android:defaultValue="508207908"/>
 </PreferenceScreen>

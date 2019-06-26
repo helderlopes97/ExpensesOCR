@@ -2,6 +2,8 @@ package com.ipt.expensesocr;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.EditTextPreference;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -23,11 +25,18 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         if(findViewById(R.id.fragment_container)!=null){
             if(savedInstanceState!= null){
                 return;
             }
-            getFragmentManager().beginTransaction().add(R.id.fragment_container, new SettingsFragment()).commit();
+            SharedPreferences sharedPref = (SharedPreferences) PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor mEditor = sharedPref.edit();
+            Bundle bundle = new Bundle();
+            bundle.putString("nif", sharedPref.getString("valorNIF",""));
+            SettingsFragment frag=new SettingsFragment();
+            frag.setArguments(bundle);
+            getFragmentManager().beginTransaction().add(R.id.fragment_container,frag).commit();
         }
     }
 

@@ -93,7 +93,7 @@ public class Login extends AppCompatActivity {
             // Termina a atividade Login
             finish();
         }
-        
+
         if(sharedPref.contains("password")){
             userTextView.setText(sharedPref.getString("email",""));
             pwTextView.setText(sharedPref.getString("password",""));
