@@ -1,32 +1,28 @@
 package com.ipt.expensesocr;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import Utils.ImageUtils;
-
-public class SettingsActivity extends AppCompatActivity {
+public class Settings extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Mostrar o ecrã das definições
         setContentView(R.layout.activity_settings);
 
         // Ativa a toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(findViewById(R.id.fragment_container)!=null){
+        if(findViewById(R.id.fragment_container) != null){
             if(savedInstanceState!= null){
                 return;
             }
+            // Inicia o SettingsFragment
             getFragmentManager().beginTransaction().add(R.id.fragment_container, new SettingsFragment()).commit();
         }
     }

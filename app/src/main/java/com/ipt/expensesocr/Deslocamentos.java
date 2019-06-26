@@ -83,8 +83,9 @@ public class Deslocamentos extends AppCompatActivity {
 
                     // Botão definições
                     case R.id.action_settings:
-                        // Não faz nada
-                        Intent intent=new Intent(Deslocamentos.this, SettingsActivity.class);
+                        // Prepara a atividade das deinições
+                        Intent intent = new Intent(Deslocamentos.this, Settings.class);
+                        // Inicia a atividade
                         startActivity(intent);
                         break;
                 }
@@ -405,15 +406,18 @@ public class Deslocamentos extends AppCompatActivity {
         // Programa os botões da barra de navegação
         switch (item.getItemId()) {
             case R.id.action_logout:
-                //acede as shared preferences
+                // Acede às shared preferences
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor mEditor = sharedPref.edit();
-                //remove o token
+                // Remove o token
                 mEditor.remove("token");
-                //guarda as alterações
+                // Guarda as alterações
                 mEditor.commit();
+                // Prepara a atividade de login
                 Intent intent = new Intent(Deslocamentos.this, Login.class);
+                // Inicia a atividade
                 startActivity(intent);
+                // Termina a atividade deslocamentos
                 finish();
                 return true;
         }
