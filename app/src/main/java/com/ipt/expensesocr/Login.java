@@ -73,9 +73,11 @@ public class Login extends AppCompatActivity {
             // Permissão já autorizada
         }
 
+        //acede as shared preferences
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = sharedPref.edit();
 
+        //coloca nas variaveis as respetivas views
         credenciais= findViewById(R.id.checkBox);
         userTextView = findViewById(R.id.email);
         pwTextView = findViewById(R.id.password);
@@ -91,6 +93,7 @@ public class Login extends AppCompatActivity {
             // Termina a atividade Login
             finish();
         }
+        
         if(sharedPref.contains("password")){
             userTextView.setText(sharedPref.getString("email",""));
             pwTextView.setText(sharedPref.getString("password",""));
@@ -140,12 +143,15 @@ public class Login extends AppCompatActivity {
                                     JSONObject obj= new JSONObject(res);
                                     // Verifica o Token
                                     if(obj.has("token")) {
+                                        //verifica se o utilizador pretende guardar credenciais
                                         if(credenciais.isChecked()){
+                                            //guarda as credenciais e o token
                                             mEditor.putString("email",email);
                                             mEditor.putString("password",password);
                                             mEditor.putString("token",(String) obj.get("token"));
                                             mEditor.commit();
                                         }else{
+                                            //guarda o email e o token mas remove a password caso ja exista uma guardada
                                             mEditor.putString("email",email);
                                             mEditor.putString("token",(String) obj.get("token"));
                                             if(sharedPref.contains("password")){

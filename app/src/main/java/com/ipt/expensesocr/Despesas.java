@@ -388,9 +388,12 @@ public class Despesas extends AppCompatActivity {
         // Programa os botões da barra de navegação
         switch (item.getItemId()) {
             case R.id.action_logout:
+                //acede as shared preferences
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor mEditor = sharedPref.edit();
+                //remove o token
                 mEditor.remove("token");
+                //guarda as alterações
                 mEditor.commit();
                 Intent intent = new Intent(Despesas.this, Login.class);
                 startActivity(intent);

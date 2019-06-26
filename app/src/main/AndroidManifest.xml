@@ -25,7 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity"></activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Definições"
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".Deslocamentos"
             android:label="Deslocamentos"
             android:screenOrientation="portrait">

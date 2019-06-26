@@ -716,9 +716,12 @@ public class Faturas extends AppCompatActivity {
                 return true;
             // Botão logout
             case R.id.action_logout:
+                //acede as shared preferences
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor mEditor = sharedPref.edit();
+                //remove o token
                 mEditor.remove("token");
+                //guarda as alterações
                 mEditor.commit();
                 // Prepara a atividade login
                 intent = new Intent(Faturas.this, Login.class);
