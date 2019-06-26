@@ -56,8 +56,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // receber a preference que foi alterada
         Preference preference= findPreference(key);
-        Log.e("key", key);
-
         // se for um editTextPreference
         if (preference instanceof EditTextPreference) {
             //atualiza summary
