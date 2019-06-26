@@ -23,16 +23,17 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //adicionar as preferences ao fragment
+        // Adicionar as preferences ao fragment
         addPreferencesFromResource(R.xml.preferences);
 
-        //verifica se é recebido algum argumento
+        // Verifica se é recebido algum argumento
         if (getArguments() != null) {
             nif = getArguments().getString("nif");
         }
-        //procura a preference valorNIF
-        edit=findPreference("valorNIF");
-        //altera o summary
+
+        // Procura a preference valorNIF
+        edit = findPreference("valorNIF");
+        // Altera o summary
         edit.setSummary(nif);
     }
 
@@ -54,17 +55,17 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // receber a preference que foi alterada
+        // Receber a preference que foi alterada
         Preference preference= findPreference(key);
-        // se for um editTextPreference
+        // Se for um editTextPreference
         if (preference instanceof EditTextPreference) {
-            //atualiza summary
+            // Atualiza summary
             updateSummary((EditTextPreference) preference);
         }
     }
 
     private void updateSummary(EditTextPreference preference) {
-        //altera o summary para o valor atual da preference
+        // Altera o summary para o valor atual da preference
         preference.setSummary(preference.getText());
     }
 }

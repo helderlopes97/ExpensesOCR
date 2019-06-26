@@ -25,6 +25,7 @@ import java.util.List;
 
 public class Formulario extends AppCompatActivity{
 
+    // Variáveis Globais
     Spinner spinner;
     Spinner spinnerRefeicao;
     Spinner spinnerTranporte;
@@ -32,17 +33,15 @@ public class Formulario extends AppCompatActivity{
     Spinner spinnerAlojamento;
     View viewRefeicao;
     View viewDiversas;
-    View viewTransport;
+    View viewTransporte;
     View viewAlojamento;
-    View viewTransporteProprio;
+    View viewViatura;
     EditText dataDespesa;
     EditText nifDespesa;
     EditText valorDespesa;
-
     String email;
     String token;
     String despesaId;
-
     String valor;
     String data;
     String nif;
@@ -53,10 +52,14 @@ public class Formulario extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Mostra o ecrã do formulário
         setContentView(R.layout.activity_formulario);
+
+        // Ativa a toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // I'm fabulous
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,104 +69,127 @@ public class Formulario extends AppCompatActivity{
             }
         });
 
+        // Recebe o id do deslocamento, email, token e valores da fatura
         final Bundle intent=getIntent().getExtras();
-        despesaId=intent.getString("deslocamentoId");
-        token=intent.getString("token");
-        email=intent.getString("email");
-        valor=intent.getString("valor");
-        data=intent.getString("data");
-        nif=intent.getString("nif");
-        tipo=intent.getString("tipo");
-        tipo=tipo.toLowerCase();
-        perc=intent.getString("perc");
+        despesaId = intent.getString("deslocamentoId");
+        token = intent.getString("token");
+        email = intent.getString("email");
+        valor = intent.getString("valor");
+        data = intent.getString("data");
+        nif = intent.getString("nif");
+        tipo = intent.getString("tipo");
+        perc = intent.getString("perc");
 
+        // Referencia os elementos gráficos
         dataDespesa=findViewById(R.id.dataDespesa);
         nifDespesa=findViewById(R.id.nifDespesa);
         valorDespesa=findViewById(R.id.valorDespesa);
 
+        // Preenche a data, NIF e valor
         dataDespesa.setText(data);
         nifDespesa.setText(nif);
         valorDespesa.setText(valor);
-        /*
-        if(data.equals("") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            dataDespesa.setBackground(getDrawable(R.drawable.rounded_edittext_red));
-        }
-        if(valor.equals("0")&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            valorDespesa.setBackground(getDrawable(R.drawable.rounded_edittext_red));
-        }
-        if(nif.equals("")&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            nifDespesa.setBackground(getDrawable(R.drawable.rounded_edittext_red));
-        }*/
 
+        // Programa a barra de opções
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bar);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+                    // Botão voltar
                     case R.id.action_back:
+                        // Prepara a atividade faturas
                         Intent intent = new Intent(Formulario.this, Faturas.class);
+                        // Envia o id do deslocamento, email e token
                         intent.putExtra("token",(String) token);
                         intent.putExtra("email",(String) email);
                         intent.putExtra("deslocamentoId",(String)despesaId);
+                        // Inicia a atividade
                         startActivity(intent);
+                        // Termina a atividade formulário
                         finish();
                         break;
+                    // Botão enviar
                     case R.id.action_send:
                         Toast.makeText(Formulario.this, "Envio não é possivel", Toast.LENGTH_SHORT).show();
                         break;
-
-
                 }
                 return true;
             }
         });
-
-        Log.e("tranport",tipo);
+        // Log do tipo de fatura
+        Log.e("TIPO: ",tipo);
+        // Prepara os elementos do ecrã
         start();
         switch(tipo){
-            case "comboio":
+            // Comboio
+            case "Comboio":
+                // Define o tipo de fatura como transporte
                 spinner.setSelection(0);
+                // Define o tipo de transporte como comboio
                 spinnerTranporte.setSelection(4);
                 break;
-            case "metro":
+            // Metro
+            case "Metro":
+                // Define o tipo de fatura como transporte
                 spinner.setSelection(0);
+                // Define o tipo de transporte como metro
                 spinnerTranporte.setSelection(5);
                 break;
-            case "taxi":
+            // Taxi
+            case "Taxi":
+                // Define o tipo de fatura como transporte
                 spinner.setSelection(0);
+                // Define o tipo de transporte como taxi
                 spinnerTranporte.setSelection(6);
                 break;
-            case "autocarro":
+            // Autocarro
+            case "Autocarro":
+                // Define o tipo de fatura como transporte
                 spinner.setSelection(0);
+                // Define o tipo de transporte como autocarro
                 spinnerTranporte.setSelection(3);
                 break;
         }
     }
 
+    /**
+     * Prepara os elementos do ecrã
+     */
     public void start(){
+
+        // Referencia os Spinners
         spinner = (Spinner) findViewById(R.id.spinnerTipo);
         spinnerRefeicao = (Spinner) findViewById(R.id.spinnerRefeição);
         spinnerTranporte = (Spinner) findViewById(R.id.spinnerTransporte);
-        spinnerDiversas =(Spinner) findViewById(R.id.spinnerDiversas);
+        spinnerDiversas = (Spinner) findViewById(R.id.spinnerDiversas);
         spinnerAlojamento = (Spinner) findViewById(R.id.spinnerAlojamento);
 
+        // Referencia as Views
         viewRefeicao = findViewById(R.id.refeição);
-        viewTransport=findViewById(R.id.transport);
-        viewDiversas=findViewById(R.id.diversas);
+        viewTransporte = findViewById(R.id.transport);
+        viewDiversas = findViewById(R.id.diversas);
         viewAlojamento = findViewById(R.id.alojamento);
-        viewTransporteProprio=findViewById(R.id.transportProprio);
+        viewViatura = findViewById(R.id.viatura);
 
+        // Define a View por defeito e esconde as outras
         viewRefeicao.setVisibility(View.GONE);
-        viewTransport.setVisibility(View.GONE);
-        viewDiversas.setVisibility(View.VISIBLE);
+        viewTransporte.setVisibility(View.VISIBLE);
+        viewDiversas.setVisibility(View.GONE);
         viewAlojamento.setVisibility(View.GONE);
-        viewTransporteProprio.setVisibility(View.GONE);
+        viewViatura.setVisibility(View.GONE);
 
+        // Adiciona os itens aos spinners
         addItemsToSpinners();
-        addListenertiSpinner();
+        // Adiciona os listeners aos spinners
+        addListenerToSpinner();
     }
 
+    /**
+     * Adiciona as opções aos spinners
+     */
     public void addItemsToSpinners(){
+        // Itens do spinner para o tipo de despesa
         List<String> list = new ArrayList<String>();
         list.add("Transporte");
         list.add("Alojamento");
@@ -172,7 +198,7 @@ public class Formulario extends AppCompatActivity{
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list);
         dataAdapter.setDropDownViewResource(R.layout.my_spinner_textview);
         spinner.setAdapter(dataAdapter);
-
+        // Itens do spinner para o tipo de refeição
         List<String> list2 = new ArrayList<String>();
         list2.add("Almoço");
         list2.add("Jantar");
@@ -181,7 +207,7 @@ public class Formulario extends AppCompatActivity{
         ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list2);
         dataAdapter2.setDropDownViewResource(R.layout.my_spinner_textview);
         spinnerRefeicao.setAdapter(dataAdapter2);
-
+        // Itens do spinner para o tipo de transporte
         List<String> list3 = new ArrayList<String>();
         list3.add("Viatura Própria");
         list3.add("Viatura Empresa");
@@ -189,11 +215,11 @@ public class Formulario extends AppCompatActivity{
         list3.add("Autocarro");
         list3.add("Comboio");
         list3.add("Metro");
-        list3.add("Taxi e outros");
+        list3.add("Taxi");
         ArrayAdapter<String> dataAdapter3 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list3);
         dataAdapter3.setDropDownViewResource(R.layout.my_spinner_textview);
         spinnerTranporte.setAdapter(dataAdapter3);
-
+        // Itens do spinner para a área da despesa diversa
         List<String> list4 = new ArrayList<String>();
         list4.add("Marketing & Comunicação");
         list4.add("Recursos Humanos");
@@ -203,7 +229,7 @@ public class Formulario extends AppCompatActivity{
         ArrayAdapter<String> dataAdapter4 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list4);
         dataAdapter4.setDropDownViewResource(R.layout.my_spinner_textview);
         spinnerDiversas.setAdapter(dataAdapter4);
-
+        // Itens do spinner para o tipo de despesa
         List<String> list5 = new ArrayList<String>();
         list5.add("Hotel");
         list5.add("Motel");
@@ -215,38 +241,48 @@ public class Formulario extends AppCompatActivity{
         spinnerAlojamento.setAdapter(dataAdapter5);
     }
 
-    public void addListenertiSpinner(){
+    /**
+     * Adiciona os listeners de eventos aos spinners
+     */
+    public void addListenerToSpinner(){
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Se o tipo de fatura selecionado for Refeição
                 if(spinner.getSelectedItem().equals("Refeições")){
-                    Log.e("spinner",spinner.getSelectedItem().toString());
+                    // Ativa a View de refeição e esconde as outras
                     viewRefeicao.setVisibility(View.VISIBLE);
-                    viewTransport.setVisibility(View.GONE);
+                    viewTransporte.setVisibility(View.GONE);
                     viewDiversas.setVisibility(View.GONE);
                     viewAlojamento.setVisibility(View.GONE);
-                    viewTransporteProprio.setVisibility(View.GONE);
+                    viewViatura.setVisibility(View.GONE);
+                // Se o tipo de fatura selecionado for Alojamento
                 }else if(spinner.getSelectedItem().equals("Alojamento")){
+                    // Ativa a View de alojamento e esconde as outras
                     viewRefeicao.setVisibility(View.GONE);
-                    viewTransport.setVisibility(View.GONE);
+                    viewTransporte.setVisibility(View.GONE);
                     viewDiversas.setVisibility(View.GONE);
                     viewAlojamento.setVisibility(View.VISIBLE);
-                    viewTransporteProprio.setVisibility(View.GONE);
+                    viewViatura.setVisibility(View.GONE);
+                // Se o tipo de fatura selecionado for Transporte
                 }else if(spinner.getSelectedItem().equals("Transporte")){
+                    // Ativa a View de transporte e esconde as outras
                     viewRefeicao.setVisibility(View.GONE);
-                    viewTransport.setVisibility(View.VISIBLE);
+                    viewTransporte.setVisibility(View.VISIBLE);
                     viewDiversas.setVisibility(View.GONE);
                     viewAlojamento.setVisibility(View.GONE);
-                    viewTransporteProprio.setVisibility(View.GONE);
+                    viewViatura.setVisibility(View.GONE);
                     if(spinnerTranporte.getSelectedItem().equals("Viatura Própria")){
-                        viewTransporteProprio.setVisibility(View.VISIBLE);
+                        viewViatura.setVisibility(View.VISIBLE);
                     }
+                // Se o tipo de fatura selecionado for Despesas Diversas
                 }else if(spinner.getSelectedItem().equals("Despesas Diversas")){
+                    // Ativa a View de despesas diversas e esconde as outras
                     viewRefeicao.setVisibility(View.GONE);
-                    viewTransport.setVisibility(View.GONE);
+                    viewTransporte.setVisibility(View.GONE);
                     viewDiversas.setVisibility(View.VISIBLE);
                     viewAlojamento.setVisibility(View.GONE);
-                    viewTransporteProprio.setVisibility(View.GONE);
+                    viewViatura.setVisibility(View.GONE);
                 }
             }
 
@@ -256,17 +292,20 @@ public class Formulario extends AppCompatActivity{
             }
         });
 
+        // Adiciona evento ao spinner de tipo de transporte
         spinnerTranporte.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(spinnerTranporte.getSelectedItem().equals("Viatura Própria")){
-                    viewTransporteProprio.setVisibility(View.VISIBLE);
-                }else if(spinnerTranporte.getSelectedItem().equals("Viatura Empresa")){
-                    viewTransporteProprio.setVisibility(View.VISIBLE);
-                }else if(spinnerTranporte.getSelectedItem().equals("Viatura Alugada")){
-                    viewTransporteProprio.setVisibility(View.VISIBLE);
+                // Se o tipo de transporte for viatura própria, da empresa ou alugada
+                if( spinnerTranporte.getSelectedItem().equals("Viatura Própria") ||
+                    spinnerTranporte.getSelectedItem().equals("Viatura Empresa") ||
+                    spinnerTranporte.getSelectedItem().equals("Viatura Alugada") )
+                {
+                    // Mostra a View de viatura
+                    viewViatura.setVisibility(View.VISIBLE);
                 }else {
-                    viewTransporteProprio.setVisibility(View.GONE);
+                    // Esconde a View de viatura
+                    viewViatura.setVisibility(View.GONE);
                 }
             }
 
@@ -279,25 +318,29 @@ public class Formulario extends AppCompatActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Adiciona os items à topbar
         getMenuInflater().inflate(R.menu.topbar, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
+        // Programa os botões da barra de navegação
         switch (item.getItemId()) {
+            // Botão logout
             case R.id.action_logout:
-                //acede as shared preferences
+                // Acede as shared preferences
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor mEditor = sharedPref.edit();
-                //remove o token
+                // Remove o token
                 mEditor.remove("token");
-                //guarda as alterações
+                // Guarda as alterações
                 mEditor.commit();
+                // Prepara a atividade login
                 Intent intent = new Intent(Formulario.this, Login.class);
+                // Inicia a atividade
                 startActivity(intent);
+                // Termina a atividade do formulario
                 finish();
                 return true;
         }
