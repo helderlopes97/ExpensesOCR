@@ -205,8 +205,13 @@ public class Faturas extends AppCompatActivity {
                             } catch (Exception e) {
                                 // Log do erro
                                 e.printStackTrace();
-                                // Altera a fatura para a original
-                                fatura_atual = fatura_original;
+                                // Se estiver transformada
+                                if(transformed){
+                                    fatura_atual = fatura_transformada;
+                                } else {
+                                    // Altera a fatura para a original
+                                    fatura_atual = fatura_original;
+                                }
                                 // Mostra a fatura original
                                 imageView.setImageBitmap(fatura_atual);
                                 // Atualiza o estado para cropped = false
@@ -293,6 +298,7 @@ public class Faturas extends AppCompatActivity {
                                                 intent.putExtra("nif",(String) nif);
                                                 intent.putExtra("tipo",(String) tipo);
                                                 intent.putExtra("perc",(String) perc);
+                                                intent.putExtra("texto", textView.getText().toString());
                                                 // Inicia a atividade
                                                 startActivity(intent);
                                                 // Termina a atividade das faturas

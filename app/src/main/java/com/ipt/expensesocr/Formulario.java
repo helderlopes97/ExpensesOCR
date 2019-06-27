@@ -20,8 +20,21 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Formulario extends AppCompatActivity{
 
@@ -47,6 +60,9 @@ public class Formulario extends AppCompatActivity{
     String nif;
     String tipo;
     String perc;
+    String texto;
+    String tag;
+    String api_key;
 
 
     @Override
@@ -79,6 +95,7 @@ public class Formulario extends AppCompatActivity{
         nif = intent.getString("nif");
         tipo = intent.getString("tipo");
         perc = intent.getString("perc");
+        texto = intent.getString("texto");
 
         // Referencia os elementos gráficos
         dataDespesa=findViewById(R.id.dataDespesa);
@@ -89,6 +106,9 @@ public class Formulario extends AppCompatActivity{
         dataDespesa.setText(data);
         nifDespesa.setText(nif);
         valorDespesa.setText(valor);
+
+        // Define a chave da API de reconhecimento do tipo de fatura
+        api_key = "b05c81093b4371c50f3aa142184974149d4411b2";
 
         // Programa a barra de opções
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bar);
@@ -111,6 +131,64 @@ public class Formulario extends AppCompatActivity{
                         break;
                     // Botão enviar
                     case R.id.action_send:
+
+                        // Inicia o RequestQueue
+                        RequestQueue queue = Volley.newRequestQueue(Formulario.this);
+
+                        // Link para a API do classificador
+                        String url ="https://api.monkeylearn.com/v3/classifiers/cl_ZSPc2GNb/classify/";
+
+                        // Pede uma String de resposta ao URL
+                        StringRequest req = new StringRequest(Request.Method.POST, url,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String res) {
+
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                    }
+                                }){
+
+                            @Override
+                            public String getBodyContentType() {
+                                // Define o tipo de informação enviada no body
+                                return "application/json; charset=utf-8";
+                            }
+
+                            @Override
+                            public byte[] getBody() throws AuthFailureError {
+                                try{
+                                    // Define o body da mensagem a enviar - texto obtido por OCR
+                                    JSONObject jsonBody = new JSONObject();
+                                    JSONArray bodyArray = new JSONArray();
+                                    JSONObject dataObj = new JSONObject();
+                                    dataObj.put("text",texto);
+                                    JSONArray tagArray = new JSONArray();
+                                    tagArray.put(tag);
+                                    dataObj.put("tags",tagArray);
+                                    bodyArray.put(dataObj);
+                                    jsonBody.put("data",bodyArray);
+                                    return jsonBody.toString().getBytes("utf-8");
+                                } catch (Exception e){
+                                    // Log do erro
+                                    e.printStackTrace();
+                                    return null;
+                                }
+                            }
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                // Define o cabeçalho de autenticação no pedido
+                                final Map<String, String> headers = new HashMap<String, String>();
+                                headers.put("Authorization", "Token " + api_key);
+                                return headers;
+                            }
+                        };
+                        // Adiciona o pedido ao RequestQueue
+                        queue.add(req);
+
                         Toast.makeText(Formulario.this, "Envio não é possivel", Toast.LENGTH_SHORT).show();
                         break;
                 }
