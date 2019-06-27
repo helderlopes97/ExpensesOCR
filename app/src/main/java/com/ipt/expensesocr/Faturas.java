@@ -140,6 +140,10 @@ public class Faturas extends AppCompatActivity {
 
         }
 
+        // Referencia elementos gráficos
+        imageView = (ImageView) findViewById(R.id.img);
+        textView = (TextView) findViewById(R.id.txt);
+
         // Recebe o id do deslocamento, email e token
         final Bundle intent=getIntent().getExtras();
         despesaId=intent.getString("deslocamentoId");
@@ -148,10 +152,6 @@ public class Faturas extends AppCompatActivity {
 
         // Define a chave da API de reconhecimento do tipo de fatura
         api_key = "b05c81093b4371c50f3aa142184974149d4411b2";
-
-        // Referencia elementos gráficos
-        imageView = (ImageView) findViewById(R.id.img);
-        textView = (TextView) findViewById(R.id.txt);
 
         // Inicia as variáveis
         fatura_original = BitmapFactory.decodeFile(path);
@@ -302,7 +302,7 @@ public class Faturas extends AppCompatActivity {
                                                 // Inicia a atividade
                                                 startActivity(intent);
                                                 // Termina a atividade das faturas
-                                                finish();
+                                                 finish();
                                             }
                                         } catch (Exception e){
                                             // Log do erro

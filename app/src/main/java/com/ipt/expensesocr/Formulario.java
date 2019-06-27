@@ -6,8 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,7 +16,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -39,6 +40,8 @@ import java.util.Map;
 public class Formulario extends AppCompatActivity{
 
     // Variáveis Globais
+    RelativeLayout layoutSpinner;
+    RelativeLayout layoutSpinnerTransporte;
     Spinner spinner;
     Spinner spinnerRefeicao;
     Spinner spinnerTranporte;
@@ -52,6 +55,7 @@ public class Formulario extends AppCompatActivity{
     EditText dataDespesa;
     EditText nifDespesa;
     EditText valorDespesa;
+    TextView confidence;
     String email;
     String token;
     String despesaId;
@@ -64,7 +68,6 @@ public class Formulario extends AppCompatActivity{
     String tag;
     String api_key;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,16 +77,6 @@ public class Formulario extends AppCompatActivity{
         // Ativa a toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // I'm fabulous
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         // Recebe o id do deslocamento, email, token e valores da fatura
         final Bundle intent=getIntent().getExtras();
@@ -97,15 +90,44 @@ public class Formulario extends AppCompatActivity{
         perc = intent.getString("perc");
         texto = intent.getString("texto");
 
+        // Define a tag
+        tag = tipo;
+
         // Referencia os elementos gráficos
-        dataDespesa=findViewById(R.id.dataDespesa);
-        nifDespesa=findViewById(R.id.nifDespesa);
-        valorDespesa=findViewById(R.id.valorDespesa);
+        dataDespesa = findViewById(R.id.dataDespesa);
+        nifDespesa = findViewById(R.id.nifDespesa);
+        valorDespesa = findViewById(R.id.valorDespesa);
+        confidence = findViewById(R.id.confidence);
+        layoutSpinner = findViewById(R.id.layoutSpinner);
+        layoutSpinnerTransporte = findViewById(R.id.layoutSpinnerTransporte);
+
+        confidence.setText(tipo+" - "+perc);
 
         // Preenche a data, NIF e valor
-        dataDespesa.setText(data);
-        nifDespesa.setText(nif);
-        valorDespesa.setText(valor);
+        if(!data.equals("")){
+            // Muda cor do edtiText
+            dataDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+            // Define a data
+            dataDespesa.setText(data);
+            // Bloqueia a textView dataDespesa
+            dataDespesa.setEnabled(false);
+        }
+        if (!nifDespesa.equals("")){
+            // Muda cor do edtiText
+            nifDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+            // Define o nif
+            nifDespesa.setText(nif);
+            // Bloqueia a textView nifDespesa
+            nifDespesa.setEnabled(false);
+        }
+        if(!valorDespesa.equals("0.0")){
+            // Muda cor do edtiText
+            valorDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+            // Define o valor
+            valorDespesa.setText(valor);
+            // Bloqueia a textView valorDespesa
+            valorDespesa.setEnabled(false);
+        }
 
         // Define a chave da API de reconhecimento do tipo de fatura
         api_key = "b05c81093b4371c50f3aa142184974149d4411b2";
@@ -123,72 +145,46 @@ public class Formulario extends AppCompatActivity{
                         // Envia o id do deslocamento, email e token
                         intent.putExtra("token",(String) token);
                         intent.putExtra("email",(String) email);
+                        intent.putExtra("texto",(String) texto);
                         intent.putExtra("deslocamentoId",(String)despesaId);
                         // Inicia a atividade
                         startActivity(intent);
                         // Termina a atividade formulário
                         finish();
                         break;
+                    // Botão editar
+                    case R.id.action_edit:
+                        // Desbloquear todas os spinners e editText
+                        spinner.setEnabled(true);
+                        spinnerTranporte.setEnabled(true);
+                        dataDespesa.setEnabled(true);
+                        nifDespesa.setEnabled(true);
+                        valorDespesa.setEnabled(true);
+                        // Mudar cor dos spinners e dos editText
+                        layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                        layoutSpinner.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                        dataDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                        valorDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                        nifDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                        break;
                     // Botão enviar
                     case R.id.action_send:
-
-                        // Inicia o RequestQueue
-                        RequestQueue queue = Volley.newRequestQueue(Formulario.this);
-
-                        // Link para a API do classificador
-                        String url ="https://api.monkeylearn.com/v3/classifiers/cl_ZSPc2GNb/classify/";
-
-                        // Pede uma String de resposta ao URL
-                        StringRequest req = new StringRequest(Request.Method.POST, url,
-                                new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String res) {
-
-                                    }
-                                },
-                                new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                    }
-                                }){
-
-                            @Override
-                            public String getBodyContentType() {
-                                // Define o tipo de informação enviada no body
-                                return "application/json; charset=utf-8";
+                        // Verifica valores selecionados nos spinners
+                        if(spinner.getSelectedItem().equals("Transporte")){
+                            String atual=spinnerTranporte.getSelectedItem().toString();
+                            if (!atual.equals(tipo) || tipo.equals("")){
+                                // Atualiza a tag
+                                tag = atual;
                             }
-
-                            @Override
-                            public byte[] getBody() throws AuthFailureError {
-                                try{
-                                    // Define o body da mensagem a enviar - texto obtido por OCR
-                                    JSONObject jsonBody = new JSONObject();
-                                    JSONArray bodyArray = new JSONArray();
-                                    JSONObject dataObj = new JSONObject();
-                                    dataObj.put("text",texto);
-                                    JSONArray tagArray = new JSONArray();
-                                    tagArray.put(tag);
-                                    dataObj.put("tags",tagArray);
-                                    bodyArray.put(dataObj);
-                                    jsonBody.put("data",bodyArray);
-                                    return jsonBody.toString().getBytes("utf-8");
-                                } catch (Exception e){
-                                    // Log do erro
-                                    e.printStackTrace();
-                                    return null;
-                                }
+                        }else{
+                            String atual= spinner.getSelectedItem().toString();
+                            if(!atual.equals(tipo) || tipo.equals("")){
+                                // Atualiza a tag
+                                tag = atual;
                             }
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                // Define o cabeçalho de autenticação no pedido
-                                final Map<String, String> headers = new HashMap<String, String>();
-                                headers.put("Authorization", "Token " + api_key);
-                                return headers;
-                            }
-                        };
-                        // Adiciona o pedido ao RequestQueue
-                        queue.add(req);
-
+                        }
+                        //Define tag
+                        defineTag();
                         Toast.makeText(Formulario.this, "Envio não é possivel", Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -204,30 +200,63 @@ public class Formulario extends AppCompatActivity{
             case "Comboio":
                 // Define o tipo de fatura como transporte
                 spinner.setSelection(0);
+                // Bloqueio do spinner
+                spinner.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 // Define o tipo de transporte como comboio
                 spinnerTranporte.setSelection(4);
+                // Bloqueio do spinnerTransporte
+                spinnerTranporte.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 break;
             // Metro
             case "Metro":
                 // Define o tipo de fatura como transporte
                 spinner.setSelection(0);
+                // Bloqueio do spinner
+                layoutSpinner.setEnabled(false);
+                // Muda cor do spinner
+                spinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 // Define o tipo de transporte como metro
                 spinnerTranporte.setSelection(5);
+                // Bloqueio do spinnerTransporte
+                spinnerTranporte.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 break;
             // Taxi
             case "Taxi":
                 // Define o tipo de fatura como transporte
                 spinner.setSelection(0);
+                // Bloqueio do spinner
+                layoutSpinner.setEnabled(false);
+                // Muda cor do spinner
+                spinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 // Define o tipo de transporte como taxi
                 spinnerTranporte.setSelection(6);
+                // Bloqueio do spinnerTransporte
+                spinnerTranporte.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 break;
             // Autocarro
             case "Autocarro":
                 // Define o tipo de fatura como transporte
                 spinner.setSelection(0);
+                // Bloqueio do spinner
+                layoutSpinner.setEnabled(false);
+                // Muda cor do spinner
+                spinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 // Define o tipo de transporte como autocarro
                 spinnerTranporte.setSelection(3);
+                // Bloqueio do spinnerTransporte
+                spinnerTranporte.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 break;
+
         }
     }
 
@@ -392,6 +421,70 @@ public class Formulario extends AppCompatActivity{
 
             }
         });
+    }
+
+    /**
+     * Classifica o texto com a tag
+     */
+    public void defineTag(){
+        // Inicia o RequestQueue
+        RequestQueue queue = Volley.newRequestQueue(Formulario.this);
+
+        // Link para a API do classificador
+        String url = "https://api.monkeylearn.com/v3/classifiers/cl_ZSPc2GNb/data/";
+
+        // Pede uma String de resposta ao URL
+        StringRequest req = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String res) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+
+            @Override
+            public String getBodyContentType() {
+                // Define o tipo de informação enviada no body
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try{
+                    // Define o body da mensagem a enviar - texto obtido por OCR
+                    JSONObject jsonBody = new JSONObject();
+                    JSONArray bodyArray = new JSONArray();
+                    JSONObject dataObj = new JSONObject();
+                    dataObj.put("text",texto);
+                    JSONArray tagArray = new JSONArray();
+                    tagArray.put(tag);
+                    dataObj.put("tags",tagArray);
+                    bodyArray.put(dataObj);
+                    jsonBody.put("data",bodyArray);
+                    jsonBody.put("existing_duplicates_strategy","overwrite");
+                    return jsonBody.toString().getBytes("utf-8");
+                } catch (Exception e){
+                    // Log do erro
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                // Define o cabeçalho de autenticação no pedido
+                final Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Token " + api_key);
+                return headers;
+            }
+        };
+        // Adiciona o pedido ao RequestQueue
+        queue.add(req);
     }
 
     @Override
