@@ -88,11 +88,17 @@ public class Faturas extends AppCompatActivity {
     String data = "";
     String nif = "";
     Date dataTeste;
+    String nifPretendido;
 
     // Opções
     boolean multipleImage = false;
     boolean cropped = false;
     boolean transformed = false;
+
+    // Dados partilhados
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor mEditor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +114,12 @@ public class Faturas extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Receber dados partilhados
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = sharedPref.edit();
+
+        // Coloca o Nif recebido na variavel
+        nifPretendido=sharedPref.getString("valorNIF","");
 
         // Pedido de autorização - Permissões da aplicação
 
@@ -293,7 +305,7 @@ public class Faturas extends AppCompatActivity {
                                                 intent.putExtra("deslocamentoId",(String) despesaId+"");
                                                 intent.putExtra("token",(String) token);
                                                 intent.putExtra("email",(String) email);
-                                                intent.putExtra("valor",(String)""+valor);
+                                                intent.putExtra("valor",(String) ""+valor);
                                                 intent.putExtra("data",(String) data);
                                                 intent.putExtra("nif",(String) nif);
                                                 intent.putExtra("tipo",(String) tipo);
@@ -465,13 +477,21 @@ public class Faturas extends AppCompatActivity {
                                             /* ############ PROCURA DA DATA ############*/
 
                                             // Expressões regulares para a data
-                                            Pattern p = Pattern.compile("[0-9]{1,4}\\-[0-9]{1,2}\\-[0-9]{1,4}");
-                                            Pattern p2 = Pattern.compile("[0-9]{1,4}\\/[0-9]{1,2}\\/[0-9]{1,4}");
+                                            Pattern p = Pattern.compile(".*?([0-9]{1,4}\\-[0-9]{1,2}\\-[0-9]{1,4})");
+                                            Pattern p2 = Pattern.compile(".*?([0-9]{1,4}\\/[0-9]{1,2}\\/[0-9]{1,4})");
                                             // Compara com o elemento
                                             Matcher m = p.matcher(elementText);
                                             Matcher m2 = p2.matcher(elementText);
                                             // Se reconhecer uma data
                                             if (m.matches() || m2.matches()) {
+                                                Log.e("true","true");
+                                                try {
+                                                    elementText=m.group(0);
+                                                }catch (Exception e){
+                                                    elementText=m2.group(0);
+                                                }
+
+
                                                 try {
                                                     // Transforma a data
                                                     Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(elementText);
@@ -482,10 +502,24 @@ public class Faturas extends AppCompatActivity {
                                                         // Atualiza a String da data
                                                         data = elementText;
                                                     }
-
                                                 } catch (Exception e) {
                                                     // Log do erro
                                                     e.printStackTrace();
+                                                    try {
+                                                        // Transforma a data
+                                                        Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(elementText);
+                                                        // Compara qual a data mais recente
+                                                        if (date1.after(dataTeste)) {
+                                                            // Atualiza a data para comparar
+                                                            dataTeste = date1;
+                                                            // Atualiza a String da data
+                                                            data = elementText;
+                                                        }
+                                                    } catch (Exception er) {
+                                                        // Log do erro
+                                                        er.printStackTrace();
+
+                                                    }
                                                 }
                                                 // Log da data
                                                 Log.e("DATA: ", data);
@@ -498,7 +532,7 @@ public class Faturas extends AppCompatActivity {
                                             // Compara com o elemento
                                             m = p.matcher(elementText);
                                             // Compara o NIF com o definido
-                                            if (m.matches() && elementText.equals("508207908")) {
+                                            if (m.matches() && elementText.equals(nifPretendido)) {
                                                 // Atualiza o NIF
                                                 nif = elementText;
                                                 // Log do NIF

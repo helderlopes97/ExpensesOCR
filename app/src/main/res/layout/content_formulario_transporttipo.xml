@@ -29,7 +29,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/dataDespesa"
+                android:id="@+id/numKms"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
@@ -37,7 +37,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/rounded_edittext"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </LinearLayout>
 
         <LinearLayout
@@ -55,7 +55,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/nifDespesa"
+                android:id="@+id/valorKms"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
@@ -63,7 +63,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/rounded_edittext"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
 
         </LinearLayout>
 

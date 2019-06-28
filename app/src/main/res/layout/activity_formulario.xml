@@ -94,7 +94,8 @@
                                 android:layout_marginLeft="5dp"
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
-                                android:spinnerMode="dropdown" />
+                                android:spinnerMode="dropdown"
+                                android:textColor="@android:color/black"/>
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -150,7 +151,7 @@
                             android:background="@drawable/rounded_edittext"
                             android:ems="10"
                             android:hint="dd/mm/aaaa"
-                            android:inputType="number" />
+                            android:inputType="date" />
 
                     </LinearLayout>
 
@@ -206,7 +207,7 @@
                             android:background="@drawable/rounded_edittext"
                             android:ems="10"
                             android:hint="0.00"
-                            android:inputType="number" />
+                            android:inputType="numberDecimal" />
 
                     </LinearLayout>
 

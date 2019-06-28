@@ -86,7 +86,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/rounded_edittext"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="date" />
 
         </LinearLayout>
 
@@ -114,7 +114,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/rounded_edittext"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="date" />
 
         </LinearLayout>
 

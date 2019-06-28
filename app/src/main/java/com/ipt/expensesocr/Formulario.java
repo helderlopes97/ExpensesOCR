@@ -2,6 +2,7 @@ package com.ipt.expensesocr;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -36,12 +38,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Formulario extends AppCompatActivity{
 
     // Variáveis Globais
     RelativeLayout layoutSpinner;
     RelativeLayout layoutSpinnerTransporte;
+    RelativeLayout layoutspinnerAlojamento;
     Spinner spinner;
     Spinner spinnerRefeicao;
     Spinner spinnerTranporte;
@@ -67,6 +72,11 @@ public class Formulario extends AppCompatActivity{
     String texto;
     String tag;
     String api_key;
+    String nifPretendido;
+
+    // Dados partilhados
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor mEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +100,13 @@ public class Formulario extends AppCompatActivity{
         perc = intent.getString("perc");
         texto = intent.getString("texto");
 
+        // Receber dados partilhados
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = sharedPref.edit();
+
+        // Coloca o Nif recebido na variavel
+        nifPretendido=sharedPref.getString("valorNIF","");
+
         // Define a tag
         tag = tipo;
 
@@ -104,29 +121,53 @@ public class Formulario extends AppCompatActivity{
         confidence.setText(tipo+" - "+perc);
 
         // Preenche a data, NIF e valor
-        if(!data.equals("")){
+
+        // Expressões regulares para a data
+        Pattern p = Pattern.compile("[0-9]{1,4}\\-[0-9]{1,2}\\-[0-9]{1,4}");
+        Pattern p2 = Pattern.compile("[0-9]{1,4}\\/[0-9]{1,2}\\/[0-9]{1,4}");
+
+
+        Log.e("data", data+"hi");
+        // Compara com o elemento
+        Matcher m = p.matcher(data);
+        Matcher m2 = p2.matcher(data);
+        // Se reconhecer uma data
+        if (m.matches() || m2.matches()) {
             // Muda cor do edtiText
             dataDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
             // Define a data
             dataDespesa.setText(data);
             // Bloqueia a textView dataDespesa
             dataDespesa.setEnabled(false);
+            // Definir cor do texto
+            dataDespesa.setTextColor(Color.BLACK);
         }
-        if (!nifDespesa.equals("")){
+
+        // Expressão regular para o NIF
+        p = Pattern.compile("[0-9]{9}");
+        // Compara com o elemento
+        m = p.matcher(nif);
+        // Compara o NIF com o definido
+        if (m.matches() && nif.equals(nifPretendido)) {
             // Muda cor do edtiText
             nifDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
             // Define o nif
             nifDespesa.setText(nif);
             // Bloqueia a textView nifDespesa
             nifDespesa.setEnabled(false);
+            // Definir cor do texto
+            nifDespesa.setTextColor(Color.BLACK);
         }
-        if(!valorDespesa.equals("0.0")){
+
+        if(!valor.equals("0.0")){
             // Muda cor do edtiText
             valorDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
             // Define o valor
             valorDespesa.setText(valor);
             // Bloqueia a textView valorDespesa
             valorDespesa.setEnabled(false);
+            // Definir cor do texto
+            valorDespesa.setTextColor(Color.BLACK);
         }
 
         // Define a chave da API de reconhecimento do tipo de fatura
@@ -163,6 +204,7 @@ public class Formulario extends AppCompatActivity{
                         // Mudar cor dos spinners e dos editText
                         layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
                         layoutSpinner.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                        layoutspinnerAlojamento.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
                         dataDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
                         valorDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
                         nifDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
@@ -216,9 +258,9 @@ public class Formulario extends AppCompatActivity{
                 // Define o tipo de fatura como transporte
                 spinner.setSelection(0);
                 // Bloqueio do spinner
-                layoutSpinner.setEnabled(false);
+                spinner.setEnabled(false);
                 // Muda cor do spinner
-                spinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 // Define o tipo de transporte como metro
                 spinnerTranporte.setSelection(5);
                 // Bloqueio do spinnerTransporte
@@ -231,9 +273,9 @@ public class Formulario extends AppCompatActivity{
                 // Define o tipo de fatura como transporte
                 spinner.setSelection(0);
                 // Bloqueio do spinner
-                layoutSpinner.setEnabled(false);
+                spinner.setEnabled(false);
                 // Muda cor do spinner
-                spinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 // Define o tipo de transporte como taxi
                 spinnerTranporte.setSelection(6);
                 // Bloqueio do spinnerTransporte
@@ -246,9 +288,9 @@ public class Formulario extends AppCompatActivity{
                 // Define o tipo de fatura como transporte
                 spinner.setSelection(0);
                 // Bloqueio do spinner
-                layoutSpinner.setEnabled(false);
+                spinner.setEnabled(false);
                 // Muda cor do spinner
-                spinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 // Define o tipo de transporte como autocarro
                 spinnerTranporte.setSelection(3);
                 // Bloqueio do spinnerTransporte
@@ -256,8 +298,53 @@ public class Formulario extends AppCompatActivity{
                 // Muda cor do spinner
                 layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 break;
+            case "Refeições":
+                // Define o tipo de fatura como Refeição
+                spinner.setSelection(2);
+                // Bloqueio do spinner
+                spinner.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                break;
+            case "Alojamento":
+                // Define o tipo de fatura como Alojamento
+                spinner.setSelection(1);
+                // Bloqueio do spinner
+                spinner.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                break;
+            case "Outros":
+                // Define o tipo de fatura como Alojamento
+                spinner.setSelection(3);
+                // Bloqueio do spinner
+                spinner.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                break;
 
         }
+        // Definir cor do texto
+        spinner.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                ((TextView) spinner.getSelectedView()).setTextColor(Color.BLACK); //change to your color
+            }
+        });
+        // Definir cor do texto
+        spinnerTranporte.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                ((TextView) spinnerTranporte.getSelectedView()).setTextColor(Color.BLACK); //change to your color
+            }
+        });
+        // Definir cor do texto
+        spinnerAlojamento.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                ((TextView) spinnerAlojamento.getSelectedView()).setTextColor(Color.BLACK); //change to your color
+            }
+        });
     }
 
     /**
@@ -301,7 +388,7 @@ public class Formulario extends AppCompatActivity{
         list.add("Transporte");
         list.add("Alojamento");
         list.add("Refeições");
-        list.add("Despesas Diversas");
+        list.add("Outros");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list);
         dataAdapter.setDropDownViewResource(R.layout.my_spinner_textview);
         spinner.setAdapter(dataAdapter);
