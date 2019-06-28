@@ -30,7 +30,7 @@
             android:label="Definições"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".Deslocamentos"
-            android:label="Deslocamentos"
+            android:label="Deslocações"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".Despesas"

@@ -11,24 +11,24 @@
         android:id="@+id/action_gallery"
         android:enabled="true"
         android:icon="@drawable/galeria"
-        android:title="Gallery"
+        android:title="Galeria"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_crop"
         android:enabled="true"
         android:icon="@drawable/crop"
-        android:title="Crop"
+        android:title="Cortar"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_detect"
         android:enabled="true"
         android:icon="@drawable/search"
-        android:title="Detect"
+        android:title="Detetar"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_next"
         android:enabled="true"
         android:icon="@drawable/next"
-        android:title="Next"
+        android:title="Avançar"
         app:showAsAction="never" />
 </menu>

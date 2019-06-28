@@ -331,20 +331,18 @@ public class Formulario extends AppCompatActivity{
                 ((TextView) spinner.getSelectedView()).setTextColor(Color.BLACK); //change to your color
             }
         });
-        // Definir cor do texto
-        spinnerTranporte.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                ((TextView) spinnerTranporte.getSelectedView()).setTextColor(Color.BLACK); //change to your color
-            }
-        });
-        // Definir cor do texto
-        spinnerAlojamento.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                ((TextView) spinnerAlojamento.getSelectedView()).setTextColor(Color.BLACK); //change to your color
-            }
-        });
+        try {
+            // Definir cor do texto
+            spinnerTranporte.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    ((TextView) spinnerTranporte.getSelectedView()).setTextColor(Color.BLACK); //change to your color
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     /**

@@ -266,6 +266,7 @@ public class Faturas extends AppCompatActivity {
                     // Botão Avançar
                     case R.id.action_next:
 
+
                         // Inicia o RequestQueue
                         RequestQueue queue = Volley.newRequestQueue(Faturas.this);
 
@@ -325,6 +326,7 @@ public class Faturas extends AppCompatActivity {
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
+                                        Log.e("erro", error.networkResponse.allHeaders.get(1)+"");
                                     }
                                 }){
 
