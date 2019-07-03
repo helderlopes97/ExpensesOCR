@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -137,7 +138,11 @@ public class Despesas extends AppCompatActivity {
                             descricao.setText( res.get("description").toString());
                             intervalo.setText(res.get("start_date").toString()+" até "+res.get("end_date").toString());
                             valorEsperado.setText(res.get("estimated_value").toString());
-                            valorReal.setText(res.get("real_value").toString());
+                            if(res.get("real_value").equals(null)){
+                                valorReal.setText("0.0");
+                            } else {
+                                valorReal.setText(res.get("real_value").toString());
+                            }
                             numeroDespesas.setText(res.get("expenses_count").toString());
                             // Cria um objeto para as despesas do deslocamento
                             JSONArray despesas= (JSONArray) res.get("expenses");
