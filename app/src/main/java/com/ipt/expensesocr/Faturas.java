@@ -703,7 +703,8 @@ public class Faturas extends AppCompatActivity {
             // Botão imagem múltipla
             case R.id.action_addmore:
                 // Ativa ou desativa Imagem Múltipla
-                multipleImage = !multipleImage;
+                multipleImage = !item.isChecked();
+                item.setChecked(multipleImage);
                 return true;
             // Botão imagem original
             case R.id.action_original:

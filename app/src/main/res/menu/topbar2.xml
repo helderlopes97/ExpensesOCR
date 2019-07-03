@@ -10,6 +10,7 @@
     <item
         android:id="@+id/action_addmore"
         app:showAsAction="never"
+        android:checkable="true"
         android:title="Imagem Múltipla">
     </item>
     <item

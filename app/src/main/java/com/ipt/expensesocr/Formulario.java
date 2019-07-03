@@ -202,9 +202,11 @@ public class Formulario extends AppCompatActivity{
                         nifDespesa.setEnabled(true);
                         valorDespesa.setEnabled(true);
                         // Mudar cor dos spinners e dos editText
-                        layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                        try{
+                            layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                        }catch (Exception e){
+                        }
                         layoutSpinner.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
-                        layoutspinnerAlojamento.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
                         dataDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
                         valorDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
                         nifDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));

@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_above="@id/bar">
+        android:layout_above="@id/searchBar">
 
 
         <ScrollView
@@ -61,7 +61,22 @@
                 android:orientation="vertical">
             </LinearLayout>
         </ScrollView>
+
     </LinearLayout>
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/bar"
+            android:hint="Search"
+            android:textSize="20dp"
+            android:layout_margin="5dp"
+            android:iconifiedByDefault="false"
+            android:visibility="gone"
+            />
+
+
         <android.support.design.widget.BottomNavigationView
 
             android:id="@+id/bar"

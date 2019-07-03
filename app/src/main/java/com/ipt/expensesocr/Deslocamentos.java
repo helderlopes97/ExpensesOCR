@@ -1,5 +1,6 @@
 package com.ipt.expensesocr;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -8,11 +9,14 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -29,9 +33,11 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.view.View.GONE;
 import static android.widget.LinearLayout.HORIZONTAL;
 import static android.widget.LinearLayout.VERTICAL;
 
@@ -42,6 +48,11 @@ public class Deslocamentos extends AppCompatActivity {
     String token;
     ScrollView viewDeslocamentos;
     LinearLayout myLayout;
+    SearchView searchBar;
+    TextView search;
+    LinearLayout searchDespesa;
+
+    ArrayList<String> despesasIDs = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +72,7 @@ public class Deslocamentos extends AppCompatActivity {
         // Referencia elementos gráficos
         viewDeslocamentos = findViewById(R.id.scrollViewDeslocamentos);
         myLayout = (LinearLayout) findViewById(R.id.myLayout);
+        searchBar=findViewById(R.id.searchBar);
 
         // Programa a barra de opções
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bar);
@@ -78,7 +90,19 @@ public class Deslocamentos extends AppCompatActivity {
                     // Botão pesquisar
                     case R.id.action_search:
                         // Não faz nada
-                        Toast.makeText(Deslocamentos.this, "Search", Toast.LENGTH_SHORT).show();
+                        if (searchBar.getVisibility()==View.GONE){
+                            // Coloca searchBar visivel
+                            searchBar.setVisibility(View.VISIBLE);
+                            // Coloca o cursor na search bar
+                            searchBar.setIconifiedByDefault(false);
+                            // Abre teclado
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                        }else{
+                            // Coloca searchBar invisivel
+                            searchBar.setVisibility(View.GONE);
+                        }
+
                         break;
 
                     // Botão definições
@@ -93,6 +117,47 @@ public class Deslocamentos extends AppCompatActivity {
             }
         });
 
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText=newText.toLowerCase();
+               if(newText.isEmpty()) {
+                  // Percorre todas as despesas
+                  for (String id : despesasIDs ) {
+                      // Recebe uma despesa
+                       searchDespesa=viewDeslocamentos.findViewWithTag(id);
+                       // Coloca despesa visivel
+                       searchDespesa.setVisibility(View.VISIBLE);
+                   }
+               }else {
+                   // Percorre todas as despesas
+                   for (String id : despesasIDs ) {
+                       // Recebe a descrição da despesa
+                       search= viewDeslocamentos.findViewWithTag("descricao"+id);
+                       // Compara o text
+                       if(search.getText().toString().toLowerCase().contains(newText)){
+                            // Recebe uma despesa
+                           searchDespesa=viewDeslocamentos.findViewWithTag(id);
+                           // Coloca despesa visivel
+                           searchDespesa.setVisibility(View.VISIBLE);
+                       }else {
+                           // Recebe uma despesa
+                           searchDespesa=viewDeslocamentos.findViewWithTag(id);
+                           // Coloca despesa invisivel
+                           searchDespesa.setVisibility(View.GONE);
+                       }
+                   }
+               }
+                return false;
+            }
+        });
         // Pede os deslocamentos
         getDeslocamentos();
     }
@@ -198,6 +263,9 @@ public class Deslocamentos extends AppCompatActivity {
             String totalDespesas,
             String descricaoDeslocamento
     ){
+        //guarda o id da despesa
+        despesasIDs.add(id);
+
         // String para o intervalo do deslocamento
         dataEnd = dataEnd.substring(0,10);
         dataStart = dataStart.substring(0,10);
@@ -205,6 +273,7 @@ public class Deslocamentos extends AppCompatActivity {
 
         // Cria o layout para o deslocamento
         LinearLayout deslocamento = new LinearLayout(this);
+        deslocamento.setTag(id);
         deslocamento.setId(R.id.deslocamento);
         deslocamento.setOrientation(VERTICAL);
         deslocamento.setBackgroundResource(R.drawable.rounded_edittext);
@@ -239,6 +308,7 @@ public class Deslocamentos extends AppCompatActivity {
 
         // Cria a TextView para o campo descrição
         TextView valorDescricao = new TextView(this);
+        valorDescricao.setTag("descricao"+id);
         valorDescricao.setId(R.id.valorDescricao);
         valorDescricao.setText(descricaoDeslocamento);
         LinearLayout.LayoutParams paramsValorDescricao = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
