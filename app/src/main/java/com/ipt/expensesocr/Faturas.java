@@ -211,8 +211,8 @@ public class Faturas extends AppCompatActivity {
                                 imageView.setImageBitmap(fatura_atual);
                                 // Atualiza o estado para cropped = true
                                 cropped = true;
-                                // Altera o titulo do botão para "Uncrop"
-                                crop.setTitle("Uncrop");
+                                // Altera o titulo do botão para "Normal"
+                                crop.setTitle("Normal");
                             // Em caso de erro
                             } catch (Exception e) {
                                 // Log do erro
@@ -228,8 +228,8 @@ public class Faturas extends AppCompatActivity {
                                 imageView.setImageBitmap(fatura_atual);
                                 // Atualiza o estado para cropped = false
                                 cropped = false;
-                                // Altera o titulo do botão para "Crop"
-                                crop.setTitle("Crop");
+                                // Altera o titulo do botão para "Cortar"
+                                crop.setTitle("Cortar");
                             }
                         // Se já estiver cropped
                         } else {
@@ -246,8 +246,8 @@ public class Faturas extends AppCompatActivity {
                             imageView.setImageBitmap(fatura_atual);
                             // Atualiza o estado para cropped = false
                             cropped = false;
-                            // Altera o titulo do botão para "Crop"
-                            crop.setTitle("Crop");
+                            // Altera o titulo do botão para "Cortar"
+                            crop.setTitle("Cortar");
                         }
                         break;
                     // Botão para detetar (OCR)
@@ -712,8 +712,8 @@ public class Faturas extends AppCompatActivity {
                 fatura_atual = fatura_original;
                 // Mostra a fatura original
                 imageView.setImageBitmap(fatura_atual);
-                // Altera o titulo do botão crop para "Crop"
-                crop.setTitle("Crop");
+                // Altera o titulo do botão crop para "Cortar"
+                crop.setTitle("Cortar");
                 // Define o estado cropped = false
                 cropped = false;
                 // Define o estado transformed = false
@@ -733,8 +733,8 @@ public class Faturas extends AppCompatActivity {
                         transformed = true;
                         // Se estava cropped
                         if(cropped){
-                            // Altera o titulo do botão crop para "Crop"
-                            crop.setTitle("Crop");
+                            // Altera o titulo do botão crop para "Cortar"
+                            crop.setTitle("Cortar");
                             // Altera o estado cropped = false
                             cropped = false;
                         }
@@ -749,8 +749,8 @@ public class Faturas extends AppCompatActivity {
                         transformed = false;
                         // Se estava cropped
                         if(cropped) {
-                            // Altera o titulo do botão crop para "Crop"
-                            crop.setTitle("Crop");
+                            // Altera o titulo do botão crop para "Cortar"
+                            crop.setTitle("Cortar");
                             // Altera o estado cropped = false
                             cropped = false;
                         }
