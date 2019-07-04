@@ -27,6 +27,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -75,13 +77,17 @@ public class Faturas extends AppCompatActivity {
     Bitmap fatura_transformada;
     Uri image;
     String mCameraFileName;
+    String pathPasta=Environment.getExternalStorageDirectory()+"/ExpensesOCR/";
     String path = Environment.getExternalStorageDirectory()+"/ExpensesOCR/fatura.jpg";
+
     String email;
     String despesaId;
     String token;
     String api_key;
     String tipo;
     String perc;
+
+    Uri outuri;
 
     // Dados
     Double valor = 0.0;
@@ -113,6 +119,8 @@ public class Faturas extends AppCompatActivity {
         // Ativa a toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         // Receber dados partilhados
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -567,6 +575,7 @@ public class Faturas extends AppCompatActivity {
      * Utiliza a camara para tirar fotografia à fatura
      */
     private void camera() {
+
         // StrictMode
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
@@ -574,12 +583,23 @@ public class Faturas extends AppCompatActivity {
         Intent intent = new Intent();
         // Define a ação de captura de imagem
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        File folder = new File(pathPasta);
+        boolean success=false;
+        if (!folder.exists()) {
+            success=folder.mkdirs();
+            if(!success){
+                path = Environment.getExternalStorageDirectory()+"/ExpensesOCR.jpg";
+            }else {
+                path = Environment.getExternalStorageDirectory()+"/ExpensesOCR/fatura.jpg";
+            }
+        }
         // Cria um ficheiro no path
         File outFile = new File(path);
         // String do ficheiro
         mCameraFileName = outFile.toString();
         // Cria um Uri do ficheiro
-        Uri outuri = Uri.fromFile(outFile);
+        outuri = Uri.fromFile(outFile);
         // Envia o Uri do ficheiro
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
         // Inicia a atividade da camera
@@ -590,6 +610,17 @@ public class Faturas extends AppCompatActivity {
      * Escolhe uma fatura da galeria
      */
     private void pickFromGallery() {
+        File folder = new File(pathPasta);
+        boolean success=false;
+        if (!folder.exists()) {
+            success=folder.mkdirs();
+            if(!success){
+                path = Environment.getExternalStorageDirectory()+"/ExpensesOCR.jpg";
+            }else {
+                path = Environment.getExternalStorageDirectory()+"/ExpensesOCR/fatura.jpg";
+            }
+        }
+
         // Prepara a atividade da galeria
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         // Inicia a atividade da galeria
@@ -609,11 +640,16 @@ public class Faturas extends AppCompatActivity {
                 // Atividade camara
                 case CAMARA:
                     // Define o bitmap da fatura
-                    fatura_original = BitmapFactory.decodeFile(path);
+                    try {
+                        fatura_original = MediaStore.Images.Media.getBitmap(this.getContentResolver(), outuri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    ;
                     // Define a imagem atual como a original
                     fatura_atual = fatura_original;
                     // Define o Uri da imagem através do ficheiro
-                    image = Uri.fromFile(new File(mCameraFileName));
+                    image = outuri;
                     // Remove a imagem anterior
                     imageView.setImageDrawable(null);
                     // Define a nova imagem
@@ -621,7 +657,7 @@ public class Faturas extends AppCompatActivity {
                     // Mostra a imagem
                     imageView.setVisibility(View.VISIBLE);
                     // Cria o ficheiro
-                    file = new File(mCameraFileName);
+                    file = new File(path);
                     // Se o ficheiro ainda não existir
                     try{
                         // Stream de dados
@@ -638,12 +674,7 @@ public class Faturas extends AppCompatActivity {
                     {
                         // Log do erro
                         e.printStackTrace();
-                    }/*
-
-                    if (!file.exists()) {
-                        // Cria a diretoria
-                        file.mkdir();
-                    }*/
+                    }
                     break;
                 case GALLERY_REQUEST_CODE:
                     try {
