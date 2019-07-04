@@ -1,8 +1,11 @@
 package com.ipt.expensesocr;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -13,10 +16,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -34,9 +39,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,12 +56,14 @@ public class Formulario extends AppCompatActivity{
     // Variáveis Globais
     RelativeLayout layoutSpinner;
     RelativeLayout layoutSpinnerTransporte;
-    RelativeLayout layoutspinnerAlojamento;
+    RelativeLayout layoutSpinnerTipoDespesa;
     Spinner spinner;
     Spinner spinnerRefeicao;
     Spinner spinnerTranporte;
     Spinner spinnerDiversas;
     Spinner spinnerAlojamento;
+    Spinner spinnerTipoViatura;
+    Spinner spinnerTipoDespesa;
     View viewRefeicao;
     View viewDiversas;
     View viewTransporte;
@@ -74,9 +86,14 @@ public class Formulario extends AppCompatActivity{
     String api_key;
     String nifPretendido;
 
+    int year,monthOfYear,dayOfMonth;
+
+
     // Dados partilhados
     SharedPreferences sharedPref;
     SharedPreferences.Editor mEditor;
+
+    final Calendar myCalendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +117,20 @@ public class Formulario extends AppCompatActivity{
         perc = intent.getString("perc");
         texto = intent.getString("texto");
 
+        try {
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(data);
+            myCalendar.setTime(date1);
+        } catch (ParseException e) {
+            try {
+                Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(data);
+                myCalendar.setTime(date1);
+            } catch (ParseException i) {
+                i.getErrorOffset();
+            }
+        }
+
+
+
         // Receber dados partilhados
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = sharedPref.edit();
@@ -117,6 +148,9 @@ public class Formulario extends AppCompatActivity{
         confidence = findViewById(R.id.confidence);
         layoutSpinner = findViewById(R.id.layoutSpinner);
         layoutSpinnerTransporte = findViewById(R.id.layoutSpinnerTransporte);
+        spinnerTipoDespesa=findViewById(R.id.spinnerTipoDespesa);
+        layoutSpinnerTipoDespesa=findViewById(R.id.layoutSpinnerTipoDespesa);
+        spinnerTipoViatura=findViewById(R.id.spinnerTipoViatura);
 
         confidence.setText(tipo+" - "+perc);
 
@@ -141,6 +175,24 @@ public class Formulario extends AppCompatActivity{
             dataDespesa.setEnabled(false);
             // Definir cor do texto
             dataDespesa.setTextColor(Color.BLACK);
+        }else{
+            // Muda cor do edtiText
+            dataDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_red));
+            dataDespesa.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    // Muda cor do edtiText
+                    dataDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                }
+
+            });
+
+            /*dataDespesa.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    dataDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                    return false;
+                }
+            });*/
         }
 
         // Expressão regular para o NIF
@@ -157,6 +209,22 @@ public class Formulario extends AppCompatActivity{
             nifDespesa.setEnabled(false);
             // Definir cor do texto
             nifDespesa.setTextColor(Color.BLACK);
+        }else{
+            // Muda cor do edtiText
+            nifDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_red));
+           /*nifDespesa.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    // Muda cor do edtiText
+                    nifDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                }
+            });*/
+            nifDespesa.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    nifDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                    return false;
+                }
+            });
         }
 
         if(!valor.equals("0.0")){
@@ -168,6 +236,23 @@ public class Formulario extends AppCompatActivity{
             valorDespesa.setEnabled(false);
             // Definir cor do texto
             valorDespesa.setTextColor(Color.BLACK);
+        }else{
+            // Muda cor do edtiText
+            valorDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_red));
+          /*  valorDespesa.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    // Muda cor do edtiText
+                    valorDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                }
+            });*/
+            valorDespesa.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    valorDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                    return false;
+                }
+            });
+
         }
 
         // Define a chave da API de reconhecimento do tipo de fatura
@@ -201,9 +286,14 @@ public class Formulario extends AppCompatActivity{
                         dataDespesa.setEnabled(true);
                         nifDespesa.setEnabled(true);
                         valorDespesa.setEnabled(true);
+                        spinnerTipoDespesa.setEnabled(true);
                         // Mudar cor dos spinners e dos editText
                         try{
                             layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
+                        }catch (Exception e){
+                        }
+                        try{
+                            layoutSpinnerTipoDespesa.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
                         }catch (Exception e){
                         }
                         layoutSpinner.setBackground(ContextCompat.getDrawable(Formulario.this,R.drawable.rounded_edittext));
@@ -216,9 +306,17 @@ public class Formulario extends AppCompatActivity{
                         // Verifica valores selecionados nos spinners
                         if(spinner.getSelectedItem().equals("Transporte")){
                             String atual=spinnerTranporte.getSelectedItem().toString();
-                            if (!atual.equals(tipo) || tipo.equals("")){
-                                // Atualiza a tag
-                                tag = atual;
+                            if(atual.equals("Viatura")){
+                                atual=spinnerTipoDespesa.getSelectedItem().toString();
+                                if (!atual.equals(tipo) || tipo.equals("")){
+                                    // Atualiza a tag
+                                    tag = atual;
+                                }
+                            }else {
+                                if (!atual.equals(tipo) || tipo.equals("")){
+                                    // Atualiza a tag
+                                    tag = atual;
+                                }
                             }
                         }else{
                             String atual= spinner.getSelectedItem().toString();
@@ -249,7 +347,7 @@ public class Formulario extends AppCompatActivity{
                 // Muda cor do spinner
                 layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 // Define o tipo de transporte como comboio
-                spinnerTranporte.setSelection(4);
+                spinnerTranporte.setSelection(2);
                 // Bloqueio do spinnerTransporte
                 spinnerTranporte.setEnabled(false);
                 // Muda cor do spinner
@@ -264,7 +362,7 @@ public class Formulario extends AppCompatActivity{
                 // Muda cor do spinner
                 layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 // Define o tipo de transporte como metro
-                spinnerTranporte.setSelection(5);
+                spinnerTranporte.setSelection(3);
                 // Bloqueio do spinnerTransporte
                 spinnerTranporte.setEnabled(false);
                 // Muda cor do spinner
@@ -279,7 +377,7 @@ public class Formulario extends AppCompatActivity{
                 // Muda cor do spinner
                 layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 // Define o tipo de transporte como taxi
-                spinnerTranporte.setSelection(6);
+                spinnerTranporte.setSelection(4);
                 // Bloqueio do spinnerTransporte
                 spinnerTranporte.setEnabled(false);
                 // Muda cor do spinner
@@ -294,11 +392,95 @@ public class Formulario extends AppCompatActivity{
                 // Muda cor do spinner
                 layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 // Define o tipo de transporte como autocarro
-                spinnerTranporte.setSelection(3);
+                spinnerTranporte.setSelection(1);
                 // Bloqueio do spinnerTransporte
                 spinnerTranporte.setEnabled(false);
                 // Muda cor do spinner
                 layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                break;
+            // Combustíveis
+            case "Combustíveis":
+                // Define o tipo de fatura como transporte
+                spinner.setSelection(0);
+                // Bloqueio do spinner
+                spinner.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                // Define o tipo de transporte como Viatura
+                spinnerTranporte.setSelection(0);
+                // Bloqueio do spinnerTransporte
+                spinnerTranporte.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                // Define o tipo de despesa como Combustíveis
+                spinnerTipoDespesa.setSelection(0);
+                // Bloqueio do spinnerTransporte
+                spinnerTipoDespesa.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTipoDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                break;
+            // Portagens
+            case "Portagens":
+                // Define o tipo de fatura como transporte
+                spinner.setSelection(0);
+                // Bloqueio do spinner
+                spinner.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                // Define o tipo de transporte como Viatura
+                spinnerTranporte.setSelection(0);
+                // Bloqueio do spinnerTransporte
+                spinnerTranporte.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                // Define o tipo de despesa como Portagens
+                spinnerTipoDespesa.setSelection(1);
+                // Bloqueio do spinnerTransporte
+                spinnerTipoDespesa.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTipoDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                break;
+            // Estacionamento
+            case "Estacionamento":
+                // Define o tipo de fatura como transporte
+                spinner.setSelection(0);
+                // Bloqueio do spinner
+                spinner.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                // Define o tipo de transporte como Viatura
+                spinnerTranporte.setSelection(0);
+                // Bloqueio do spinnerTransporte
+                spinnerTranporte.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                // Define o tipo de despesa como Estacionamento
+                spinnerTipoDespesa.setSelection(2);
+                // Bloqueio do spinnerTransporte
+                spinnerTipoDespesa.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTipoDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                break;
+            // Aluguer
+            case "Aluguer":
+                // Define o tipo de fatura como transporte
+                spinner.setSelection(0);
+                // Bloqueio do spinner
+                spinner.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinner.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                // Define o tipo de transporte como Viatura
+                spinnerTranporte.setSelection(0);
+                // Bloqueio do spinnerTransporte
+                spinnerTranporte.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTransporte.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                // Define o tipo de despesa como Aluguer
+                spinnerTipoDespesa.setSelection(3);
+                // Bloqueio do spinnerTransporte
+                spinnerTipoDespesa.setEnabled(false);
+                // Muda cor do spinner
+                layoutSpinnerTipoDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
                 break;
             case "Refeições":
                 // Define o tipo de fatura como Refeição
@@ -333,18 +515,60 @@ public class Formulario extends AppCompatActivity{
                 ((TextView) spinner.getSelectedView()).setTextColor(Color.BLACK); //change to your color
             }
         });
-        try {
-            // Definir cor do texto
-            spinnerTranporte.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
+        // Definir cor do texto
+        spinnerTranporte.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                try {
                     ((TextView) spinnerTranporte.getSelectedView()).setTextColor(Color.BLACK); //change to your color
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-            });
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+            }
+        });
 
+        // Definir cor do texto
+        spinnerTipoDespesa.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                try{
+                    ((TextView) spinnerTipoDespesa.getSelectedView()).setTextColor(Color.BLACK); //change to your color
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                    myCalendar.set(Calendar.YEAR, year);
+                    myCalendar.set(Calendar.MONTH, monthOfYear);
+                    myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    updateLabel();
+            }
+        };
+
+
+        dataDespesa.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(Formulario.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+    }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
+
+        dataDespesa.setText(sdf.format(myCalendar.getTime()));
     }
 
     /**
@@ -372,6 +596,7 @@ public class Formulario extends AppCompatActivity{
         viewDiversas.setVisibility(View.GONE);
         viewAlojamento.setVisibility(View.GONE);
         viewViatura.setVisibility(View.GONE);
+
 
         // Adiciona os itens aos spinners
         addItemsToSpinners();
@@ -403,9 +628,7 @@ public class Formulario extends AppCompatActivity{
         spinnerRefeicao.setAdapter(dataAdapter2);
         // Itens do spinner para o tipo de transporte
         List<String> list3 = new ArrayList<String>();
-        list3.add("Viatura Própria");
-        list3.add("Viatura Empresa");
-        list3.add("Viatura Alugada");
+        list3.add("Viatura");
         list3.add("Autocarro");
         list3.add("Comboio");
         list3.add("Metro");
@@ -433,6 +656,23 @@ public class Formulario extends AppCompatActivity{
         ArrayAdapter<String> dataAdapter5 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list5);
         dataAdapter5.setDropDownViewResource(R.layout.my_spinner_textview);
         spinnerAlojamento.setAdapter(dataAdapter5);
+        // Itens do spinner para o tipo de viatura
+        List<String> list6 = new ArrayList<String>();
+        list6.add("Própria");
+        list6.add("Empresa");
+        list6.add("Alugada");
+        ArrayAdapter<String> dataAdapter6 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list6);
+        dataAdapter6.setDropDownViewResource(R.layout.my_spinner_textview);
+        spinnerTipoViatura.setAdapter(dataAdapter6);
+        // Itens do spinner para o tipo de despesa
+        List<String> list7 = new ArrayList<String>();
+        list7.add("Combustível");
+        list7.add("Portagens");
+        list7.add("Estacionamento");
+        list7.add("Aluguer");
+        ArrayAdapter<String> dataAdapter7 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list7);
+        dataAdapter7.setDropDownViewResource(R.layout.my_spinner_textview);
+        spinnerTipoDespesa.setAdapter(dataAdapter7);
     }
 
     /**
@@ -466,7 +706,7 @@ public class Formulario extends AppCompatActivity{
                     viewDiversas.setVisibility(View.GONE);
                     viewAlojamento.setVisibility(View.GONE);
                     viewViatura.setVisibility(View.GONE);
-                    if(spinnerTranporte.getSelectedItem().equals("Viatura Própria")){
+                    if(spinnerTranporte.getSelectedItem().equals("Viatura")){
                         viewViatura.setVisibility(View.VISIBLE);
                     }
                 // Se o tipo de fatura selecionado for Despesas Diversas
@@ -490,11 +730,8 @@ public class Formulario extends AppCompatActivity{
         spinnerTranporte.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Se o tipo de transporte for viatura própria, da empresa ou alugada
-                if( spinnerTranporte.getSelectedItem().equals("Viatura Própria") ||
-                    spinnerTranporte.getSelectedItem().equals("Viatura Empresa") ||
-                    spinnerTranporte.getSelectedItem().equals("Viatura Alugada") )
-                {
+                // Se o tipo de transporte for viatura
+                if( spinnerTranporte.getSelectedItem().equals("Viatura") && spinner.getSelectedItem().equals("Transporte")){
                     // Mostra a View de viatura
                     viewViatura.setVisibility(View.VISIBLE);
                 }else {

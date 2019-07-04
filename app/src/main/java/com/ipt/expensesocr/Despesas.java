@@ -174,9 +174,9 @@ public class Despesas extends AppCompatActivity {
                             TextView text= new TextView(Despesas.this);
                             // Define o layout da TextView
                             text.setLayoutParams(new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                                )
+                                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                                            LinearLayout.LayoutParams.WRAP_CONTENT
+                                    )
                             );
                             // Define a mensagem de erro
                             text.setText("Ocoreu um erro");

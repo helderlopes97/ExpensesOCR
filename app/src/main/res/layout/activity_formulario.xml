@@ -116,6 +116,12 @@
                         android:layout_height="wrap_content" />
 
                     <include
+                        android:id="@+id/viatura"
+                        layout="@layout/content_formulario_transporttipo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
                         android:id="@+id/refeição"
                         layout="@layout/content_formulario_refeicao"
                         android:layout_width="match_parent"
@@ -151,7 +157,8 @@
                             android:background="@drawable/rounded_edittext"
                             android:ems="10"
                             android:hint="dd/mm/aaaa"
-                            android:inputType="date" />
+                            android:inputType="date"
+                            android:windowSoftInputMode="stateAlwaysHidden"/>
 
                     </LinearLayout>
 
@@ -169,6 +176,7 @@
                             android:textAllCaps="false"
                             android:textAppearance="@style/TextAppearance.AppCompat.Title"
                             android:textSize="15sp" />
+
 
                         <EditText
                             android:id="@+id/nifDespesa"
@@ -216,12 +224,6 @@
                 <include
                     android:id="@+id/alojamento"
                     layout="@layout/content_formulario_alojamento"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    android:id="@+id/viatura"
-                    layout="@layout/content_formulario_transporttipo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
