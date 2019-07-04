@@ -623,10 +623,27 @@ public class Faturas extends AppCompatActivity {
                     // Cria o ficheiro
                     file = new File(mCameraFileName);
                     // Se o ficheiro ainda não existir
+                    try{
+                        // Stream de dados
+                        OutputStream stream = null;
+                        // Inicia a stream
+                        stream = new FileOutputStream(file);
+                        // Comprime a imagem
+                        fatura_original.compress(Bitmap.CompressFormat.JPEG,100,stream);
+                        // Envia os dados
+                        stream.flush();
+                        // Fecha a stream
+                        stream.close();
+                    }catch (IOException e)
+                    {
+                        // Log do erro
+                        e.printStackTrace();
+                    }/*
+
                     if (!file.exists()) {
                         // Cria a diretoria
                         file.mkdir();
-                    }
+                    }*/
                     break;
                 case GALLERY_REQUEST_CODE:
                     try {
@@ -705,6 +722,11 @@ public class Faturas extends AppCompatActivity {
                 // Ativa ou desativa Imagem Múltipla
                 multipleImage = !item.isChecked();
                 item.setChecked(multipleImage);
+                if(!multipleImage){
+                    valor = 0.0;
+                    data = "";
+                    nif = "";
+                }
                 return true;
             // Botão imagem original
             case R.id.action_original:
