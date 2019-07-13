@@ -53,6 +53,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -94,6 +95,7 @@ public class Faturas extends AppCompatActivity {
     String data = "";
     String nif = "";
     Date dataTeste;
+    Date dataAtual;
     String nifPretendido;
 
     // Opções
@@ -156,6 +158,13 @@ public class Faturas extends AppCompatActivity {
         // Data para comparar com a encontrada por OCR
         try{
             dataTeste = new SimpleDateFormat("yyyy-MM-dd").parse("2000-1-1");
+        }catch (Exception e){
+
+        }
+
+        // Data atual para comparar com a encontrada por OCR
+        try{
+            dataAtual = Calendar.getInstance().getTime();
         }catch (Exception e){
 
         }
@@ -506,7 +515,7 @@ public class Faturas extends AppCompatActivity {
                                                     // Transforma a data
                                                     Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(elementText);
                                                     // Compara qual a data mais recente
-                                                    if (date1.after(dataTeste)) {
+                                                    if ((date1.after(dataTeste) && date1.before(dataAtual))|| date1.equals(dataAtual)) {
                                                         // Atualiza a data para comparar
                                                         dataTeste = date1;
                                                         // Atualiza a String da data
@@ -519,7 +528,7 @@ public class Faturas extends AppCompatActivity {
                                                         // Transforma a data
                                                         Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(elementText);
                                                         // Compara qual a data mais recente
-                                                        if (date1.after(dataTeste)) {
+                                                        if ((date1.after(dataTeste) && date1.before(dataAtual))|| date1.equals(dataAtual)) {
                                                             // Atualiza a data para comparar
                                                             dataTeste = date1;
                                                             // Atualiza a String da data
