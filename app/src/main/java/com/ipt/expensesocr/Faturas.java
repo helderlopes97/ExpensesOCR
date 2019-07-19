@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -98,6 +101,10 @@ public class Faturas extends AppCompatActivity {
     Date dataAtual;
     String nifPretendido;
 
+    //Datas
+    String dataInicio;
+    String dataFim;
+
     // Opções
     boolean multipleImage = false;
     boolean cropped = false;
@@ -178,6 +185,11 @@ public class Faturas extends AppCompatActivity {
         despesaId=intent.getString("deslocamentoId");
         token=intent.getString("token");
         email=intent.getString("email");
+        dataInicio= intent.getString("dataInicio");
+        dataFim= intent.getString("dataFim");
+        Log.e("datainicio","ola" + dataInicio);
+        Log.e("dataFim",dataFim);
+
 
         // Define a chave da API de reconhecimento do tipo de fatura
         api_key = "b05c81093b4371c50f3aa142184974149d4411b2";
@@ -329,6 +341,8 @@ public class Faturas extends AppCompatActivity {
                                                 intent.putExtra("tipo",(String) tipo);
                                                 intent.putExtra("perc",(String) perc);
                                                 intent.putExtra("texto", textView.getText().toString());
+                                                intent.putExtra("dataInicio",dataInicio);
+                                                intent.putExtra("dataFim",dataFim);
                                                 // Inicia a atividade
                                                 startActivity(intent);
                                                 // Termina a atividade das faturas
@@ -413,8 +427,14 @@ public class Faturas extends AppCompatActivity {
                                     // Limpa o texto da TextView
                                     textView.setText("");
                                 }
+
+                                Bitmap idc=fatura_atual.copy(Bitmap.Config.ARGB_8888, true);
+                                Canvas canvas = new Canvas(idc);
+                                Paint wallpaint = new Paint();
+
                                 // Percorre os blocos de texto decifrados
                                 for (FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()) {
+
                                     // Adiciona um ENTER no texto
                                     texto += "\n";
                                     // Percorre as linhas do bloco
@@ -438,7 +458,6 @@ public class Faturas extends AppCompatActivity {
                                                 lineText.contains("total a pagar") ||
                                                 lineText.contains("preco") ||
                                                 lineText.contains("prego")) {
-
                                             // Margem de procura
                                             int y1, y2;
                                             y1 = lineCornerPoints[0].y - 100;
@@ -509,9 +528,8 @@ public class Faturas extends AppCompatActivity {
                                                 }catch (Exception e){
                                                     elementText=m2.group(0);
                                                 }
-
-
                                                 try {
+
                                                     // Transforma a data
                                                     Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(elementText);
                                                     // Compara qual a data mais recente
@@ -562,6 +580,7 @@ public class Faturas extends AppCompatActivity {
                                         }
                                     }
                                 }
+
                                 // Mostra o texto final na TextView
                                 textView.setText(texto);
                                 // Log do texto reconehcido

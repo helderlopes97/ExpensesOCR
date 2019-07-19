@@ -28,6 +28,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +46,10 @@ public class Despesas extends AppCompatActivity {
     TextView valorEsperado;
     TextView valorReal;
     TextView numeroDespesas;
+
+    //Datas
+    String dataInicio;
+    String dataFim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +101,8 @@ public class Despesas extends AppCompatActivity {
                         Intent intent2 = new Intent(Despesas.this, Faturas.class);
                         // Envia o id do deslocamento, email e token para a nova atividade
                         intent2.putExtra("deslocamentoId",(String) deslocamentoId +"");
+                        intent2.putExtra("dataInicio",(String) dataInicio);
+                        intent2.putExtra("dataFim",(String) dataFim);
                         intent2.putExtra("token",(String) token);
                         intent2.putExtra("email",(String) email);
                         // Inicia a atividade
@@ -137,6 +145,9 @@ public class Despesas extends AppCompatActivity {
                             // Mostra os detalhes do deslocamento
                             descricao.setText( res.get("description").toString());
                             intervalo.setText(res.get("start_date").toString()+" até "+res.get("end_date").toString());
+                            dataInicio=res.get("start_date").toString();
+                            dataFim=res.get("end_date").toString();
+
                             valorEsperado.setText(res.get("estimated_value").toString());
                             if(res.get("real_value").equals(null)){
                                 valorReal.setText("0.0");

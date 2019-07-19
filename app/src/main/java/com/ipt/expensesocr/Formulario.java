@@ -85,7 +85,8 @@ public class Formulario extends AppCompatActivity{
     String tag;
     String api_key;
     String nifPretendido;
-
+    Date dataInicio;
+    Date dataFim;
     int year,monthOfYear,dayOfMonth;
 
 
@@ -116,6 +117,30 @@ public class Formulario extends AppCompatActivity{
         tipo = intent.getString("tipo");
         perc = intent.getString("perc");
         texto = intent.getString("texto");
+
+        try{
+            dataInicio= new SimpleDateFormat("yyyy-MM-dd").parse(intent.getString("dataInicio"));
+            Log.e("datainicio",dataInicio.toString());
+        }catch (Exception e){
+            try{
+                dataInicio= new SimpleDateFormat("yyyy/MM/dd").parse(intent.getString("dataInicio"));
+                Log.e("datainicio",dataInicio.toString());
+            }catch (Exception i){
+                e.printStackTrace();
+            }
+        }
+
+        try{
+            dataFim= new SimpleDateFormat("yyyy-MM-dd").parse(intent.getString("dataFim"));
+            Log.e("dataFim",dataFim.toString());
+        }catch (Exception e){
+            try{
+                dataFim= new SimpleDateFormat("yyyy/MM/dd").parse(intent.getString("dataFim"));
+                Log.e("dataFim",dataFim.toString());
+            }catch (Exception i){
+                e.printStackTrace();
+            }
+        }
 
         try {
             Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(data);
@@ -167,12 +192,26 @@ public class Formulario extends AppCompatActivity{
         Matcher m2 = p2.matcher(data);
         // Se reconhecer uma data
         if (m.matches() || m2.matches()) {
-            // Muda cor do edtiText
-            dataDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+            try {
+                if(myCalendar.getTime().before(dataInicio)||myCalendar.getTime().after(dataFim)){
+                    // Muda cor do edtiText
+                    dataDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_red));
+                    // Bloqueia a textView dataDespesa
+                    dataDespesa.setEnabled(true);
+                }else {
+                    // Muda cor do edtiText
+                    dataDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                    // Bloqueia a textView dataDespesa
+                    dataDespesa.setEnabled(false);
+                }
+            }catch (Exception e){
+                // Muda cor do edtiText
+                dataDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_green));
+                // Bloqueia a textView dataDespesa
+                dataDespesa.setEnabled(false);
+            }
             // Define a data
             dataDespesa.setText(data);
-            // Bloqueia a textView dataDespesa
-            dataDespesa.setEnabled(false);
             // Definir cor do texto
             dataDespesa.setTextColor(Color.BLACK);
         }else{
@@ -569,6 +608,19 @@ public class Formulario extends AppCompatActivity{
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
 
         dataDespesa.setText(sdf.format(myCalendar.getTime()));
+        try {
+
+            if(myCalendar.getTime().before(dataInicio)||myCalendar.getTime().after(dataFim)){
+                // Muda cor do edtiText
+                dataDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext_red));
+            }else {
+                // Muda cor do edtiText
+                dataDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext));
+            }
+        }catch (Exception e){
+            // Muda cor do edtiText
+            dataDespesa.setBackground(ContextCompat.getDrawable(this,R.drawable.rounded_edittext));
+        }
     }
 
     /**
