@@ -294,8 +294,7 @@ public class Faturas extends AppCompatActivity {
                         break;
                     // Botão Avançar
                     case R.id.action_next:
-
-
+                        
                         // Inicia o RequestQueue
                         RequestQueue queue = Volley.newRequestQueue(Faturas.this);
 
@@ -534,10 +533,27 @@ public class Faturas extends AppCompatActivity {
                                                     Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(elementText);
                                                     // Compara qual a data mais recente
                                                     if ((date1.after(dataTeste) && date1.before(dataAtual))|| date1.equals(dataAtual)) {
-                                                        // Atualiza a data para comparar
-                                                        dataTeste = date1;
-                                                        // Atualiza a String da data
-                                                        data = elementText;
+                                                        if(dataTeste.before(new SimpleDateFormat("yyyy-MM-dd").parse(dataInicio))||dataTeste.after(new SimpleDateFormat("yyyy-MM-dd").parse(dataFim))||dataTeste.equals(new SimpleDateFormat("yyyy-MM-dd").parse(dataFim))){
+                                                            // Atualiza a data para comparar
+                                                            dataTeste = date1;
+                                                            // Atualiza a String da data
+                                                            data = elementText;
+                                                        }else{
+                                                            if((date1.after(dataTeste)&& date1.before(new SimpleDateFormat("yyyy-MM-dd").parse(dataFim)))||date1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(dataFim))||date1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(dataInicio))){
+                                                                // Atualiza a data para comparar
+                                                                dataTeste = date1;
+                                                                // Atualiza a String da data
+                                                                data = elementText;
+                                                            }
+                                                        }
+
+                                                    }else{
+                                                        if((dataTeste.after(new SimpleDateFormat("yyyy-MM-dd").parse(dataFim))&&date1.before(new SimpleDateFormat("yyyy-MM-dd").parse(dataFim))&& date1.after(new SimpleDateFormat("yyyy-MM-dd").parse(dataInicio)))||date1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(dataFim))){
+                                                            // Atualiza a data para comparar
+                                                            dataTeste = date1;
+                                                            // Atualiza a String da data
+                                                            data = elementText;
+                                                        }
                                                     }
                                                 } catch (Exception e) {
                                                     // Log do erro
