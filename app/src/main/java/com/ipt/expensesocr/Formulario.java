@@ -89,6 +89,9 @@ public class Formulario extends AppCompatActivity{
     Date dataFim;
     int year,monthOfYear,dayOfMonth;
 
+    String dataInicioOriginal;
+    String dataFimOriginal;
+
 
     // Dados partilhados
     SharedPreferences sharedPref;
@@ -117,6 +120,8 @@ public class Formulario extends AppCompatActivity{
         tipo = intent.getString("tipo");
         perc = intent.getString("perc");
         texto = intent.getString("texto");
+        dataInicioOriginal=intent.getString("dataInicio");
+        dataFimOriginal=intent.getString("dataFim");
 
         try{
             dataInicio= new SimpleDateFormat("yyyy-MM-dd").parse(intent.getString("dataInicio"));
@@ -312,6 +317,8 @@ public class Formulario extends AppCompatActivity{
                         intent.putExtra("email",(String) email);
                         intent.putExtra("texto",(String) texto);
                         intent.putExtra("deslocamentoId",(String)despesaId);
+                        intent.putExtra("dataInicio",dataInicioOriginal);
+                        intent.putExtra("dataFim",dataFimOriginal);
                         // Inicia a atividade
                         startActivity(intent);
                         // Termina a atividade formulário
@@ -554,29 +561,39 @@ public class Formulario extends AppCompatActivity{
                 ((TextView) spinner.getSelectedView()).setTextColor(Color.BLACK); //change to your color
             }
         });
-        // Definir cor do texto
-        spinnerTranporte.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                try {
-                    ((TextView) spinnerTranporte.getSelectedView()).setTextColor(Color.BLACK); //change to your color
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
 
+        try {
         // Definir cor do texto
-        spinnerTipoDespesa.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                try{
-                    ((TextView) spinnerTipoDespesa.getSelectedView()).setTextColor(Color.BLACK); //change to your color
-                }catch (Exception e){
-                    e.printStackTrace();
+            spinnerTranporte.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    try{
+                        ((TextView) spinnerTranporte.getSelectedView()).setTextColor(Color.BLACK); //change to your color
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        try{
+        // Definir cor do texto
+            spinnerTipoDespesa.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    try{
+                        ((TextView) spinnerTipoDespesa.getSelectedView()).setTextColor(Color.BLACK); //change to your color
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {

@@ -147,6 +147,7 @@ public class Despesas extends AppCompatActivity {
                             intervalo.setText(res.get("start_date").toString()+" até "+res.get("end_date").toString());
                             dataInicio=res.get("start_date").toString();
                             dataFim=res.get("end_date").toString();
+                            Log.e("dataoriginal",dataInicio);
 
                             valorEsperado.setText(res.get("estimated_value").toString());
                             if(res.get("real_value").equals(null)){
